@@ -106,7 +106,7 @@ bonus:			$(OBJ_BONUS)
 
 clean:
 				@$(RM) $(OBJ_DIR)
-				@echo $(RED)"Deleted libft object files & object folder"$(DEFAULT)
+				@echo $(RED)"Deleted libft object files & folder"$(DEFAULT)
 
 fclean:			clean
 				@$(RM) $(NAME)

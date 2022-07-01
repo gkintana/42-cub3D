@@ -10,7 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <libft.h>
 #include <mlx.h>
+
+int close_window(void)
+{
+	exit(0);
+}
 
 int	main(void)
 {
@@ -18,6 +24,12 @@ int	main(void)
 	void	*mlx_win;
 
 	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
+	mlx_win = mlx_new_window(mlx, 420, 420, "cub3D Test");
+	// (void)mlx;
+	(void)mlx_win;
+
+	mlx_hook(mlx_win, 17, 1L<<17, close_window, NULL);
 	mlx_loop(mlx);
+
+	return (0);
 }

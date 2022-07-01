@@ -15,6 +15,9 @@ NAME		=	cub3D
 LIBFT_DIR	=	libft
 LIBFT		=	libft.a
 
+MLXL_DIR	=	minilibx_linux
+MLXL		=	libmlx_Linux.a
+
 INC_DIR		=	include
 SRC_DIR		=	sources
 OBJ_DIR		=	objects
@@ -38,19 +41,26 @@ CYAN		=	"\033[3;36m"
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 			@mkdir -p $(OBJ_DIR)
 			@printf $(CYAN)
-			$(CC) $(CFLAGS) -I $(INC_DIR) -I $(LIBFT_DIR)/$(INC_DIR) -c $< -o $@
+			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLXL_DIR) -O3 -c $< -o $@
 
 all:		$(NAME)
 
-$(NAME):	$(LIBFT) $(OBJS)
-			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) -o $@
+mlx:		$(MLXL)
+
+$(NAME):	$(MLXL) $(LIBFT) $(OBJS)
+			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) -L$(MLXL_DIR) -lmlx_Linux -I$(MLXL_DIR) -lXext -lX11 -lm -lz -o $@
 
 $(LIBFT):	
 			@printf $(DEFAULT)
 			@make -C $(LIBFT_DIR) all
 
+$(MLXL):
+			@printf $(DEFAULT)
+			@make -C $(MLXL_DIR) all
+
 clean:
 			@make -C $(LIBFT_DIR) fclean
+			@cd $(MLXL_DIR); chmod 777 configure; ./configure clean; cd ..
 			@$(RM) $(OBJ_DIR)
 			@echo $(RED)"Deleted cub3D object files & folder"$(DEFAULT)
 
