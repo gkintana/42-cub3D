@@ -17,6 +17,7 @@ LIBFT		=	libft.a
 
 MLXL_DIR	=	minilibx_linux
 MLXL		=	libmlx_Linux.a
+LINK_MLXL	=	-L$(MLXL_DIR) -lmlx_Linux -I$(MLXL_DIR) -lXext -lX11 -lm -lz
 
 INC_DIR		=	include
 SRC_DIR		=	sources
@@ -45,12 +46,10 @@ $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 
 all:		$(NAME)
 
-mlx:		$(MLXL)
-
 $(NAME):	$(MLXL) $(LIBFT) $(OBJS)
-			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) -L$(MLXL_DIR) -lmlx_Linux -I$(MLXL_DIR) -lXext -lX11 -lm -lz -o $@
+			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLXL) -o $@
 
-$(LIBFT):	
+$(LIBFT):
 			@printf $(DEFAULT)
 			@make -C $(LIBFT_DIR) all
 
@@ -60,7 +59,7 @@ $(MLXL):
 
 clean:
 			@make -C $(LIBFT_DIR) fclean
-			@cd $(MLXL_DIR); chmod 777 configure; ./configure clean; cd ..
+			@make -C $(MLXL_DIR) clean
 			@$(RM) $(OBJ_DIR)
 			@echo $(RED)"Deleted cub3D object files & folder"$(DEFAULT)
 
