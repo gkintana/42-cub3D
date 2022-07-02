@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 09:49:13 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/02 19:56:30 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/02 23:32:00 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,6 @@ int		ft_strcmp(const char *s1, const char *s2);
 int		ft_isspace(int c);
 double	ft_atof(const char *str);
 void	ft_swap(int *a, int *b);
+char	*get_next_line(int fd);
 
 #endif
