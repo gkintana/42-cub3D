@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/06 12:54:15 by gkintana          #+#    #+#             */
-/*   Updated: 2022/01/29 10:46:35 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/02 14:02:26 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 		node = ft_lstnew(f(lst->content));
 		if (!node)
 		{
-			ft_lstclear(&node, del);
-			return (newlist);
+			ft_lstclear(&newlist, del);
+			break ;
 		}
 		ft_lstadd_back(&newlist, node);
 		lst = lst->next;

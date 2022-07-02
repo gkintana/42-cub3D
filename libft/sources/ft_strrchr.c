@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 15:29:04 by gkintana          #+#    #+#             */
-/*   Updated: 2022/01/29 10:50:32 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/02 12:52:07 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 char	*ft_strrchr(const char *s, int c)
 {
-	int		i;
 	char	*str;
+	int		i;
 
 	str = (char *)s;
-	if (c == '\0')
+	if (!c)
 		return (str + ft_strlen(str));
 	i = ft_strlen(str);
 	while (i >= 0)

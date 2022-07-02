@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/03 14:54:19 by gkintana          #+#    #+#             */
-/*   Updated: 2022/01/29 10:50:16 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/02 12:34:41 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,19 @@
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	unsigned int	i;
 	char			*str;
+	unsigned int	i;
 
 	if (!s)
 		return (NULL);
-	str = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	str = (char *)ft_calloc((ft_strlen(s) + 1), sizeof(char));
 	if (!str)
 		return (NULL);
 	i = 0;
-	while (s[i] != '\0')
+	while (s[i])
 	{
 		str[i] = f(i, s[i]);
 		i++;
 	}
-	str[i] = '\0';
 	return (str);
 }

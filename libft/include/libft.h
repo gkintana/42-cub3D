@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 09:49:13 by gkintana          #+#    #+#             */
-/*   Updated: 2022/01/29 10:41:04 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/02 19:56:30 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 # define LIBFT_H
 
 # include <stdlib.h>
+# include <stdint.h>
 # include <unistd.h>
+
+# define BUFFER_SIZE 42
 
 /*------------------------- PART 1 - LIBC FUNCTIONS -------------------------*/
 int		ft_isalpha(int c);

@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 12:06:58 by gkintana          #+#    #+#             */
-/*   Updated: 2022/01/29 10:50:35 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/02 12:36:02 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,10 @@ static int	ft_isset(int c, char const *set)
 {
 	int	i;
 
-	i = 0;
-	while (set[i] != '\0')
-	{
+	i = -1;
+	while (set[++i] != '\0')
 		if (set[i] == c)
 			return (1);
-		i++;
-	}
 	return (0);
 }
 

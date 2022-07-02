@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 12:20:55 by gkintana          #+#    #+#             */
-/*   Updated: 2022/01/29 10:43:50 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/02 12:12:37 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,5 @@ int	ft_isdigit(int c)
 {
 	if (c >= 48 && c <= 57)
 		return (1);
-	else
-		return (0);
+	return (0);
 }
