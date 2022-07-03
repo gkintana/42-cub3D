@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/03 00:09:09 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/03 18:49:10 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,25 @@
 #include <math.h>
 #include <stdio.h>
 
-typedef struct s_pixel
+typedef struct s_img
 {
-	void	*img;
-	char	*address;
-	int		bits_per_pixel;
-	int		line_len;
-	int		endian;
-}				t_pixel;
+	void	*mlx;
+	void	*window;
+	// char	*map;
+
+	void	*wall;
+	void	*player;
+	
+	char	*white;
+	char	*yellow;
+	
+	int		wall_width;
+	int		wall_height;
+	int		player_width;
+	int		player_height;
+	
+	int		x;
+	int		y;
+}				t_img;
 
 #endif
