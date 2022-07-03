@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/03 19:09:47 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/03 21:01:20 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,15 @@ void	check_map_extension(char *file)
 	
 // }
 
-void	check_map_validity(char *file)
+int	check_map_validity(char *file)
 {
 	char	*str;
 	int		fd;
+	int		i;
 
 	fd = open(file, O_RDONLY);
 	str = get_next_line(fd);
+	i = 0;
 	while (str)
 	{
 		// if (find_errors(str))
@@ -46,8 +48,33 @@ void	check_map_validity(char *file)
 		// printf("%s", str);
 		free(str);
 		str = get_next_line(fd);
+		i++;
 	}
 	free(str);
+	return (i);
+}
+
+char	**save_map(char *file, int lines)
+{
+	char	**map;
+	char	*temp;
+	int		fd;
+	int		i;
+
+	map = (char **)ft_calloc(lines + 1, sizeof(char *));
+	fd = open(file, O_RDONLY);
+	temp = get_next_line(fd);
+	i = 0;
+	while (i < lines)
+	{
+		map[i] = ft_strdup(temp);
+		free(temp);
+		temp = NULL;
+		temp = get_next_line(fd);
+		i++;
+	}
+	free(temp);
+	return (map);
 }
 
 int	close_window(t_img *img)
@@ -57,71 +84,67 @@ int	close_window(t_img *img)
 	exit(0);
 }
 
+/*
+ * i[0] = index for 2D array
+ * i[1] = index to read each element in array[i[0]]
+ */
+void	plot_map(t_img *img)
+{
+	int	i[2];
+
+	i[0] = -1;
+	while(img->map_info[++i[0]])
+	{
+		i[1] = -1;
+		while (img->map_info[i[0]][++i[1]])
+		{
+			if (img->map_info[i[0]][i[1]] == '1')
+			{
+				mlx_put_image_to_window(img->mlx, img->window, img->wall,
+				i[1] * img->wall_width, i[0] * img->wall_height);
+			}
+		}
+	}
+}
+
 int	keyboard_events(int key_code, t_img *img)
 {
 	if (key_code == 65307)
 		close_window(img);
 	else if (key_code == 97)
-		img->x -= 42;
+		img->x -= img->wall_width;
 	else if (key_code == 100)
-		img->x += 42;
+		img->x += img->wall_width;
 	else if (key_code == 119)
-		img->y -= 42;
+		img->y -= img->wall_height;
 	else if (key_code == 115)
-		img->y += 42;
+		img->y += img->wall_height;
 
-	// mlx_clear_window(img->mlx, img->window);
 	// mlx_destroy_image(img->mlx, img->player);
+	mlx_clear_window(img->mlx, img->window);
+	plot_map(img);
 	mlx_put_image_to_window(img->mlx, img->window, img->player, img->x, img->y);
-	
 	return (0);
 }
 
-void	draw_test(char *file, t_img *img)
-{
-	char	*str;
-	int		fd;
-	int		i;
-	int		j;
 
-	fd = open(file, O_RDONLY);
-	str = get_next_line(fd);
-	i = 0;
-	while(str)
-	{
-		printf("%s", str);
-		j = 0;
-		while (str[j])
-		{
-			if (str[j] == '1')
-			{
-				mlx_put_image_to_window(img->mlx, img->window, img->wall, 
-					(j * img->wall_width) + img->x, (i * img->wall_height) + img->y);
-			}
-			j++;
-		}
-		free(str);
-		str = get_next_line(fd);
-		i++;
-	}
-}
 
 int	main(int argc, char **argv)
 {
 	// void	*mlx;
 	// void	*mlx_win;
 	t_img	img;
+	int		map_lines;
 
 	if (argc == 2)
 	{
 		check_map_extension(argv[1]);
-		check_map_validity(argv[1]);
+		map_lines = check_map_validity(argv[1]);
+		img.map_info = save_map(argv[1], map_lines);
 
 		img.mlx = mlx_init();
 		img.window = mlx_new_window(img.mlx, 1000, 800, "cub3D Test");
 
-		
-		
 		img.white = "xpm/white.xpm";
 		img.yellow = "xpm/yellow.xpm";
 		
@@ -129,18 +152,14 @@ int	main(int argc, char **argv)
 		img.player = mlx_xpm_file_to_image(img.mlx, img.yellow, &img.player_width, &img.player_height);
 		// mlx_put_image_to_window(mlx, mlx_win, img.ptr, 0, 0);
 		
-		draw_test(argv[1], &img);
+		plot_map(&img);
 
 		img.x = 2 * img.player_width;
 		img.y = 2 * img.player_height;
 		mlx_put_image_to_window(img.mlx, img.window, img.player, img.x, img.y);
-		// mlx_put_image_to_window(img.mlx, img.window, img.wall, img.x, img.y);
 
 
-		// img.ptr = mlx_xpm_file_to_image(img.mlx, img.white, &img.width, &img.height);
-		
-
-		mlx_do_key_autorepeaton(img.mlx);
+		// mlx_do_key_autorepeaton(img.mlx);
 		mlx_key_hook(img.window, keyboard_events, &img);
 		mlx_hook(img.window, 17, 1L<<17, close_window, &img);
 		mlx_loop(img.mlx);
