@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/03 21:01:20 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/03 22:31:55 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	check_map_validity(char *file)
 		i++;
 	}
 	free(str);
+	str = NULL;
+	close(fd);
 	return (i);
 }
 
@@ -69,18 +71,34 @@ char	**save_map(char *file, int lines)
 	{
 		map[i] = ft_strdup(temp);
 		free(temp);
-		temp = NULL;
 		temp = get_next_line(fd);
 		i++;
 	}
 	free(temp);
+	temp = NULL;
+	close(fd);
 	return (map);
+}
+
+void	free_2d_array(char **array)
+{
+	size_t	i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+	array = NULL;
 }
 
 int	close_window(t_img *img)
 {
 	mlx_clear_window(img->mlx, img->window);
 	mlx_destroy_window(img->mlx, img->window);
+	free_2d_array(img->map);
 	exit(0);
 }
 
@@ -93,12 +111,12 @@ void	plot_map(t_img *img)
 	int	i[2];
 
 	i[0] = -1;
-	while(img->map_info[++i[0]])
+	while(img->map[++i[0]])
 	{
 		i[1] = -1;
-		while (img->map_info[i[0]][++i[1]])
+		while (img->map[i[0]][++i[1]])
 		{
-			if (img->map_info[i[0]][i[1]] == '1')
+			if (img->map[i[0]][i[1]] == '1')
 			{
 				mlx_put_image_to_window(img->mlx, img->window, img->wall,
 				i[1] * img->wall_width, i[0] * img->wall_height);
@@ -112,13 +130,25 @@ int	keyboard_events(int key_code, t_img *img)
 	if (key_code == 65307)
 		close_window(img);
 	else if (key_code == 97)
-		img->x -= img->wall_width;
+	{
+		if (img->map[img->y / img->wall_height][(img->x / img->wall_width) - 1] == '0')
+			img->x -= img->wall_width;
+	}
 	else if (key_code == 100)
-		img->x += img->wall_width;
+	{
+		if (img->map[img->y / img->wall_height][(img->x / img->wall_width) + 1] == '0')
+			img->x += img->wall_width;
+	}
 	else if (key_code == 119)
-		img->y -= img->wall_height;
+	{
+		if (img->map[(img->y / img->wall_height) - 1][img->x / img->wall_width] == '0')
+			img->y -= img->wall_height;
+	}
 	else if (key_code == 115)
-		img->y += img->wall_height;
+	{
+		if (img->map[(img->y / img->wall_height) + 1][img->x / img->wall_width] == '0')
+			img->y += img->wall_height;
+	}
 
 	// mlx_destroy_image(img->mlx, img->player);
 	mlx_clear_window(img->mlx, img->window);
@@ -127,12 +157,8 @@ int	keyboard_events(int key_code, t_img *img)
 	return (0);
 }
 
-
-
 int	main(int argc, char **argv)
 {
-	// void	*mlx;
-	// void	*mlx_win;
 	t_img	img;
 	int		map_lines;
 
@@ -140,17 +166,15 @@ int	main(int argc, char **argv)
 	{
 		check_map_extension(argv[1]);
 		map_lines = check_map_validity(argv[1]);
-		img.map_info = save_map(argv[1], map_lines);
+		img.map = save_map(argv[1], map_lines);
 
 		img.mlx = mlx_init();
 		img.window = mlx_new_window(img.mlx, 1000, 800, "cub3D Test");
 
 		img.white = "xpm/white.xpm";
-		img.yellow = "xpm/yellow.xpm";
-		
 		img.wall = mlx_xpm_file_to_image(img.mlx, img.white, &img.wall_width, &img.wall_height);
+		img.yellow = "xpm/yellow.xpm";
 		img.player = mlx_xpm_file_to_image(img.mlx, img.yellow, &img.player_width, &img.player_height);
-		// mlx_put_image_to_window(mlx, mlx_win, img.ptr, 0, 0);
 		
 		plot_map(&img);
 

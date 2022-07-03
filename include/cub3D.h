@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/03 21:00:27 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/03 22:18:19 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct s_img
 {
 	void	*mlx;
 	void	*window;
-	char	**map_info;
+	char	**map;
 
 	void	*wall;
 	void	*player;
