@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/04 00:27:38 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/04 13:34:17 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,6 @@ int	keyboard_events(int input, t_data *data)
 			data->x += data->wall_width;
 	}
 
-	// mlx_destroy_image(data->mlx, data->player);
 	mlx_clear_window(data->mlx, data->window);
 	plot_map(data);
 	mlx_put_image_to_window(data->mlx, data->window, data->player, data->x, data->y);
@@ -193,7 +192,7 @@ int	main(int argc, char **argv)
 		data.map = save_map(argv[1], map_lines);
 
 		data.mlx = mlx_init();
-		data.width = 1000;
+		data.width = 1600;
 		data.height = 800;
 		data.window = mlx_new_window(data.mlx, data.width, data.height, "cub3D");
 
@@ -206,8 +205,7 @@ int	main(int argc, char **argv)
 		plot_map(&data);
 		mlx_put_image_to_window(data.mlx, data.window, data.player, data.x, data.y);
 
-		mlx_do_key_autorepeaton(data.mlx);
-		mlx_key_hook(data.window, keyboard_events, &data);
+		mlx_hook(data.window, 02, 1L<<0, keyboard_events, &data);
 		mlx_hook(data.window, 17, 1L<<17, close_window, &data);
 		mlx_loop(data.mlx);
 
