@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/04 13:34:17 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/06 01:29:46 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,21 @@ int	close_window(t_data *data)
 	exit(0);
 }
 
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = img->addr + (y * img->len + x * (img->bpp / 8));
+	*(unsigned int*)dst = color;
+}
+
 /*
  * i[0] = index for 2D array
  * i[1] = index to read each element in array[i[0]]
  */
 void	plot_map(t_data *data)
 {
+
 	int	i[2];
 
 	i[0] = -1;
@@ -138,8 +147,8 @@ void	set_player_position(t_data *data)
 		{
 			if (data->map[i[0]][i[1]] == '0')
 			{
-				data->x = i[1] * data->player_width;
-				data->y = i[0] * data->player_height;
+				data->px = i[1] * data->player_width * 2;
+				data->py = i[0] * data->player_height * 2;
 				i[2] = 1;
 				break ;
 			}
@@ -151,32 +160,68 @@ void	set_player_position(t_data *data)
 
 int	keyboard_events(int input, t_data *data)
 {
+	// printf("%d\n", input);	// print keycodes
 	if (input == KEYCODE_ESC)
 		close_window(data);
 	else if (input == KEYCODE_W)
 	{
-		if (data->map[(data->y / data->wall_height) - 1][data->x / data->wall_width] == '0')
-			data->y -= data->wall_height;
+		// if (data->map[(data->y / data->wall_height) - 1][data->x / data->wall_width] == '0')
+			// data->y -= data->player_height / 4;
+		data->px -= data->pdx;
+		data->py -= data->pdy;
+		
 	}
 	else if (input == KEYCODE_A)
 	{
-		if (data->map[data->y / data->wall_height][(data->x / data->wall_width) - 1] == '0')
-			data->x -= data->wall_width;
+		// if (data->map[data->y / data->wall_height][(data->x / data->wall_width) - 1] == '0')
+			// data->x -= data->player_width / 4;
+		
+		data->px -= data->pdx;
+		data->py += data->pdy;
 	}
 	else if (input == KEYCODE_S)
 	{
-		if (data->map[(data->y / data->wall_height) + 1][data->x / data->wall_width] == '0')
-			data->y += data->wall_height;
+		// if (data->map[(data->y / data->wall_height) + 1][data->x / data->wall_width] == '0')
+			// data->y += data->player_height / 4;
+		data->px += data->pdx;
+		data->py += data->pdy;
 	}
 	else if (input == KEYCODE_D)
 	{
-		if (data->map[data->y / data->wall_height][(data->x / data->wall_width) + 1] == '0')
-			data->x += data->wall_width;
+		// if (data->map[data->y / data->wall_height][(data->x / data->wall_width) + 1] == '0')
+			// data->x += data->player_width / 4;
+		
+		data->px += data->pdx;
+		data->py -= data->pdy;
+	}
+	else if (input == KEYCODE_UP)
+	{
+		
+	}
+	else if (input == KEYCODE_DOWN)
+	{
+
+	}
+	else if (input == KEYCODE_LEFT)
+	{
+		data->pa -= 0.1;
+		if (data->pa < 0)
+			data->pa += 2 * 3.1416;
+		data->pdx = cos(data->pa) * 2.25;
+		data->pdy = sin(data->pa) * 2.25;
+	}
+	else if (input == KEYCODE_RIGHT)
+	{
+		data->pa += 0.1;
+		if (data->pa > 2 * 3.1416)
+			data->pa += 2 * 3.1416;
+		data->pdx = cos(data->pa) * 2.25;
+		data->pdy = sin(data->pa) * 2.25;
 	}
 
 	mlx_clear_window(data->mlx, data->window);
 	plot_map(data);
-	mlx_put_image_to_window(data->mlx, data->window, data->player, data->x, data->y);
+	mlx_put_image_to_window(data->mlx, data->window, data->player, data->px, data->py);
 	return (0);
 }
 
@@ -192,7 +237,7 @@ int	main(int argc, char **argv)
 		data.map = save_map(argv[1], map_lines);
 
 		data.mlx = mlx_init();
-		data.width = 1600;
+		data.width = 1900;
 		data.height = 800;
 		data.window = mlx_new_window(data.mlx, data.width, data.height, "cub3D");
 
@@ -201,11 +246,25 @@ int	main(int argc, char **argv)
 		data.yellow = "xpm/yellow.xpm";
 		data.player = mlx_xpm_file_to_image(data.mlx, data.yellow, &data.player_width, &data.player_height);
 
+		// data.img = mlx_new_image(data.mlx, 25, 25);
+		// data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.len, &data.endian);
+		// int i = 0;
+		// while (i < 5)
+		// 	my_mlx_pixel_put(&data, i, i, 0xFFFFFF);
+		// data.player = data.img;
+		
+
+
+		data.pa = 60;
+		data.pdx = cos(data.pa) * 2.25;
+		data.pdy = sin(data.pa) * 2.25;
+
 		set_player_position(&data);
 		plot_map(&data);
-		mlx_put_image_to_window(data.mlx, data.window, data.player, data.x, data.y);
+		mlx_put_image_to_window(data.mlx, data.window, data.player, data.px, data.py);
+		
 
-		mlx_hook(data.window, 02, 1L<<0, keyboard_events, &data);
+		mlx_hook(data.window, 2, 1L<<0, keyboard_events, &data);
 		mlx_hook(data.window, 17, 1L<<17, close_window, &data);
 		mlx_loop(data.mlx);
 

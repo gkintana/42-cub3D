@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/04 10:50:30 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/06 01:32:14 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@
 #  define KEYCODE_S		115
 #  define KEYCODE_D		100
 #  define KEYCODE_ESC	65307
+#  define KEYCODE_UP	65362
+#  define KEYCODE_DOWN	65364
+#  define KEYCODE_LEFT	65361
+#  define KEYCODE_RIGHT	65363
 # endif
 
 # if __APPLE__
@@ -38,6 +42,15 @@
 # endif
 
 /*-------------------------------- STRUCTURES --------------------------------*/
+typedef struct s_img
+{
+	void *img;
+	char *addr;
+	int bpp;
+	int len;
+	int endian;
+}			t_img;
+
 typedef struct s_data
 {
 	void	*mlx;
@@ -57,8 +70,10 @@ typedef struct s_data
 	void	*player;
 	int		player_width;
 	int		player_height;
-	int		x;
-	int		y;
+	// int		x;
+	// int		y;
+
+	double	px, py, pdx, pdy, pa;
 }				t_data;
 
 #endif

@@ -6,7 +6,7 @@
 #    By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/22 08:46:09 by gkintana          #+#    #+#              #
-#    Updated: 2022/07/04 10:59:24 by gkintana         ###   ########.fr        #
+#    Updated: 2022/07/05 22:55:24 by gkintana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,18 +46,18 @@ CYAN		=	"\033[3;36m"
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 			@mkdir -p $(OBJ_DIR)
 			@printf $(CYAN)
-# $(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLXL_DIR) -O3 -c $< -o $@
-			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLXM_DIR) -O3 -c $< -o $@
+			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLXL_DIR) -O3 -c $< -o $@
+# $(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLXM_DIR) -O3 -c $< -o $@
 
 all:		$(NAME)
 
 # LINUX
-# $(NAME):	$(MLXL) $(LIBFT) $(OBJS)
-# 			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLXL) -o $@
+$(NAME):	$(MLXL) $(LIBFT) $(OBJS)
+			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLXL) -o $@
 
 # MAC
-$(NAME):	$(MLXM) $(LIBFT) $(OBJS)
-			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLXM) -o $@
+# $(NAME):	$(MLXM) $(LIBFT) $(OBJS)
+# 			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLXM) -o $@
 
 $(LIBFT):
 			@printf $(DEFAULT)
