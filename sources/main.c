@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/06 01:29:46 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/06 13:16:44 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,8 +176,16 @@ int	keyboard_events(int input, t_data *data)
 		// if (data->map[data->y / data->wall_height][(data->x / data->wall_width) - 1] == '0')
 			// data->x -= data->player_width / 4;
 		
-		data->px -= data->pdx;
-		data->py += data->pdy;
+		// if (data->pa > 0)
+		// {
+		// 	data->px += data->pdx;
+		// 	data->py -= data->pdy;
+		// }
+		// else
+		// {
+			data->px -= data->pdx;
+			data->py += data->pdy;
+		// }
 	}
 	else if (input == KEYCODE_S)
 	{
@@ -190,9 +198,16 @@ int	keyboard_events(int input, t_data *data)
 	{
 		// if (data->map[data->y / data->wall_height][(data->x / data->wall_width) + 1] == '0')
 			// data->x += data->player_width / 4;
-		
-		data->px += data->pdx;
-		data->py -= data->pdy;
+		// if (data->pa < 0)
+		// {
+		// 	data->px -= data->pdx;
+		// 	data->py += data->pdy;
+		// }
+		// else
+		// {
+			data->px += data->pdx;
+			data->py -= data->pdy;
+		// }
 	}
 	else if (input == KEYCODE_UP)
 	{
@@ -205,6 +220,7 @@ int	keyboard_events(int input, t_data *data)
 	else if (input == KEYCODE_LEFT)
 	{
 		data->pa -= 0.1;
+		printf("%f\n", data->pa);
 		if (data->pa < 0)
 			data->pa += 2 * 3.1416;
 		data->pdx = cos(data->pa) * 2.25;
@@ -213,8 +229,9 @@ int	keyboard_events(int input, t_data *data)
 	else if (input == KEYCODE_RIGHT)
 	{
 		data->pa += 0.1;
+		printf("%f\n", data->pa);
 		if (data->pa > 2 * 3.1416)
-			data->pa += 2 * 3.1416;
+			data->pa -= 2 * 3.1416;
 		data->pdx = cos(data->pa) * 2.25;
 		data->pdy = sin(data->pa) * 2.25;
 	}
@@ -237,25 +254,66 @@ int	main(int argc, char **argv)
 		data.map = save_map(argv[1], map_lines);
 
 		data.mlx = mlx_init();
-		data.width = 1900;
-		data.height = 800;
+		// data.width = 1600;
+		// data.height = 800;
+		mlx_get_screen_size(data.mlx, &data.width, &data.height);
 		data.window = mlx_new_window(data.mlx, data.width, data.height, "cub3D");
 
-		data.white = "xpm/white.xpm";
-		data.wall = mlx_xpm_file_to_image(data.mlx, data.white, &data.wall_width, &data.wall_height);
-		data.yellow = "xpm/yellow.xpm";
-		data.player = mlx_xpm_file_to_image(data.mlx, data.yellow, &data.player_width, &data.player_height);
+		// data.white = "xpm/white.xpm";
+		// data.wall = mlx_xpm_file_to_image(data.mlx, data.white, &data.wall_width, &data.wall_height);
 
-		// data.img = mlx_new_image(data.mlx, 25, 25);
-		// data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.len, &data.endian);
-		// int i = 0;
-		// while (i < 5)
-		// 	my_mlx_pixel_put(&data, i, i, 0xFFFFFF);
-		// data.player = data.img;
+		data.wall_width = 50;
+		data.wall_height = 50;
+		data.img[0].img = mlx_new_image(data.mlx, data.wall_width, data.wall_height);
+		data.img[0].addr = mlx_get_data_addr(data.img[0].img, &data.img[0].bpp, &data.img[0].len, &data.img[0].endian);
+		{
+			int i = -1;
+			while (++i < data.wall_height)
+			{
+				int j = -1;
+				while (++j < data.wall_width)
+					my_mlx_pixel_put(&data.img[0], i, j, 0xFFFFFF);
+			}
+		}
+		data.wall = data.img[0].img;
+
+		// data.yellow = "xpm/yellow.xpm";
+		// data.player = mlx_xpm_file_to_image(data.mlx, data.yellow, &data.player_width, &data.player_height);
+
+		data.player_width = data.wall_width / 2;
+		data.player_height = data.wall_height / 2;
+		data.img[1].img = mlx_new_image(data.mlx, data.player_width, data.player_height);
+		data.img[1].addr = mlx_get_data_addr(data.img[1].img, &data.img[1].bpp, &data.img[1].len, &data.img[1].endian);
+		{
+			float i = -1;
+			while (++i < data.player_height)
+			{
+				float j = -1;
+				while (++j < data.player_width)
+				{
+					if (i >= data.player_height * 0.25 && i <= data.player_height * 0.75
+						&& j >= data.player_width * 0.25 && j <= data.player_width * 0.75)
+						my_mlx_pixel_put(&data.img[1], i, j, 0xFF0000);
+				}
+			}
+
+			i = data.player_height / 2;
+			while (i < data.player_height)
+			{
+				float j = data.player_width / 2;
+				while (j < data.player_width)
+				{
+					if (j == i)
+						my_mlx_pixel_put(&data.img[1], i, j, 0xFFFF00);
+					j++;
+				}
+				i++;
+			}
+		}
 		
+		data.player = data.img[1].img;
 
-
-		data.pa = 60;
+		data.pa = 180;
 		data.pdx = cos(data.pa) * 2.25;
 		data.pdy = sin(data.pa) * 2.25;
 

@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/06 01:32:14 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/06 12:32:55 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@
 #  define KEYCODE_S		1
 #  define KEYCODE_D		2
 #  define KEYCODE_ESC	53
+#  define KEYCODE_UP	
+#  define KEYCODE_DOWN	
+#  define KEYCODE_LEFT	
+#  define KEYCODE_RIGHT	
 # endif
 
 /*-------------------------------- STRUCTURES --------------------------------*/
@@ -60,8 +64,8 @@ typedef struct s_data
 	char	**map;
 
 
-	char	*white;
-	char	*yellow;
+	// char	*white;
+	// char	*yellow;
 
 	void	*wall;
 	int		wall_width;
@@ -72,6 +76,8 @@ typedef struct s_data
 	int		player_height;
 	// int		x;
 	// int		y;
+
+	t_img	img[2];
 
 	double	px, py, pdx, pdy, pa;
 }				t_data;
