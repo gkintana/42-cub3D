@@ -6,12 +6,19 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/07 00:08:47 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/07 02:41:31 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 
+/*
+ * this function simply checks if the argument being passed is a file with a
+ * .cub extension.
+ *
+ * Note: will still work or sometimes even segfault when given
+ *      ./cub3d maps/minimalist_map_only.cub.cub
+ */
 void	check_map_extension(char *file)
 {
 	size_t	i;
@@ -29,6 +36,10 @@ void	check_map_extension(char *file)
 	
 // }
 
+/*
+ * function intended to parse map before proceding with the initializations,
+ * calculations, raycasting, etc.
+ */
 int	check_map_validity(char *file)
 {
 	char	*str;
@@ -56,6 +67,9 @@ int	check_map_validity(char *file)
 	return (i);
 }
 
+/*
+  saves the map in a 2d array if it passes the parser
+*/
 char	**save_map(char *file, int lines)
 {
 	char	**map;
@@ -97,20 +111,30 @@ void	free_2d_array(char **array)
 int	close_window(t_data *data)
 {
 	free_2d_array(data->map);
+	mlx_destroy_image(data->mlx, data->wall);
+	mlx_destroy_image(data->mlx, data->player);
 	mlx_clear_window(data->mlx, data->window);
 	mlx_destroy_window(data->mlx, data->window);
 	exit(0);
 }
 
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
+/*
+ * this is the my_mlx_pixel_put function from the minilibx documentation
+ */
+void	put_pixel_at_addr(t_img *img, int x, int y, int color)
 {
-	char	*dst;
+	char			*pixel;
+	unsigned int	pixel_position;
 
-	dst = img->addr + (y * img->len + x * (img->bpp / 8));
-	*(unsigned int*)dst = color;
+	pixel_position = (y * img->len) + (x * (img->bpp >> 3));
+	pixel = img->addr + pixel_position;
+	*(unsigned int *)pixel = color;
 }
 
 /*
+ * will place the respective wall image to the mlx_window if the current tile
+ * on the 2d map is '1'
+ *
  * i[0] = index for 2D array
  * i[1] = index to read each element in array[i[0]]
  */
@@ -133,6 +157,10 @@ void	plot_map(t_data *data)
 	}
 }
 
+/*
+ * searches for the first occurence of a 0 character from the 2d map and
+ * sets the player's starting position to that specific coordinate
+ */
 void	set_player_position(t_data *data)
 {
 	int i[3];
@@ -146,8 +174,8 @@ void	set_player_position(t_data *data)
 		{
 			if (data->map[i[0]][i[1]] == '0')
 			{
-				data->px = i[1] * data->player_width * 2;
-				data->py = i[0] * data->player_height * 2;
+				data->px = i[1] * data->wall_width;
+				data->py = i[0] * data->wall_height;
 				i[2] = 1;
 				break ;
 			}
@@ -159,8 +187,8 @@ void	set_player_position(t_data *data)
 
 void	plot_player(t_data *data)
 {
-	data->img[1].img = mlx_new_image(data->mlx, data->player_width, data->player_height);
-	data->img[1].addr = mlx_get_data_addr(data->img[1].img, &data->img[1].bpp, &data->img[1].len, &data->img[1].endian);
+	data->img[1].addr = mlx_get_data_addr(data->img[1].img, &data->img[1].bpp,
+		&data->img[1].len, &data->img[1].endian);
 	{
 		float i = -1;
 		while (++i < data->player_height)
@@ -168,13 +196,14 @@ void	plot_player(t_data *data)
 			float j = -1;
 			while (++j < data->player_width)
 			{
-				if (i >= data->player_height * 0.25 && i <= data->player_height * 0.75
-					&& j >= data->player_width * 0.25 && j <= data->player_width * 0.75)
-					my_mlx_pixel_put(&data->img[1], i, j, 0xFF0000);
+				// if (i >= data->player_height * 0.25 && i <= data->player_height * 0.75
+				// 	&& j >= data->player_width * 0.25 && j <= data->player_width * 0.75)
+					put_pixel_at_addr(&data->img[1], i, j, 0xFF0000);
 			}
 		}
 	}
 	data->player = data->img[1].img;
+	mlx_put_image_to_window(data->mlx, data->window, data->player, data->px, data->py);
 }
 
 bool	is_quadrant_angle(double n)
@@ -182,6 +211,17 @@ bool	is_quadrant_angle(double n)
 	if (n == 0 || n == 90 || n == 180 || n == 270 || n == 360)
 		return (true);
 	return (false);
+}
+
+void	print_player_angle(t_data *data)
+{
+	char	*temp;
+	
+	temp = ft_itoa((int)data->pa);
+	mlx_string_put(data->mlx, data->window, 25, 25, 0x00FFFF, temp);
+	mlx_string_put(data->mlx, data->window, 47.5, 25, 0x00FFFF, "deg.");
+	free(temp);
+	temp = NULL;
 }
 
 int	keyboard_events(int input, t_data *data)
@@ -247,14 +287,14 @@ int	keyboard_events(int input, t_data *data)
 			data->py -= data->pdy;
 		}
 	}
-	else if (input == KEYCODE_UP)
-	{
+	// else if (input == KEYCODE_UP)
+	// {
 		
-	}
-	else if (input == KEYCODE_DOWN)
-	{
+	// }
+	// else if (input == KEYCODE_DOWN)
+	// {
 
-	}
+	// }
 	else if (input == KEYCODE_LEFT)
 	{
 		data->pa -= 2.5;
@@ -275,13 +315,7 @@ int	keyboard_events(int input, t_data *data)
 	mlx_clear_window(data->mlx, data->window);
 	plot_map(data);
 	plot_player(data);
-	mlx_put_image_to_window(data->mlx, data->window, data->player, data->px, data->py);
-
-	char	*temp = ft_itoa((int)data->pa);
-	mlx_string_put(data->mlx, data->window, 25, 25, 0x00FFFF, temp);
-	mlx_string_put(data->mlx, data->window, 47.5, 25, 0x00FFFF, "deg.");
-	free(temp);
-	temp = NULL;
+	print_player_angle(data);
 	
 	return (0);
 }
@@ -293,17 +327,20 @@ int	main(int argc, char **argv)
 
 	if (argc == 2)
 	{
+		// Parsing of Map
 		check_map_extension(argv[1]);
 		map_lines = check_map_validity(argv[1]);
 		data.map = save_map(argv[1], map_lines);
+
 
 		data.mlx = mlx_init();
 		mlx_get_screen_size(data.mlx, &data.width, &data.height);
 		data.window = mlx_new_window(data.mlx, data.width, data.height, "cub3D");
 
 
-		data.wall_width = 50;
-		data.wall_height = 50;
+		// Creating Wall Img
+		data.wall_width = WALL_WIDTH;
+		data.wall_height = WALL_HEIGHT;
 		data.img[0].img = mlx_new_image(data.mlx, data.wall_width, data.wall_height);
 		data.img[0].addr = mlx_get_data_addr(data.img[0].img, &data.img[0].bpp, &data.img[0].len, &data.img[0].endian);
 		{
@@ -312,69 +349,31 @@ int	main(int argc, char **argv)
 			{
 				int j = -1;
 				while (++j < data.wall_width)
-					my_mlx_pixel_put(&data.img[0], i, j, 0xFFFFFF);
+					put_pixel_at_addr(&data.img[0], i, j, 0xFFFFFF);
 			}
 		}
 		data.wall = data.img[0].img;
 
+
+		// Creating Player Img
 		data.pa = 0;
 		data.player_speed = 2.50;
 		data.pdx = cos(data.pa * PI / 180) * data.player_speed;
 		data.pdy = sin(data.pa * PI / 180) * data.player_speed;
 		data.player_width = data.wall_width / 2;
 		data.player_height = data.wall_height / 2;
-		plot_player(&data);
-
-		// data.img[1].img = mlx_new_image(data.mlx, data.player_width, data.player_height);
-		// data.img[1].addr = mlx_get_data_addr(data.img[1].img, &data.img[1].bpp, &data.img[1].len, &data.img[1].endian);
-		// {
-		// 	float i = -1;
-		// 	while (++i < data.player_height)
-		// 	{
-		// 		float j = -1;
-		// 		while (++j < data.player_width)
-		// 		{
-		// 			if (i >= data.player_height * 0.25 && i <= data.player_height * 0.75
-		// 				&& j >= data.player_width * 0.25 && j <= data.player_width * 0.75)
-		// 				my_mlx_pixel_put(&data.img[1], i, j, 0xFF0000);
-		// 		}
-		// 	}
-
-		// 	my_mlx_pixel_put(&data.img[1], data.player_width / 2, data.player_height / 2, 0xFFFF00);
-		// 	my_mlx_pixel_put(&data.img[1], data.px, data.py, 0xFFFF00);
-		// 	// printf("%f\n", cos = );
-		// 	// printf("%f\n", sin(180.0 / 2.0 * PI / 180.0));
-			
-		// 	// i = data.player_height / 2;
-		// 	// while (i < data.player_height)
-		// 	// {
-		// 	// 	float j = data.player_width / 2;
-		// 	// 	while (j < data.player_width)
-		// 	// 	{
-		// 	// 		if (cos())
-		// 	// 			my_mlx_pixel_put(&data.img[1], i, j, 0xFFFF00);
-		// 	// 		j++;
-		// 	// 	}
-		// 	// 	i++;
-		// 	// }
-		// }
-		// data.player = data.img[1].img;
+		data.img[1].img = mlx_new_image(data.mlx, data.player_width, data.player_height);
 
 
-		set_player_position(&data);
 		plot_map(&data);
-		mlx_put_image_to_window(data.mlx, data.window, data.player, data.px, data.py);
-
-		char	*temp = ft_itoa((int)data.pa);
-		mlx_string_put(data.mlx, data.window, 25, 25, 0x00FFFF, temp);
-		mlx_string_put(data.mlx, data.window, 47.5, 25, 0x00FFFF, "deg.");
-		free(temp);
-		temp = NULL;
+		set_player_position(&data);
+		plot_player(&data);
+		print_player_angle(&data);
+		
 
 		mlx_hook(data.window, 2, 1L<<0, keyboard_events, &data);
 		mlx_hook(data.window, 17, 1L<<17, close_window, &data);
 		mlx_loop(data.mlx);
-
 		return (0);
 	}
 	ft_putstr_fd("Invalid Arguments\n", 2);

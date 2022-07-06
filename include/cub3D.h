@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/07 00:08:56 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/07 02:22:48 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,19 @@
 # endif
 
 /*------------------------------ CONSTANT VALUES -----------------------------*/
-# define PI 3.1415926535897932384626434
+# define PI 			3.1415926535897932384626434
+# define WALL_WIDTH		50
+# define WALL_HEIGHT	50
 
 /*-------------------------------- STRUCTURES --------------------------------*/
 typedef struct s_img
 {
-	void *img;
-	char *addr;
-	int bpp;
-	int len;
-	int endian;
-}			t_img;
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		len;
+	int		endian;
+}				t_img;
 
 typedef struct s_data
 {
@@ -67,9 +69,9 @@ typedef struct s_data
 	int		height;
 	char	**map;
 
-
 	// char	*white;
 	// char	*yellow;
+	t_img	img[2];
 
 	void	*wall;
 	int		wall_width;
@@ -82,9 +84,11 @@ typedef struct s_data
 	// int		x;
 	// int		y;
 
-	t_img	img[2];
-
-	double	px, py, pdx, pdy, pa;
+	double	px;		// player x-coordinate
+	double	py;		// player y-coordinate
+	double	pdx;	// distance x
+	double	pdy;	// distance y
+	double	pa;		// player angle
 }				t_data;
 
 #endif
