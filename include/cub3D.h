@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/06 12:32:55 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/06 18:18:16 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@
 #  define KEYCODE_RIGHT	
 # endif
 
+# define PI 3.1415926535897932384626434
+
 /*-------------------------------- STRUCTURES --------------------------------*/
 typedef struct s_img
 {
@@ -72,6 +74,7 @@ typedef struct s_data
 	int		wall_height;
 	
 	void	*player;
+	double	player_speed;
 	int		player_width;
 	int		player_height;
 	// int		x;
