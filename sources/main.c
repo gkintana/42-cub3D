@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/06 18:20:22 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/07 00:08:47 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
  */
 void	plot_map(t_data *data)
 {
-
 	int	i[2];
 
 	i[0] = -1;
@@ -174,35 +173,15 @@ void	plot_player(t_data *data)
 					my_mlx_pixel_put(&data->img[1], i, j, 0xFF0000);
 			}
 		}
-
-		my_mlx_pixel_put(&data->img[1], data->player_width / 2, data->player_height / 2, 0xFFFF00);
-		// my_mlx_pixel_put(&data->img[1], data->px + data->pdx * data->player_speed, data->py + data->pdy * data->player_speed, 0xFFFF00);
-
-		// printf("cos = %f\n", data->player_width / 2 * cos(data->pa * PI / 180));
-		// printf("sin = %f\n", data->player_width / 2 * sin(data->pa * PI / 180));
-		// printf("%f\n", sin(180.0 / 2.0 * PI / 180.0));
-		
-		// i = data.player_height / 2;
-		// while (i < data.player_height)
-		// {
-		// 	float j = data.player_width / 2;
-		// 	while (j < data.player_width)
-		// 	{
-		// 		if (cos())
-		// 			my_mlx_pixel_put(&data.img[1], i, j, 0xFFFF00);
-		// 		j++;
-		// 	}
-		// 	i++;
-		// }
 	}
 	data->player = data->img[1].img;
 }
 
-int	is_quadrant(double n)
+bool	is_quadrant_angle(double n)
 {
 	if (n == 0 || n == 90 || n == 180 || n == 270 || n == 360)
-		return (1);
-	return (0);
+		return (true);
+	return (false);
 }
 
 int	keyboard_events(int input, t_data *data)
@@ -212,73 +191,59 @@ int	keyboard_events(int input, t_data *data)
 		close_window(data);
 	else if (input == KEYCODE_W)
 	{
-		// if (data->map[(data->y / data->wall_height) - 1][data->x / data->wall_width] == '0')
-			// data->y -= data->player_height / 4;
-		data->px -= data->pdx;
+		data->px += data->pdx;
 		data->py -= data->pdy;
-		
 	}
 	else if (input == KEYCODE_A)
 	{
-		// if (data->map[data->y / data->wall_height][(data->x / data->wall_width) - 1] == '0')
-			// data->x -= data->player_width / 4;
-		
-		if (is_quadrant(data->pa))
+		if (is_quadrant_angle(data->pa))
 		{
 			if (!data->pa || data->pa == 360)
-				data->py += data->player_speed;
+				data->py -= data->player_speed;
 			else if (data->pa == 90)
 				data->px -= data->player_speed;
 			else if (data->pa == 180)
-				data->py -= data->player_speed;
+				data->py += data->player_speed;
 			else if (data->pa == 270)
 				data->px += data->player_speed;
 		}
-		else if ((data->pa > 90 && data->pa < 180) || (data->pa > 270 && data->pa < 360))
+		else if ((data->pa > 0 && data->pa < 90) || (data->pa > 180 && data->pa < 270))
 		{
-			data->px += data->pdx;
+			data->px -= data->pdx;
 			data->py -= data->pdy;
 		}
 		else
 		{
-			data->px -= data->pdx;
+			data->px += data->pdx;
 			data->py += data->pdy;
 		}
 	}
 	else if (input == KEYCODE_S)
 	{
-		// if (data->map[(data->y / data->wall_height) + 1][data->x / data->wall_width] == '0')
-			// data->y += data->player_height / 4;
-		data->px += data->pdx;
+		data->px -= data->pdx;
 		data->py += data->pdy;
 	}
 	else if (input == KEYCODE_D)
 	{
-		// if (data->map[data->y / data->wall_height][(data->x / data->wall_width) + 1] == '0')
-			// data->x += data->player_width / 4;
-		if (is_quadrant(data->pa))
+		if (is_quadrant_angle(data->pa))
 		{
 			if (!data->pa || data->pa == 360)
-				data->py -= data->player_speed;
+				data->py += data->player_speed;
 			else if (data->pa == 90)
 				data->px += data->player_speed;
 			else if (data->pa == 180)
-				data->py += data->player_speed;
+				data->py -= data->player_speed;
 			else if (data->pa == 270)
 				data->px -= data->player_speed;
-			// if (data->pa == 0 || data->pa == 180)
-			// 	data->py += data->player_speed;
-			// else
-			// 	data->px += data->player_speed;
 		}
-		else if ((data->pa > 90 && data->pa < 180) || (data->pa > 270 && data->pa < 360))
+		else if ((data->pa > 0 && data->pa < 90) || (data->pa > 180 && data->pa < 270))
 		{
-			data->px -= data->pdx;
+			data->px += data->pdx;
 			data->py += data->pdy;
 		}
 		else
 		{
-			data->px += data->pdx;
+			data->px -= data->pdx;
 			data->py -= data->pdy;
 		}
 	}
@@ -295,7 +260,6 @@ int	keyboard_events(int input, t_data *data)
 		data->pa -= 2.5;
 		if (data->pa < 0)
 			data->pa += 360;
-		printf("%f\n", data->pa);
 		data->pdx = cos(data->pa * PI / 180) * data->player_speed;
 		data->pdy = sin(data->pa * PI / 180) * data->player_speed;
 	}
@@ -304,7 +268,6 @@ int	keyboard_events(int input, t_data *data)
 		data->pa += 2.5;
 		if (data->pa > 360)
 			data->pa -= 360;
-		printf("%f\n", data->pa);
 		data->pdx = cos(data->pa * PI / 180) * data->player_speed;
 		data->pdy = sin(data->pa * PI / 180) * data->player_speed;
 	}
@@ -313,6 +276,13 @@ int	keyboard_events(int input, t_data *data)
 	plot_map(data);
 	plot_player(data);
 	mlx_put_image_to_window(data->mlx, data->window, data->player, data->px, data->py);
+
+	char	*temp = ft_itoa((int)data->pa);
+	mlx_string_put(data->mlx, data->window, 25, 25, 0x00FFFF, temp);
+	mlx_string_put(data->mlx, data->window, 47.5, 25, 0x00FFFF, "deg.");
+	free(temp);
+	temp = NULL;
+	
 	return (0);
 }
 
@@ -328,13 +298,9 @@ int	main(int argc, char **argv)
 		data.map = save_map(argv[1], map_lines);
 
 		data.mlx = mlx_init();
-		data.width = 800;
-		data.height = 800;
-		// mlx_get_screen_size(data.mlx, &data.width, &data.height);
+		mlx_get_screen_size(data.mlx, &data.width, &data.height);
 		data.window = mlx_new_window(data.mlx, data.width, data.height, "cub3D");
 
-		// data.white = "xpm/white.xpm";
-		// data.wall = mlx_xpm_file_to_image(data.mlx, data.white, &data.wall_width, &data.wall_height);
 
 		data.wall_width = 50;
 		data.wall_height = 50;
@@ -351,10 +317,7 @@ int	main(int argc, char **argv)
 		}
 		data.wall = data.img[0].img;
 
-		// data.yellow = "xpm/yellow.xpm";
-		// data.player = mlx_xpm_file_to_image(data.mlx, data.yellow, &data.player_width, &data.player_height);
-
-		data.pa = 180;
+		data.pa = 0;
 		data.player_speed = 2.50;
 		data.pdx = cos(data.pa * PI / 180) * data.player_speed;
 		data.pdy = sin(data.pa * PI / 180) * data.player_speed;
@@ -402,6 +365,11 @@ int	main(int argc, char **argv)
 		plot_map(&data);
 		mlx_put_image_to_window(data.mlx, data.window, data.player, data.px, data.py);
 
+		char	*temp = ft_itoa((int)data.pa);
+		mlx_string_put(data.mlx, data.window, 25, 25, 0x00FFFF, temp);
+		mlx_string_put(data.mlx, data.window, 47.5, 25, 0x00FFFF, "deg.");
+		free(temp);
+		temp = NULL;
 
 		mlx_hook(data.window, 2, 1L<<0, keyboard_events, &data);
 		mlx_hook(data.window, 17, 1L<<17, close_window, &data);
