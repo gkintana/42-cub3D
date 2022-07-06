@@ -6,82 +6,81 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 10:05:53 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/02 19:56:45 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/07 01:58:06 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
-static char	*update_static_buffer(char *buffer)
+static void	ft_free(char **sbuf, char *set)
 {
+	free (*sbuf);
+	*sbuf = set;
+}
+
+static char	*extract_one_line(char **sbuf)
+{
+	char	*line;
 	char	*temp;
-	size_t	i;
+	int		i;
 
 	i = 0;
-	while (buffer[i] && buffer[i] != 10)
+	while (sbuf[0][i] != 0 && sbuf[0][i] != 10)
 		i++;
-	if (!buffer[i])
+	if (!sbuf[0][i])
 	{
-		free(buffer);
-		buffer = NULL;
+		line = ft_strdup(&sbuf[0][0]);
+		ft_free(sbuf, NULL);
 	}
 	else
 	{
-		temp = ft_strdup(buffer + i + 1);
-		free(buffer);
-		buffer = temp;
+		line = ft_substr(&sbuf[0][0], 0, i + 1);
+		temp = ft_strdup(&sbuf[0][i + 1]);
+		ft_free(sbuf, temp);
+		if (!sbuf[0][0])
+			ft_free(sbuf, NULL);
 	}
-	return (buffer);
-}
-
-static char	*one_line(char *buffer)
-{
-	char	*line;
-	size_t	i;
-
-	i = 0;
-	while (buffer[i] && buffer[i] != 10)
-		i++;
-	line = ft_substr(buffer, 0, i + 1);
 	return (line);
 }
 
-static char	*read_fd(int fd, char *buffer, char *read_str)
+static void	process_file(int fd, char **sbuf, char *buffer, ssize_t nbytes)
 {
 	char	*temp;
-	ssize_t	bytes;
 
-	bytes = read(fd, read_str, BUFFER_SIZE);
-	if (!buffer)
-		buffer = ft_strdup("");
-	while (bytes > 0)
+	while (nbytes > 0)
 	{
-		read_str[bytes] = 0;
-		temp = ft_strjoin(buffer, read_str);
-		free(buffer);
-		buffer = temp;
-		if (ft_strchr(buffer, 10))
+		buffer[nbytes] = 0;
+		if (!sbuf[0])
+			sbuf[0] = ft_strdup("");
+		temp = ft_strjoin(sbuf[0], buffer);
+		ft_free(&sbuf[0], temp);
+		if (ft_strchr(sbuf[0], 10))
 			break ;
-		bytes = read(fd, read_str, BUFFER_SIZE);
+		nbytes = read(fd, buffer, BUFFER_SIZE);
 	}
-	free(read_str);
-	return (buffer);
+	free(buffer);
+}
+
+static char	*check_sbuf(char **sbuf, ssize_t n)
+{
+	if (!sbuf[0] && n <= 0)
+		return (NULL);
+	else
+		return (extract_one_line(sbuf));
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
-	char		*string[2];
+	static char	*sbuf;
+	char		*buffer;
+	ssize_t		nbytes;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	string[0] = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!string[0])
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buffer)
 		return (NULL);
-	buffer = read_fd(fd, buffer, string[0]);
-	if (!buffer || !buffer[0])
-		return (NULL);
-	string[1] = one_line(buffer);
-	buffer = update_static_buffer(buffer);
-	return (string[1]);
+	nbytes = read(fd, buffer, BUFFER_SIZE);
+	process_file(fd, &sbuf, buffer, nbytes);
+	return (check_sbuf(&sbuf, nbytes));
 }
