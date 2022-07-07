@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/07 02:22:48 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/08 01:01:04 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,41 +54,70 @@
 /*-------------------------------- STRUCTURES --------------------------------*/
 typedef struct s_img
 {
-	void	*img;
+	void	*ptr;
 	char	*addr;
 	int		bpp;
 	int		len;
 	int		endian;
 }				t_img;
 
+// Approach done based on this series
+// https://www.youtube.com/watch?v=gYRrGTC7GtA
+// typedef struct s_data
+// {
+// 	void	*mlx;
+// 	void	*window;
+// 	int		width;
+// 	int		height;
+// 	char	**map;
+
+// 	// char	*white;
+// 	// char	*yellow;
+// 	t_img	img[2];
+
+// 	void	*wall;
+// 	int		wall_width;
+// 	int		wall_height;
+	
+// 	void	*player;
+// 	double	player_speed;
+// 	int		player_width;
+// 	int		player_height;
+// 	// int		x;
+// 	// int		y;
+
+// 	double	px;		// player x-coordinate
+// 	double	py;		// player y-coordinate
+// 	double	pdx;	// distance x
+// 	double	pdy;	// distance y
+// 	double	pa;		// player angle
+// }				t_data;
+
+
+// Lode's Raycasting Tutorial
 typedef struct s_data
 {
 	void	*mlx;
-	void	*window;
-	int		width;
-	int		height;
+	void	*mlx_window;
+	int		win_width;
+	int		win_height;
 	char	**map;
 
-	// char	*white;
-	// char	*yellow;
-	t_img	img[2];
+	t_img	img;
+	void	*render;
+	double	position_x;
+	double	position_y;
+	double	vector_x;
+	double	vector_y;
+	double	plane_x;
+	double	plane_y;
 
-	void	*wall;
-	int		wall_width;
-	int		wall_height;
-	
-	void	*player;
-	double	player_speed;
-	int		player_width;
-	int		player_height;
-	// int		x;
-	// int		y;
+	// double	time_new;
+	// double	time_old;
 
-	double	px;		// player x-coordinate
-	double	py;		// player y-coordinate
-	double	pdx;	// distance x
-	double	pdy;	// distance y
-	double	pa;		// player angle
-}				t_data;
+}		t_data;
+
+#define MOVE	0.042
+#define ROT		0.020
 
 #endif
