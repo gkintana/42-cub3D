@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/08 01:02:42 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/08 01:50:17 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -393,13 +393,8 @@ void	draw_line(t_data *data, int x, int start, int end, int color)
 	int	i;
 
 	i = start;
-	while (i <= end)
-	{
-		mlx_pixel_put(data->mlx, data->mlx_window, x, i, color);
-		// put_pixel_at_addr(&data->img, x, i, color);
-		i++;
-	}
-	// data->render = data->img.ptr;
+	while (++i < end)
+		put_pixel_at_addr(&data->img, x, i, color);
 }
 
 // untextured version - part I of Lode's Raycasting Tutorial
@@ -417,8 +412,8 @@ int	raycast_loop(t_data *data)
 		double	side_dist_x = 0;
 		double	side_dist_y = 0;
 
-		double	delta_dist_x = !ray_dir_x ? 1e30 : fabs(1 / ray_dir_x);
-		double	delta_dist_y = !ray_dir_y ? 1e30 : fabs(1 / ray_dir_y);
+		double	delta_dist_x = fabs(1 / ray_dir_x);
+		double	delta_dist_y = fabs(1 / ray_dir_y);
 		double	perp_dist = 0;
 
 		int	step_x = 0;
@@ -503,11 +498,12 @@ int	raycast_loop(t_data *data)
 			color /= 2;
 
 		draw_line(data, x, draw_start, draw_end, color);
-		// mlx_put_image_to_window(data->mlx, data->mlx_window, data->render, 0, 0);
+		// mlx_put_image_to_window(data->mlx, data->mlx_window, data->img.ptr, 0, 0);
 		
 		// skipped input timer, fps counter and speed modifiers
 		
 	}
+		mlx_put_image_to_window(data->mlx, data->mlx_window, data->img.ptr, 0, 0);
 	return (0);
 }
 
@@ -556,9 +552,11 @@ int	keyboard_events(int input, t_data *data)
 		data->plane_y = old_plane_x * sin(ROT) + data->plane_y * cos(ROT);
 	}
 	
+	mlx_destroy_image(data->mlx, data->img.ptr);
+	data->img.ptr = mlx_new_image(data->mlx, data->win_width, data->win_height);
+	data->img.addr = mlx_get_data_addr(data->img.ptr, &data->img.bpp, &data->img.len, &data->img.endian);
 	mlx_clear_window(data->mlx, data->mlx_window);
-	// raycast_loop(data);
-	// mlx_put_image_to_window(data->mlx, data->mlx_window, data->render, 0, 0);
+	raycast_loop(data);
 	
 	return (0);
 }
@@ -602,6 +600,7 @@ int main(int argc, char **argv)
 		data.win_width /= 2.500;
 		data.win_height /= 2.000;
 		data.mlx_window = mlx_new_window(data.mlx, data.win_width, data.win_height, "cub3D");
+		
 		data.img.ptr = mlx_new_image(data.mlx, data.win_width, data.win_height);
 		data.img.addr = mlx_get_data_addr(data.img.ptr, &data.img.bpp, &data.img.len, &data.img.endian);
 
@@ -612,10 +611,9 @@ int main(int argc, char **argv)
 		data.plane_y = 0.66;
 		// data.time_new = 0;
 		// data.time_old = 0;
-		// raycast_loop(&data);
-		mlx_loop_hook(data.mlx, raycast_loop, &data);
+
+		raycast_loop(&data);
 		mlx_hook(data.mlx_window, 2, 1L<<0, keyboard_events, &data);
-		// mlx_hook(data.mlx_window, 17, 1L<<17, close_window, &data);
 		mlx_loop(data.mlx);
 		return (0);
 	}

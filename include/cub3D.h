@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/08 01:01:04 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/08 01:52:38 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct s_img
 // 	void	*wall;
 // 	int		wall_width;
 // 	int		wall_height;
-	
+
 // 	void	*player;
 // 	double	player_speed;
 // 	int		player_width;
@@ -104,7 +104,6 @@ typedef struct s_data
 	char	**map;
 
 	t_img	img;
-	void	*render;
 	double	position_x;
 	double	position_y;
 	double	vector_x;
@@ -117,7 +116,12 @@ typedef struct s_data
 
 }		t_data;
 
+typedef struct s_raycast
+{
+	
+}				t_raycast;
+
 #define MOVE	0.042
-#define ROT		0.020
+#define ROT		0.030
 
 #endif
