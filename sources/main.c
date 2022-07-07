@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/08 01:50:17 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/08 02:46:39 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 /*
  * this function simply checks if the argument being passed is a file with a
  * .cub extension.
- *
- * Note: will still work or sometimes even segfault when given
- *      ./cub3d maps/minimalist_map_only.cub.cub
+ * 
+ * Note: will still work or sometimes even segfault when given invalid
+ * 		 arguments
  */
 void	check_map_extension(char *file)
 {
@@ -73,8 +73,8 @@ int	check_map_validity(char *file)
 }
 
 /*
-  saves the map in a 2d array if it passes the parser
-*/
+ * saves the map in a 2d array if it passes the parser
+ */
 char	**save_map(char *file, int lines)
 {
 	char	**map;
@@ -113,16 +113,6 @@ void	free_2d_array(char **array)
 	array = NULL;
 }
 
-// int	close_window(t_data *data)
-// {
-// 	free_2d_array(data->map);
-// 	mlx_destroy_image(data->mlx, data->wall);
-// 	mlx_destroy_image(data->mlx, data->player);
-// 	mlx_clear_window(data->mlx, data->window);
-// 	mlx_destroy_window(data->mlx, data->window);
-// 	exit(0);
-// }
-
 /*
  * this is the my_mlx_pixel_put function from the minilibx documentation
  */
@@ -135,6 +125,8 @@ void	put_pixel_at_addr(t_img *img, int x, int y, int color)
 	pixel = img->addr + pixel_position;
 	*(unsigned int *)pixel = color;
 }
+
+
 
 // /*
 //  * will place the respective wall image to the mlx_window if the current tile
@@ -388,6 +380,11 @@ void	put_pixel_at_addr(t_img *img, int x, int y, int color)
 // 	return (1);
 // }
 
+
+/*
+ * draws a vertical line to our image's address according to the specified
+ * starting and ending points
+ */
 void	draw_line(t_data *data, int x, int start, int end, int color)
 {
 	int	i;
@@ -403,11 +400,11 @@ int	raycast_loop(t_data *data)
 	for (int x = 0; x < data->win_width; x++) {
 		
 		double	camera_x = 2 * x / (double)data->win_width - 1;
-		double	ray_dir_x = data->vector_x + data->plane_x * camera_x;
-		double	ray_dir_y = data->vector_y + data->plane_y * camera_x;
+		double	ray_dir_x = data->vec_x + data->plane_x * camera_x;
+		double	ray_dir_y = data->vec_y + data->plane_y * camera_x;
 		
-		int	map_x = (int)data->position_x;
-		int	map_y = (int)data->position_y;
+		int	map_x = (int)data->pos_x;
+		int	map_y = (int)data->pos_y;
 
 		double	side_dist_x = 0;
 		double	side_dist_y = 0;
@@ -423,23 +420,22 @@ int	raycast_loop(t_data *data)
 		
 		if (ray_dir_x < 0) {
 			step_x = -1;
-			side_dist_x = (data->position_x - map_x) * delta_dist_x;
+			side_dist_x = (data->pos_x - map_x) * delta_dist_x;
 		} else {
 			step_x = 1;
-			side_dist_x = (map_x + 1.0 - data->position_x) * delta_dist_x;
+			side_dist_x = (map_x + 1.0 - data->pos_x) * delta_dist_x;
 		}
 
 		if (ray_dir_y < 0) {
 			step_y = -1;
-			side_dist_y = (data->position_y - map_y) * delta_dist_y;
+			side_dist_y = (data->pos_y - map_y) * delta_dist_y;
 		} else {
 			step_y = 1;
-			side_dist_y = (map_y + 1.0 - data->position_y) * delta_dist_y;
+			side_dist_y = (map_y + 1.0 - data->pos_y) * delta_dist_y;
 		}
 
 
 		// DDA Algorithm
-		// while (!hit) {
 		while (1) {
 			if (side_dist_x < side_dist_y) {
 				side_dist_x += delta_dist_x;
@@ -450,10 +446,8 @@ int	raycast_loop(t_data *data)
 				map_y += step_y;
 				side = 1;
 			}
-			// printf("map_x = %d\nmap_y = %d\n", map_x, map_y);
 			if (data->map[map_y][map_x] == '1')
 				break ;
-				// hit = 1;
 		}
 
 
@@ -472,44 +466,20 @@ int	raycast_loop(t_data *data)
 			draw_end = data->win_height - 1;
 
 		int	color = 0xFFFFFF;
-		// switch(ft_atoi(data->map[map_y][map_x])) {
-		// 	case 1:
-		// 		color = 0xFF0000;
-		// 		break;
-		// 	case 2:
-		// 		color = 0x00FF00;
-		// 		break;
-		// 	case 3:
-		// 		color = 0x0000FF;
-		// 		break;
-		// 	case 4:
-		// 		color = 0xFFFFFF;
-		// 		break;
-		// 	default:
-		// 		color = 0xFFFF00;
-		// 		break;
-		// }
 		if (data->map[map_y][map_x] == '1')
-			color = 0x0000FF;
-		// else
-		// 	color = 
-
+			color = 0xAAAAAA;
 		if (side)
 			color /= 2;
-
 		draw_line(data, x, draw_start, draw_end, color);
-		// mlx_put_image_to_window(data->mlx, data->mlx_window, data->img.ptr, 0, 0);
-		
-		// skipped input timer, fps counter and speed modifiers
-		
 	}
-		mlx_put_image_to_window(data->mlx, data->mlx_window, data->img.ptr, 0, 0);
+	mlx_put_image_to_window(data->mlx, data->mlx_window, data->img.ptr, 0, 0);
 	return (0);
 }
 
 int	close_window(t_data *data)
 {
 	free_2d_array(data->map);
+	mlx_destroy_image(data->mlx, data->img.ptr);
 	mlx_clear_window(data->mlx, data->mlx_window);
 	mlx_destroy_window(data->mlx, data->mlx_window);
 	exit(0);
@@ -521,35 +491,49 @@ int	keyboard_events(int input, t_data *data)
 		close_window(data);
 	else if (input == KEYCODE_W)
 	{
-		if (data->map[(int)data->position_y][(int)(data->position_x + data->vector_x * MOVE)] == '0')
-			data->position_x += data->vector_x * MOVE;
-		if (data->map[(int)(data->position_y + data->vector_y * MOVE)][(int)data->position_x] == '0')
-			data->position_y += data->vector_y * MOVE;
+		if (data->map[(int)data->pos_y][(int)(data->pos_x + data->vec_x * data->move_speed)] == '0')
+			data->pos_x += data->vec_x * data->move_speed;
+		if (data->map[(int)(data->pos_y + data->vec_y * data->move_speed)][(int)data->pos_x] == '0')
+			data->pos_y += data->vec_y * data->move_speed;
+	}
+	else if (input == KEYCODE_A)
+	{
+		if (data->map[(int)data->pos_y][(int)(data->pos_x - data->plane_x * data->move_speed)] == '0')
+			data->pos_x -= data->plane_x * data->move_speed;
+		if (data->map[(int)(data->pos_y - data->plane_y * data->move_speed)][(int)data->pos_x] == '0')
+			data->pos_y -= data->plane_y * data->move_speed;
 	}
 	else if (input == KEYCODE_S)
 	{
-		if (data->map[(int)data->position_y][(int)(data->position_x - data->vector_x * MOVE)] == '0')
-			data->position_x -= data->vector_x * MOVE;
-		if (data->map[(int)(data->position_y - data->vector_y * MOVE)][(int)data->position_x] == '0')
-			data->position_y -= data->vector_y * MOVE;
+		if (data->map[(int)data->pos_y][(int)(data->pos_x - data->vec_x * data->move_speed)] == '0')
+			data->pos_x -= data->vec_x * data->move_speed;
+		if (data->map[(int)(data->pos_y - data->vec_y * data->move_speed)][(int)data->pos_x] == '0')
+			data->pos_y -= data->vec_y * data->move_speed;
+	}
+	else if (input == KEYCODE_D)
+	{
+		if (data->map[(int)data->pos_y][(int)(data->pos_x + data->plane_x * data->move_speed)] == '0')
+			data->pos_x += data->plane_x * data->move_speed;
+		if (data->map[(int)(data->pos_y + data->plane_y * data->move_speed)][(int)data->pos_x] == '0')
+			data->pos_y += data->plane_y * data->move_speed;
 	}
 	else if (input == KEYCODE_LEFT)
 	{
-		double	old_vector_x = data->vector_x;
-		data->vector_x = data->vector_x * cos(-ROT) - data->vector_y * sin(-ROT);
-		data->vector_y = old_vector_x * sin(-ROT) + data->vector_y * cos(-ROT);
+		double	old_vec_x = data->vec_x;
+		data->vec_x = data->vec_x * cos(-data->rotate_speed) - data->vec_y * sin(-data->rotate_speed);
+		data->vec_y = old_vec_x * sin(-data->rotate_speed) + data->vec_y * cos(-data->rotate_speed);
 		double	old_plane_x = data->plane_x;
-		data->plane_x = data->plane_x * cos(-ROT) - data->plane_y * sin(-ROT);
-		data->plane_y = old_plane_x * sin(-ROT) + data->plane_y * cos(-ROT);
+		data->plane_x = data->plane_x * cos(-data->rotate_speed) - data->plane_y * sin(-data->rotate_speed);
+		data->plane_y = old_plane_x * sin(-data->rotate_speed) + data->plane_y * cos(-data->rotate_speed);
 	}
 	else if (input == KEYCODE_RIGHT)
 	{
-		double	old_vector_x = data->vector_x;
-		data->vector_x = data->vector_x * cos(ROT) - data->vector_y * sin(ROT);
-		data->vector_y = old_vector_x * sin(ROT) + data->vector_y * cos(ROT);
+		double	old_vec_x = data->vec_x;
+		data->vec_x = data->vec_x * cos(data->rotate_speed) - data->vec_y * sin(data->rotate_speed);
+		data->vec_y = old_vec_x * sin(data->rotate_speed) + data->vec_y * cos(data->rotate_speed);
 		double	old_plane_x = data->plane_x;
-		data->plane_x = data->plane_x * cos(ROT) - data->plane_y * sin(ROT);
-		data->plane_y = old_plane_x * sin(ROT) + data->plane_y * cos(ROT);
+		data->plane_x = data->plane_x * cos(data->rotate_speed) - data->plane_y * sin(data->rotate_speed);
+		data->plane_y = old_plane_x * sin(data->rotate_speed) + data->plane_y * cos(data->rotate_speed);
 	}
 	
 	mlx_destroy_image(data->mlx, data->img.ptr);
@@ -574,8 +558,8 @@ void	set_player_position(t_data *data)
 		{
 			if (data->map[i[0]][i[1]] == '0')
 			{
-				data->position_x = i[1] + 0.50;
-				data->position_y = i[0] + 0.50;
+				data->pos_x = i[1] + 0.50;
+				data->pos_y = i[0] + 0.50;
 				i[2] = 1;
 				break ;
 			}
@@ -605,12 +589,12 @@ int main(int argc, char **argv)
 		data.img.addr = mlx_get_data_addr(data.img.ptr, &data.img.bpp, &data.img.len, &data.img.endian);
 
 		set_player_position(&data);
-		data.vector_x = 1;
-		data.vector_y = 0;
+		data.vec_x = 1;
+		data.vec_y = 0;
 		data.plane_x = 0;
 		data.plane_y = 0.66;
-		// data.time_new = 0;
-		// data.time_old = 0;
+		data.move_speed = 0.042;
+		data.rotate_speed = 0.024;
 
 		raycast_loop(&data);
 		mlx_hook(data.mlx_window, 2, 1L<<0, keyboard_events, &data);

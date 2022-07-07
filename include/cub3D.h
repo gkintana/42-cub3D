@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/08 01:52:38 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/08 02:34:00 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,24 +104,40 @@ typedef struct s_data
 	char	**map;
 
 	t_img	img;
-	double	position_x;
-	double	position_y;
-	double	vector_x;
-	double	vector_y;
+	double	pos_x;
+	double	pos_y;
+	double	vec_x;
+	double	vec_y;
 	double	plane_x;
 	double	plane_y;
-
-	// double	time_new;
-	// double	time_old;
-
+	double	move_speed;
+	double	rotate_speed;
 }		t_data;
 
 typedef struct s_raycast
 {
-	
-}				t_raycast;
+	double	camera_x;
+	double	ray_vec_x;
+	double	ray_vec_y;
 
-#define MOVE	0.042
-#define ROT		0.030
+	int		map_x;
+	int		map_y;
+	
+	double	side_dist_x;
+	double	side_dist_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	perp_dist;
+
+	int		offset_x;
+	int		offset_y;
+	int		side;
+
+	int		line_height;
+	int		line_start;
+	int		line_end;
+
+	int		color;
+}				t_raycast;
 
 #endif
