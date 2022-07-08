@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/08 02:34:00 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/09 01:06:40 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_img
 {
 	void	*ptr;
 	char	*addr;
+	int		*pixel;
 	int		bpp;
 	int		len;
 	int		endian;
@@ -103,7 +104,7 @@ typedef struct s_data
 	int		win_height;
 	char	**map;
 
-	t_img	img;
+	t_img	img[2];
 	double	pos_x;
 	double	pos_y;
 	double	vec_x;
@@ -112,11 +113,14 @@ typedef struct s_data
 	double	plane_y;
 	double	move_speed;
 	double	rotate_speed;
+
+	int		texture_width;
+	int		texture_height;
 }		t_data;
 
-typedef struct s_raycast
+typedef struct s_calculations
 {
-	double	camera_x;
+	double	camera;
 	double	ray_vec_x;
 	double	ray_vec_y;
 
@@ -132,6 +136,26 @@ typedef struct s_raycast
 	int		offset_x;
 	int		offset_y;
 	int		side;
+}			t_calculations
+
+typedef struct s_raycast
+{
+	// double	camera;
+	// double	ray_vec_x;
+	// double	ray_vec_y;
+
+	// int		map_x;
+	// int		map_y;
+	
+	// double	side_dist_x;
+	// double	side_dist_y;
+	// double	delta_dist_x;
+	// double	delta_dist_y;
+	// double	perp_dist;
+
+	// int		offset_x;
+	// int		offset_y;
+	// int		side;
 
 	int		line_height;
 	int		line_start;

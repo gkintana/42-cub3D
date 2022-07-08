@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/08 02:46:39 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/09 01:08:10 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,11 @@ char	**save_map(char *file, int lines)
 	fd = open(file, O_RDONLY);
 	temp = get_next_line(fd);
 	i = 0;
-	while (i < lines)
+	while (temp)
 	{
-		map[i] = ft_strdup(temp);
+		map[i++] = ft_strdup(temp);
 		free(temp);
 		temp = get_next_line(fd);
-		i++;
 	}
 	free(temp);
 	temp = NULL;
@@ -383,20 +382,53 @@ void	put_pixel_at_addr(t_img *img, int x, int y, int color)
 
 /*
  * draws a vertical line to our image's address according to the specified
- * starting and ending points
+ * starting and ending points. Used for untextured raycasting
  */
-void	draw_line(t_data *data, int x, int start, int end, int color)
+void	draw_line(t_img	*img, int x, int start, int end, int color)
 {
 	int	i;
 
 	i = start;
 	while (++i < end)
-		put_pixel_at_addr(&data->img, x, i, color);
+		put_pixel_at_addr(&img[0], x, i, color);
 }
 
-// untextured version - part I of Lode's Raycasting Tutorial
+// https://stackoverflow.com/questions/20297594/warning-expected-int-but-argument-is-of-type-int-sizetypen
+/*
+ * transfers each individual pixel from the pre-rendered texture buffer to the
+ * output image's address. Used for textured raycasting
+ * 
+ * i[0] = index for y-axis of map
+ * i[1] = index for x-axis of map
+ */
+void	draw_walls(t_data *data, int (*buffer)[data->win_width])
+{
+	int	i[2];
+	
+	i[0] = -1;
+	while (++i[0] < data->win_height)
+	{
+		i[1] = -1;
+		while (++i[1] < data->win_width)
+			put_pixel_at_addr(&data->img[0], i[1], i[0], buffer[i[0]][i[1]]);
+	}
+}
+
 int	raycast_loop(t_data *data)
 {
+	t_calculations calc;
+
+	ft_bzero(calc, sizeof(t_calculations));
+	
+
+	
+	int buffer[data->win_height][data->win_width];
+	for (int i = 0; i < data->win_height; i++) {
+		for (int j = 0; j < data->win_width; j++) {
+			buffer[i][j] = 0;
+		}
+	}
+
 	for (int x = 0; x < data->win_width; x++) {
 		
 		double	camera_x = 2 * x / (double)data->win_width - 1;
@@ -456,7 +488,7 @@ int	raycast_loop(t_data *data)
 		else
 			perp_dist = side_dist_y - delta_dist_y;
 
-		
+
 		int	line_height = (int)(data->win_height / perp_dist);
 		int	draw_start = -line_height / 2 + data->win_height / 2;
 		if (draw_start < 0)
@@ -465,27 +497,56 @@ int	raycast_loop(t_data *data)
 		if (draw_end >= data->win_height)
 			draw_end = data->win_height - 1;
 
-		int	color = 0xFFFFFF;
-		if (data->map[map_y][map_x] == '1')
-			color = 0xAAAAAA;
-		if (side)
-			color /= 2;
-		draw_line(data, x, draw_start, draw_end, color);
+
+		double wall_x;
+		if (!side)
+			wall_x = data->pos_y + perp_dist * ray_dir_y;
+		else
+			wall_x = data->pos_x + perp_dist * ray_dir_x;
+		wall_x -= floor(wall_x);
+
+		int	texture_x = (int)(wall_x * (double)data->texture_width);
+		if (!side && ray_dir_x > 0)
+			texture_x = data->texture_width - texture_x - 1;
+		else if (side && ray_dir_y < 0)
+			texture_x = data->texture_width - texture_x - 1;
+
+		double step = 1.0 * data->texture_height / line_height;
+		double texture_pos = (draw_start - data->win_height / 2 + line_height / 2) * step;
+		for (int y = draw_start; y < draw_end; y++)
+		{
+			int	texture_y = (int)texture_pos & (data->texture_height - 1);
+			texture_pos += step;
+			int	color = data->img[1].pixel[data->texture_height * texture_y + texture_x];
+			if (side)
+				color = (color >> 1) & 8355711;
+			buffer[y][x] = color;
+		}
+
+
+		// int	color = 0xFFFFFF;
+		// if (data->map[map_y][map_x] == '1')
+		// 	color = 0xAA0000;
+		// if (side)
+		// 	color /= 2;
+		// draw_line(&data->img[0], x, draw_start, draw_end, color);
 	}
-	mlx_put_image_to_window(data->mlx, data->mlx_window, data->img.ptr, 0, 0);
+	draw_walls(data, buffer);
+	mlx_put_image_to_window(data->mlx, data->mlx_window, data->img[0].ptr, 0, 0);
 	return (0);
 }
 
 int	close_window(t_data *data)
 {
 	free_2d_array(data->map);
-	mlx_destroy_image(data->mlx, data->img.ptr);
+	mlx_destroy_image(data->mlx, data->img[0].ptr);
+	mlx_destroy_image(data->mlx, data->img[1].ptr);
 	mlx_clear_window(data->mlx, data->mlx_window);
 	mlx_destroy_window(data->mlx, data->mlx_window);
 	exit(0);
 }
 
-int	keyboard_events(int input, t_data *data)
+int	key_events(int input, t_data *data)
 {
 	if (input == KEYCODE_ESC)
 		close_window(data);
@@ -536,19 +597,28 @@ int	keyboard_events(int input, t_data *data)
 		data->plane_y = old_plane_x * sin(data->rotate_speed) + data->plane_y * cos(data->rotate_speed);
 	}
 	
-	mlx_destroy_image(data->mlx, data->img.ptr);
-	data->img.ptr = mlx_new_image(data->mlx, data->win_width, data->win_height);
-	data->img.addr = mlx_get_data_addr(data->img.ptr, &data->img.bpp, &data->img.len, &data->img.endian);
+	mlx_destroy_image(data->mlx, data->img[0].ptr);
+	data->img[0].ptr = mlx_new_image(data->mlx, data->win_width, data->win_height);
+	data->img[0].addr = mlx_get_data_addr(data->img[0].ptr, &data->img[0].bpp, &data->img[0].len, &data->img[0].endian);
 	mlx_clear_window(data->mlx, data->mlx_window);
 	raycast_loop(data);
 	
 	return (0);
 }
 
+/*
+ * parses the map and sets the player's starting location at the first 
+ * occurence of a '0' character
+ * 
+ * i[0] = index for y-axis of map
+ * i[1] = index for x-axis of map
+ * i[2] = acts like a boolean to indicate if the player's starting
+ *        location has been set
+ */
 void	set_player_position(t_data *data)
 {
-	int i[3];
-		
+	int	i[3];
+
 	i[2] = 0;
 	i[0] = -1;
 	while (data->map[++i[0]])
@@ -572,32 +642,32 @@ void	set_player_position(t_data *data)
 int main(int argc, char **argv)
 {
 	t_data	data;
-	int		map_lines;
 
 	if (argc == 2) {
 		check_map_extension(argv[1]);
-		map_lines = check_map_validity(argv[1]);
-		data.map = save_map(argv[1], map_lines);
+		data.map = save_map(argv[1], check_map_validity(argv[1]));
 
 		data.mlx = mlx_init();
 		mlx_get_screen_size(data.mlx, &data.win_width, &data.win_height);
-		data.win_width /= 2.500;
-		data.win_height /= 2.000;
+		data.win_width /= 1.65;
+		data.win_height /= 1.35;
 		data.mlx_window = mlx_new_window(data.mlx, data.win_width, data.win_height, "cub3D");
-		
-		data.img.ptr = mlx_new_image(data.mlx, data.win_width, data.win_height);
-		data.img.addr = mlx_get_data_addr(data.img.ptr, &data.img.bpp, &data.img.len, &data.img.endian);
+
+		data.img[0].ptr = mlx_new_image(data.mlx, data.win_width, data.win_height);
+		data.img[0].addr = mlx_get_data_addr(data.img[0].ptr, &data.img[0].bpp, &data.img[0].len, &data.img[0].endian);
+		data.img[1].ptr = mlx_xpm_file_to_image(data.mlx, "assets/multibrick.xpm", &data.texture_width, &data.texture_height);
+		data.img[1].pixel = (int *)mlx_get_data_addr(data.img[1].ptr, &data.img[1].bpp, &data.img[1].len, &data.img[1].endian);
 
 		set_player_position(&data);
 		data.vec_x = 1;
 		data.vec_y = 0;
 		data.plane_x = 0;
 		data.plane_y = 0.66;
-		data.move_speed = 0.042;
-		data.rotate_speed = 0.024;
+		data.move_speed = 0.065;
+		data.rotate_speed = 0.035;
 
 		raycast_loop(&data);
-		mlx_hook(data.mlx_window, 2, 1L<<0, keyboard_events, &data);
+		mlx_hook(data.mlx_window, 2, 1L<<0, key_events, &data);
 		mlx_loop(data.mlx);
 		return (0);
 	}
