@@ -6,7 +6,7 @@
 #    By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/22 08:46:09 by gkintana          #+#    #+#              #
-#    Updated: 2022/07/05 22:55:24 by gkintana         ###   ########.fr        #
+#    Updated: 2022/07/09 02:12:03 by gkintana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,11 @@ INC_DIR		=	include
 SRC_DIR		=	sources
 OBJ_DIR		=	objects
 
-SRCS		=	main.c
+SRCS		=	main.c \
+				event_utils.c \
+				keyboard.c \
+				parse.c \
+				utils.c
 
 OBJS		=	$(addprefix $(OBJ_DIR)/, $(SRCS:%c=%o))
 

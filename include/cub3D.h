@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/09 01:06:40 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/09 02:02:51 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@
 
 /*------------------------------ CONSTANT VALUES -----------------------------*/
 # define PI 			3.1415926535897932384626434
-# define WALL_WIDTH		50
-# define WALL_HEIGHT	50
+// # define WALL_WIDTH		50
+// # define WALL_HEIGHT	50
 
 /*-------------------------------- STRUCTURES --------------------------------*/
 typedef struct s_img
@@ -123,45 +123,45 @@ typedef struct s_calculations
 	double	camera;
 	double	ray_vec_x;
 	double	ray_vec_y;
-
+	double	delta_x;
+	double	delta_y;
 	int		map_x;
 	int		map_y;
 	
 	double	side_dist_x;
 	double	side_dist_y;
-	double	delta_dist_x;
-	double	delta_dist_y;
 	double	perp_dist;
 
 	int		offset_x;
 	int		offset_y;
 	int		side;
-}			t_calculations
+}			t_calculations;
 
 typedef struct s_raycast
 {
-	// double	camera;
-	// double	ray_vec_x;
-	// double	ray_vec_y;
-
-	// int		map_x;
-	// int		map_y;
-	
-	// double	side_dist_x;
-	// double	side_dist_y;
-	// double	delta_dist_x;
-	// double	delta_dist_y;
-	// double	perp_dist;
-
-	// int		offset_x;
-	// int		offset_y;
-	// int		side;
-
 	int		line_height;
-	int		line_start;
-	int		line_end;
+	int		start;
+	int		end;
 
+	double	wall;
+	double	step;
+	double	texture_pos;
+	int		texture_x;
+	int		texture_y;
 	int		color;
 }				t_raycast;
+
+/*---------------------------- FUNCTION PROTOTYPES ---------------------------*/
+void	check_map_extension(char *file);
+int		check_map_validity(char *file);
+char	**save_map(char *file, int lines);
+
+int		raycast_loop(t_data *data);
+
+int		key_events(int input, t_data *data);
+int		close_window(t_data *data);
+
+void	put_pixel_at_addr(t_img *img, int x, int y, int color);
+void	free_2d_array(char **array);
 
 #endif
