@@ -6,7 +6,7 @@
 #    By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/22 08:46:09 by gkintana          #+#    #+#              #
-#    Updated: 2022/07/09 02:12:03 by gkintana         ###   ########.fr        #
+#    Updated: 2022/07/09 02:22:08 by gkintana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,13 +15,17 @@ NAME		=	cub3D
 LIBFT_DIR	=	libft
 LIBFT		=	libft.a
 
-MLXL_DIR	=	minilibx_linux
-MLXL		=	libmlx_Linux.a
-LINK_MLXL	=	-L$(MLXL_DIR) -lmlx_Linux -I$(MLXL_DIR) -lXext -lX11 -lm -lz
+ifeq ($(shell uname -s), Linux)
+	MLX_DIR		=	minilibx_linux
+	MLX			=	libmlx_Linux.a
+	LINK_MLX	=	-I$(MLX_DIR) -L$(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
+endif
 
-MLXM_DIR	=	minilibx_mac
-MLXM		=	libmlx.a
-LINK_MLXM	=	-L $(MLXM_DIR) -lmlx -framework OpenGL -framework AppKit
+ifeq ($(shell uname -s), Darwin)
+	MLX_DIR		=	minilibx_mac
+	MLX			=	libmlx.a
+	LINK_MLX	=	-L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+endif
 
 INC_DIR		=	include
 SRC_DIR		=	sources
@@ -50,35 +54,24 @@ CYAN		=	"\033[3;36m"
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 			@mkdir -p $(OBJ_DIR)
 			@printf $(CYAN)
-			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLXL_DIR) -O3 -c $< -o $@
-# $(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLXM_DIR) -O3 -c $< -o $@
+			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLX_DIR) -O3 -c $< -o $@
 
 all:		$(NAME)
 
-# LINUX
-$(NAME):	$(MLXL) $(LIBFT) $(OBJS)
-			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLXL) -o $@
-
-# MAC
-# $(NAME):	$(MLXM) $(LIBFT) $(OBJS)
-# 			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLXM) -o $@
+$(NAME):	$(MLX) $(LIBFT) $(OBJS)
+			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLX) -o $@
 
 $(LIBFT):
 			@printf $(DEFAULT)
 			@make -C $(LIBFT_DIR) all
 
-$(MLXL):
+$(MLX):
 			@printf $(DEFAULT)
-			@make -C $(MLXL_DIR) all
-
-$(MLXM):
-			@printf $(DEFAULT)
-			@make -C $(MLXM_DIR) all
+			@make -C $(MLX_DIR) all
 
 clean:
 			@make -C $(LIBFT_DIR) fclean
-			@make -C $(MLXL_DIR) clean
-			@make -C $(MLXM_DIR) clean
+			@make -C $(MLX_DIR) clean
 			@$(RM) $(OBJ_DIR)
 			@echo $(RED)"Deleted cub3D object files & folder"$(DEFAULT)
 
