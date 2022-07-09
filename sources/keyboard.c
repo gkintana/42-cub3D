@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 01:54:46 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/09 01:55:06 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/10 02:08:09 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,10 @@ int	key_events(int input, t_data *data)
 		data->plane_x = data->plane_x * cos(data->rotate_speed) - data->plane_y * sin(data->rotate_speed);
 		data->plane_y = old_plane_x * sin(data->rotate_speed) + data->plane_y * cos(data->rotate_speed);
 	}
-	
 	mlx_destroy_image(data->mlx, data->img[0].ptr);
 	data->img[0].ptr = mlx_new_image(data->mlx, data->win_width, data->win_height);
 	data->img[0].addr = mlx_get_data_addr(data->img[0].ptr, &data->img[0].bpp, &data->img[0].len, &data->img[0].endian);
 	mlx_clear_window(data->mlx, data->mlx_window);
 	raycast_loop(data);
-	
 	return (0);
 }

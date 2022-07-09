@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/09 02:02:51 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/10 02:37:17 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,16 @@
 #  define KEYCODE_S		1
 #  define KEYCODE_D		2
 #  define KEYCODE_ESC	53
-#  define KEYCODE_UP	
-#  define KEYCODE_DOWN	
-#  define KEYCODE_LEFT	
-#  define KEYCODE_RIGHT	
+#  define KEYCODE_UP	126
+#  define KEYCODE_DOWN	125
+#  define KEYCODE_LEFT	123
+#  define KEYCODE_RIGHT	124
 # endif
 
 /*------------------------------ CONSTANT VALUES -----------------------------*/
 # define PI 			3.1415926535897932384626434
-// # define WALL_WIDTH		50
-// # define WALL_HEIGHT	50
+# define WIN_WIDTH		1200
+# define WIN_HEIGHT		700
 
 /*-------------------------------- STRUCTURES --------------------------------*/
 typedef struct s_img
@@ -94,6 +94,30 @@ typedef struct s_img
 // 	double	pa;		// player angle
 // }				t_data;
 
+typedef struct s_mlx
+{
+	void	*mlx;
+	void	*mlx_window;
+	int		win_width;
+	int		win_height;
+
+	char	**map;
+	t_img	img[2];
+	int		texture_width;
+	int		texture_height;
+}				t_mlx;
+
+typedef struct s_player
+{
+	double	pos_x;
+	double	pos_y;
+	double	vec_x;
+	double	vec_y;
+	double	plane_x;
+	double	plane_y;
+	double	move_speed;
+	double	rotate_speed;
+}				t_player;
 
 // Lode's Raycasting Tutorial
 typedef struct s_data
@@ -148,6 +172,7 @@ typedef struct s_raycast
 	double	texture_pos;
 	int		texture_x;
 	int		texture_y;
+	int		buffer[WIN_HEIGHT][WIN_WIDTH];
 	int		color;
 }				t_raycast;
 

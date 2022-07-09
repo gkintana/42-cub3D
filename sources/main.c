@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/09 02:07:01 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/10 02:37:40 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,72 @@ void	draw_walls(t_data *data, int (*buffer)[data->win_width])
 	}
 }
 
-int	raycast_loop(t_data *data)
+void	draw_map(t_data *data)
 {
-	int buffer[data->win_height][data->win_width];
-	for (int i = 0; i < data->win_height; i++) {
-		for (int j = 0; j < data->win_width; j++) {
-			buffer[i][j] = 0;
+	int	i[4];
+
+	i[0] = -1;
+	while(data->map[++i[0]])
+	{
+		i[1] = -1;
+		while (data->map[i[0]][++i[1]])
+		{
+			if (data->map[i[0]][i[1]] == '1')
+			{
+				i[2] = -1;
+				while (++i[2] < data->win_height / 100)
+				{
+					i[3] = -1;
+					while (++i[3] < data->win_width / 100)
+						put_pixel_at_addr(&data->img[0],
+						i[3] + data->win_width / 100 * i[1] + 15,
+						i[2] + data->win_height / 100 * i[0] + 15, 0xAA555555);
+				}
+				// for (int k = 0; k < data->win_height / 100; k++) {
+				// 	for (int j = 0; j < data->win_width / 100; j++) {
+				// 		put_pixel_at_addr(&data->img[0], j + data->win_width / 100 * i[1] + 15,
+				// 		k + data->win_height / 100 * i[0] + 15, 0xAA555555);
+				// 	}
+				// }
+				// mlx_put_image_to_window(data->mlx, data->mlx_window, data->img[2].ptr,
+				// i[1] * data->win_width / 100 + 25, i[0] * data->win_height / 100 + 25);
+			}
 		}
 	}
+}
 
-	t_calculations calc;
+void	draw_player(t_data *data)
+{
+	int	i[2];
+
+	i[0] = -1;
+	while (++i[0] < 3)
+	{
+		i[1] = -1;
+		while (++i[1] < 3)
+			put_pixel_at_addr(&data->img[0],
+			i[1] + data->pos_x * data->win_width / 100 + 15,
+			i[0] + data->pos_y * data->win_height / 100 + 15, 0xAAFF0000);
+	}
+	// mlx_put_image_to_window(data->mlx, data->mlx_window, data->img[3].ptr,
+	// data->pos_x * data->win_width / 100 + 25 - 0.75, data->pos_y * data->win_height / 100 + 25 - 0.75);
+}
+
+int	raycast_loop(t_data *data)
+{
+	// int buffer[data->win_height][data->win_width];
+	// for (int i = 0; i < data->win_height; i++) {
+	// 	for (int j = 0; j < data->win_width; j++) {
+	// 		buffer[i][j] = 0;
+	// 	}
+	// }
+
+	t_calculations	calc;
+	t_raycast		ray;
 	int	i;
 
 	ft_bzero(&calc, sizeof(t_calculations));
+	ft_bzero(&ray, sizeof(t_raycast));
 	i = -1;
 	while (++i < data->win_width)
 	{
@@ -209,9 +262,8 @@ int	raycast_loop(t_data *data)
 		// 	buffer[y][i] = color;
 		// }
 
-		t_raycast	ray;
 
-		ft_bzero(&ray, sizeof(t_raycast));
+		// ft_bzero(&ray, sizeof(t_raycast));
 		ray.line_height = (int)(data->win_height / calc.perp_dist);
 		ray.start = -ray.line_height / 2 + data->win_height / 2;
 		if (ray.start < 0)
@@ -235,7 +287,6 @@ int	raycast_loop(t_data *data)
 		ray.step = 1.0 * data->texture_height / ray.line_height;
 		ray.texture_pos = (ray.start - data->win_height / 2 + ray.line_height / 2) * ray.step;
 
-
 		int	j;
 
 		j = ray.start;
@@ -246,10 +297,9 @@ int	raycast_loop(t_data *data)
 			ray.color = data->img[1].pixel[data->texture_height * ray.texture_y + ray.texture_x];
 			if (calc.side)
 				ray.color = (ray.color >> 1) & 8355711;
-			buffer[j][i] = ray.color;
+			ray.buffer[j][i] = ray.color;
 			j++;
 		}
-
 
 		// int	color = 0xFFFFFF;
 		// if (data->map[map_y][map_x] == '1')
@@ -258,7 +308,9 @@ int	raycast_loop(t_data *data)
 		// 	color /= 2;
 		// draw_line(&data->img[0], x, draw_start, draw_end, color);
 	}
-	draw_walls(data, buffer);
+	draw_walls(data, ray.buffer);
+	draw_map(data);
+	draw_player(data);
 	mlx_put_image_to_window(data->mlx, data->mlx_window, data->img[0].ptr, 0, 0);
 	return (0);
 }
@@ -307,9 +359,11 @@ int main(int argc, char **argv)
 		data.map = save_map(argv[1], check_map_validity(argv[1]));
 
 		data.mlx = mlx_init();
-		mlx_get_screen_size(data.mlx, &data.win_width, &data.win_height);
-		data.win_width /= 1.65;
-		data.win_height /= 1.35;
+		// mlx_get_screen_size(data.mlx, &data.win_width, &data.win_height);
+		// data.win_width /= 1.65;
+		// data.win_height /= 1.35;
+		data.win_width = WIN_WIDTH;
+		data.win_height = WIN_HEIGHT;
 		data.mlx_window = mlx_new_window(data.mlx, data.win_width, data.win_height, "cub3D");
 
 		data.img[0].ptr = mlx_new_image(data.mlx, data.win_width, data.win_height);
