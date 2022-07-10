@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/10 14:58:35 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/10 21:11:59 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef struct s_minilibx
 	int		win_height;
 
 	char	**map;
-	t_image	img[2];
+	t_image	img[5];
 }				t_minilibx;
 
 typedef struct s_player_info

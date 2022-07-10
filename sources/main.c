@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/10 14:56:49 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/10 21:12:54 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,11 @@ int main(int argc, char **argv)
 
 	if (argc == 2) {
 		ft_bzero(&prog, sizeof(t_program));
+
 		prog.tex.north = "assets/multibrick.xpm";
+		prog.tex.south = "assets/wolf_xpm/greystone.xpm";
+		prog.tex.east = "assets/wolf_xpm/redbrick.xpm";
+		prog.tex.west = "assets/wolf_xpm/wood.xpm";
 
 		check_map_extension(argv[1]);
 		prog.mlx.map = save_map(argv[1], check_map_validity(argv[1]));
@@ -67,6 +71,12 @@ int main(int argc, char **argv)
 		// prog.tex.north is temporary
 		prog.mlx.img[1].ptr = mlx_xpm_file_to_image(prog.mlx.ptr, prog.tex.north, &prog.tex.width, &prog.tex.height);
 		prog.mlx.img[1].pixel = (int *)mlx_get_data_addr(prog.mlx.img[1].ptr, &prog.mlx.img[1].bpp, &prog.mlx.img[1].len, &prog.mlx.img[1].endian);
+		prog.mlx.img[2].ptr = mlx_xpm_file_to_image(prog.mlx.ptr, prog.tex.south, &prog.tex.width, &prog.tex.height);
+		prog.mlx.img[2].pixel = (int *)mlx_get_data_addr(prog.mlx.img[2].ptr, &prog.mlx.img[2].bpp, &prog.mlx.img[2].len, &prog.mlx.img[2].endian);
+		prog.mlx.img[3].ptr = mlx_xpm_file_to_image(prog.mlx.ptr, prog.tex.east, &prog.tex.width, &prog.tex.height);
+		prog.mlx.img[3].pixel = (int *)mlx_get_data_addr(prog.mlx.img[3].ptr, &prog.mlx.img[3].bpp, &prog.mlx.img[3].len, &prog.mlx.img[2].endian);
+		prog.mlx.img[4].ptr = mlx_xpm_file_to_image(prog.mlx.ptr, prog.tex.west, &prog.tex.width, &prog.tex.height);
+		prog.mlx.img[4].pixel = (int *)mlx_get_data_addr(prog.mlx.img[4].ptr, &prog.mlx.img[4].bpp, &prog.mlx.img[4].len, &prog.mlx.img[4].endian);
 
 		set_player_position(&prog);
 		prog.info.vec_x = 1;

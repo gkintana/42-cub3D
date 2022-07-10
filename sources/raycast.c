@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:55:41 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/10 14:56:06 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/10 21:13:48 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,14 @@ int	raycast_loop(t_program *prog)
 		{
 			ray.texture_y = (int)ray.texture_pos & (prog->tex.height - 1);
 			ray.texture_pos += ray.step;
-			ray.color = prog->mlx.img[1].pixel[prog->tex.height * ray.texture_y + ray.texture_x];
+			if (!calc.side && calc.ray_vec_x > 0)
+				ray.color = prog->mlx.img[1].pixel[prog->tex.height * ray.texture_y + ray.texture_x];
+			else if (!calc.side && calc.ray_vec_x < 0)
+				ray.color = prog->mlx.img[2].pixel[prog->tex.height * ray.texture_y + ray.texture_x];
+			else if (calc.side && calc.ray_vec_y > 0)
+				ray.color = prog->mlx.img[3].pixel[prog->tex.height * ray.texture_y + ray.texture_x];
+			else if (calc.side && calc.offset_y < 0)
+				ray.color = prog->mlx.img[4].pixel[prog->tex.height * ray.texture_y + ray.texture_x];
 			if (calc.side)
 				ray.color = (ray.color >> 1) & 8355711;
 			ray.buffer[j][i] = ray.color;
