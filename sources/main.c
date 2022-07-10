@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/10 21:12:54 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/10 21:32:48 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ int main(int argc, char **argv)
 	if (argc == 2) {
 		ft_bzero(&prog, sizeof(t_program));
 
-		prog.tex.north = "assets/multibrick.xpm";
-		prog.tex.south = "assets/wolf_xpm/greystone.xpm";
-		prog.tex.east = "assets/wolf_xpm/redbrick.xpm";
-		prog.tex.west = "assets/wolf_xpm/wood.xpm";
+		prog.tex.north = "assets/xpm/wall_1.xpm";
+		prog.tex.south = "assets/xpm/wall_2.xpm";
+		prog.tex.east = "assets/xpm/wall_5.xpm";
+		prog.tex.west = "assets/xpm/wall_4.xpm";
 
 		check_map_extension(argv[1]);
 		prog.mlx.map = save_map(argv[1], check_map_validity(argv[1]));
