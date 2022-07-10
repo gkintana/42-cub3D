@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/10 02:37:17 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/10 14:27:24 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@
 
 /*------------------------------ CONSTANT VALUES -----------------------------*/
 # define PI 			3.1415926535897932384626434
-# define WIN_WIDTH		1200
-# define WIN_HEIGHT		700
+# define WIN_WIDTH		1600
+# define WIN_HEIGHT		900
 
 /*-------------------------------- STRUCTURES --------------------------------*/
-typedef struct s_img
+typedef struct s_image
 {
 	void	*ptr;
 	char	*addr;
@@ -60,54 +60,30 @@ typedef struct s_img
 	int		bpp;
 	int		len;
 	int		endian;
-}				t_img;
+}				t_image;
 
-// Approach done based on this series
-// https://www.youtube.com/watch?v=gYRrGTC7GtA
-// typedef struct s_data
-// {
-// 	void	*mlx;
-// 	void	*window;
-// 	int		width;
-// 	int		height;
-// 	char	**map;
-
-// 	// char	*white;
-// 	// char	*yellow;
-// 	t_img	img[2];
-
-// 	void	*wall;
-// 	int		wall_width;
-// 	int		wall_height;
-
-// 	void	*player;
-// 	double	player_speed;
-// 	int		player_width;
-// 	int		player_height;
-// 	// int		x;
-// 	// int		y;
-
-// 	double	px;		// player x-coordinate
-// 	double	py;		// player y-coordinate
-// 	double	pdx;	// distance x
-// 	double	pdy;	// distance y
-// 	double	pa;		// player angle
-// }				t_data;
-
-typedef struct s_mlx
+typedef struct s_texture
 {
-	void	*mlx;
-	void	*mlx_window;
+	char	*north;
+	char	*south;
+	char	*east;
+	char	*west;
+	int		width;
+	int		height;
+}				t_texture;
+
+typedef struct s_minilibx
+{
+	void	*ptr;
+	void	*window;
 	int		win_width;
 	int		win_height;
 
 	char	**map;
-	t_img	img[2];
-	int		texture_width;
-	int		texture_height;
-}				t_mlx;
+	t_image	img[2];
+}				t_minilibx;
 
-typedef struct s_player
+typedef struct s_player_info
 {
 	double	pos_x;
 	double	pos_y;
@@ -117,30 +93,22 @@ typedef struct s_player
 	double	plane_y;
 	double	move_speed;
 	double	rotate_speed;
-}				t_player;
+}				t_player_info;
 
-// Lode's Raycasting Tutorial
-typedef struct s_data
+typedef struct s_minimap
 {
-	void	*mlx;
-	void	*mlx_window;
-	int		win_width;
-	int		win_height;
-	char	**map;
+	int	scale;
+	int	offset_x;
+	int	offset_y;
+}				t_minimap;
 
-	t_img	img[2];
-	double	pos_x;
-	double	pos_y;
-	double	vec_x;
-	double	vec_y;
-	double	plane_x;
-	double	plane_y;
-	double	move_speed;
-	double	rotate_speed;
-
-	int		texture_width;
-	int		texture_height;
-}		t_data;
+typedef struct s_program
+{
+	t_texture		tex;
+	t_minilibx		mlx;
+	t_player_info	info;
+	t_minimap		map;
+}				t_program;
 
 typedef struct s_calculations
 {
@@ -181,12 +149,12 @@ void	check_map_extension(char *file);
 int		check_map_validity(char *file);
 char	**save_map(char *file, int lines);
 
-int		raycast_loop(t_data *data);
+int		raycast_loop(t_program *prog);
 
-int		key_events(int input, t_data *data);
-int		close_window(t_data *data);
+int		key_events(int input, t_program *prog);
+int		close_window(t_program *prog);
 
-void	put_pixel_at_addr(t_img *img, int x, int y, int color);
+void	put_pixel_at_addr(t_image *img, int x, int y, int color);
 void	free_2d_array(char **array);
 
 #endif
