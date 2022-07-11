@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/10 21:32:48 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/11 21:00:10 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,21 @@ void	set_player_position(t_program *prog)
 	}
 }
 
+int	mouse_events(int input, int x, int y, t_program *prog)
+{
+		(void)input, (void)x, (void)y, (void)prog;
+		// printf("x=%d\ny=%d\n", x, y);
+		// int i, j;
+		// mlx_mouse_get_pos(prog->mlx.ptr, prog->mlx.window, &i, &j);
+		// printf("x=%d\ny=%d\n", i, j);
+		// int a = mlx_mouse_move(0,0,0,0);
+		// (void)a;
+		printf("x=%d\ny=%d\n", x, y);
+	// mlx_clear_window(prog->mlx.ptr, prog->mlx.window);
+	// raycast_loop(prog);
+	return (0);
+}
+
 int main(int argc, char **argv)
 {
 	t_program	prog;
@@ -79,10 +94,31 @@ int main(int argc, char **argv)
 		prog.mlx.img[4].pixel = (int *)mlx_get_data_addr(prog.mlx.img[4].ptr, &prog.mlx.img[4].bpp, &prog.mlx.img[4].len, &prog.mlx.img[4].endian);
 
 		set_player_position(&prog);
+		
+		// NORTH
+		// prog.info.vec_x = 0;
+		// prog.info.vec_y = -1;
+		// prog.info.plane_x = 0.66;
+		// prog.info.plane_y = 0;
+
+		// SOUTH 
+		// prog.info.vec_x = 0;
+		// prog.info.vec_y = 1;
+		// prog.info.plane_x = -0.66;
+		// prog.info.plane_y = 0;
+
+		// EAST
 		prog.info.vec_x = 1;
 		prog.info.vec_y = 0;
 		prog.info.plane_x = 0;
 		prog.info.plane_y = 0.66;
+
+		// WEST
+		// prog.info.vec_x = -1;
+		// prog.info.vec_y = 0;
+		// prog.info.plane_x = 0;
+		// prog.info.plane_y = -0.66;
+		
 		prog.info.move_speed = 0.065;
 		prog.info.rotate_speed = 0.035;
 
@@ -91,6 +127,10 @@ int main(int argc, char **argv)
 		prog.map.offset_y = 15;
 
 		raycast_loop(&prog);
+		// mlx_mouse_hide(prog.mlx.ptr, prog.mlx.window);
+		// mlx_mouse_hook(prog.mlx.window, mouse_events, &prog);
+		// mlx_loop_hook(prog.mlx.ptr, mouse_events, &prog);
+		// mlx_hook(prog.mlx.window, 6, 0L, mouse_events, &prog);
 		mlx_hook(prog.mlx.window, 2, 1L<<0, key_events, &prog);
 		mlx_loop(prog.mlx.ptr);
 		return (0);

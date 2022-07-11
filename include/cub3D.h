@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/10 21:11:59 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/11 22:50:18 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,9 @@ void	draw_player(t_program *prog);
 
 int		raycast_loop(t_program *prog);
 
+double	calculate_position_and_vector(t_program *prog, int formula);
+double	calculate_position_and_plane(t_program *prog, int formula);
+double	calculate_rotation(t_program *prog, int formula, double i[]);
 int		key_events(int input, t_program *prog);
 int		close_window(t_program *prog);
 

@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:55:41 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/10 21:13:48 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/11 17:51:58 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,11 @@ int	raycast_loop(t_program *prog)
 				ray.color = prog->mlx.img[3].pixel[prog->tex.height * ray.texture_y + ray.texture_x];
 			else if (calc.side && calc.offset_y < 0)
 				ray.color = prog->mlx.img[4].pixel[prog->tex.height * ray.texture_y + ray.texture_x];
+			if (calc.perp_dist > calc.delta_x * 6 || calc.perp_dist > calc.delta_y * 6)
+			{
+				ray.color = (ray.color >> 1) & 8355711;
+				ray.color = (ray.color >> 1) & 8355711;
+			}
 			if (calc.side)
 				ray.color = (ray.color >> 1) & 8355711;
 			ray.buffer[j][i] = ray.color;

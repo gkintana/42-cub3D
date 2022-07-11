@@ -6,7 +6,7 @@
 #    By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/22 08:46:09 by gkintana          #+#    #+#              #
-#    Updated: 2022/07/10 14:58:59 by gkintana         ###   ########.fr        #
+#    Updated: 2022/07/11 22:50:34 by gkintana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ OBJ_DIR		=	objects
 SRCS		=	main.c \
 				draw_functions.c \
 				event_utils.c \
+				keyboard_utils.c \
 				keyboard.c \
 				parse.c \
 				raycast.c \
