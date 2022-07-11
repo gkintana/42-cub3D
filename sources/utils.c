@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 02:02:04 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/09 02:02:41 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/10 14:05:08 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
  * this is the my_mlx_pixel_put function from the minilibx documentation
  */
-void	put_pixel_at_addr(t_img *img, int x, int y, int color)
+void	put_pixel_at_addr(t_image *img, int x, int y, int color)
 {
 	char			*pixel;
 	unsigned int	pixel_position;
