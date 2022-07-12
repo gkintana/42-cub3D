@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 01:54:46 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/12 11:22:40 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/12 12:12:17 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	a_and_d_keys(t_program *prog, bool move_left)
 ** i[2] = stores a copy of the player's plane x value before updating
 ** i[3] = boolean which indicates if rotation speed is negative
 */
-static void	left_and_right_keys(t_program *prog, bool rotate_left)
+void	left_and_right_keys(t_program *prog, bool rotate_left)
 {
 	double	i[4];
 
