@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 01:54:46 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/12 12:12:17 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/12 13:56:00 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,18 @@ static void	w_and_s_keys(t_program *prog, bool move_forward)
 	{
 		i[0] = (int)(calculate_position_and_vector(prog, 1));
 		i[1] = (int)(calculate_position_and_vector(prog, 2));
-		if (prog->mlx.map[(int)prog->info.pos_y][i[0]] == '0')
+		if (prog->mlx.map[(int)prog->info.pos_y][i[0]] != '1')
 			prog->info.pos_x += prog->info.vec_x * prog->info.move_speed;
-		if (prog->mlx.map[i[1]][(int)prog->info.pos_x] == '0')
+		if (prog->mlx.map[i[1]][(int)prog->info.pos_x] != '1')
 			prog->info.pos_y += prog->info.vec_y * prog->info.move_speed;
 	}
 	else
 	{
 		i[0] = (int)(calculate_position_and_vector(prog, 3));
 		i[1] = (int)(calculate_position_and_vector(prog, 4));
-		if (prog->mlx.map[(int)prog->info.pos_y][i[0]] == '0')
+		if (prog->mlx.map[(int)prog->info.pos_y][i[0]] != '1')
 			prog->info.pos_x -= prog->info.vec_x * prog->info.move_speed;
-		if (prog->mlx.map[i[1]][(int)prog->info.pos_x] == '0')
+		if (prog->mlx.map[i[1]][(int)prog->info.pos_x] != '1')
 			prog->info.pos_y -= prog->info.vec_y * prog->info.move_speed;
 	}
 }
@@ -46,18 +46,18 @@ static void	a_and_d_keys(t_program *prog, bool move_left)
 	{
 		i[0] = (int)(calculate_position_and_plane(prog, 1));
 		i[1] = (int)(calculate_position_and_plane(prog, 2));
-		if (prog->mlx.map[(int)prog->info.pos_y][i[0]] == '0')
+		if (prog->mlx.map[(int)prog->info.pos_y][i[0]] != '1')
 			prog->info.pos_x -= prog->info.plane_x * prog->info.move_speed;
-		if (prog->mlx.map[i[1]][(int)prog->info.pos_x] == '0')
+		if (prog->mlx.map[i[1]][(int)prog->info.pos_x] != '1')
 			prog->info.pos_y -= prog->info.plane_y * prog->info.move_speed;
 	}
 	else
 	{
 		i[0] = (int)(calculate_position_and_plane(prog, 3));
 		i[1] = (int)(calculate_position_and_plane(prog, 4));
-		if (prog->mlx.map[(int)prog->info.pos_y][i[0]] == '0')
+		if (prog->mlx.map[(int)prog->info.pos_y][i[0]] != '1')
 			prog->info.pos_x += prog->info.plane_x * prog->info.move_speed;
-		if (prog->mlx.map[i[1]][(int)prog->info.pos_x] == '0')
+		if (prog->mlx.map[i[1]][(int)prog->info.pos_x] != '1')
 			prog->info.pos_y += prog->info.plane_y * prog->info.move_speed;
 	}
 }
@@ -125,14 +125,6 @@ int	key_events(int input, t_program *prog)
 		if (prog->info.pitch < -200)
 			prog->info.pitch = -200;
 	}
-
-	mlx_destroy_image(prog->mlx.ptr, prog->mlx.img[0].ptr);
-	prog->mlx.img[0].ptr = mlx_new_image(prog->mlx.ptr, prog->mlx.win_width, prog->mlx.win_height);
-	prog->mlx.img[0].addr = mlx_get_data_addr(prog->mlx.img[0].ptr, &prog->mlx.img[0].bpp, &prog->mlx.img[0].len, &prog->mlx.img[0].endian);
-	// mlx_destroy_image(prog->mlx.ptr, prog->mlx.img[1].ptr);
-	// prog->mlx.img[1].ptr = mlx_xpm_file_to_image(prog->mlx.ptr, prog->tex.north, &prog->tex.width, &prog->tex.height);
-	// prog->mlx.img[1].pixel = (int *)mlx_get_data_addr(prog->mlx.img[1].ptr, &prog->mlx.img[1].bpp, &prog->mlx.img[1].len, &prog->mlx.img[1].endian);
-	mlx_clear_window(prog->mlx.ptr, prog->mlx.window);
-	raycast_loop(prog);
+	update_frame(prog);
 	return (0);
 }

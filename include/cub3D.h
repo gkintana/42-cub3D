@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/12 12:12:27 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/12 12:58:05 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_minilibx
 
 typedef struct s_player_info
 {
+	int		orientation;
 	double	pos_x;
 	double	pos_y;
 	double	vec_x;
@@ -163,6 +164,8 @@ double	calculate_rotation(t_program *prog, int formula, double i[]);
 void	left_and_right_keys(t_program *prog, bool rotate_left);
 int		key_events(int input, t_program *prog);
 int		close_window(t_program *prog);
+
+void	update_frame(t_program *prog);
 
 void	put_pixel_at_addr(t_image *img, int x, int y, int color);
 void	free_2d_array(char **array);

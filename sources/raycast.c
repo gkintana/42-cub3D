@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:55:41 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/12 11:20:32 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/12 12:55:23 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,4 +169,33 @@ int	raycast_loop(t_program *prog)
 	draw_player(prog);
 	mlx_put_image_to_window(prog->mlx.ptr, prog->mlx.window, prog->mlx.img[0].ptr, 0, 0);
 	return (0);
+}
+
+/*
+** used to renew the image according to the changes made from either pressing
+** some specific keys on the keyboard or based from the movement of the mouse
+**
+** this function destroys the current image and creates a new one instead of
+** reassigning new pixels over the old image. Observed that it reduced cpu
+** load by about 2-3%, however it does affect the memory wherein it always
+** fluctuates between 0.2 and 0.4 which could be misinterpreted by our
+** evaluators as mishandling of memory usage
+*/
+void	update_frame(t_program *prog)
+{
+	int		i[2];
+	int		*j[3];
+	char	*temp;
+
+	i[0] = prog->mlx.win_width;
+	i[1] = prog->mlx.win_height;
+	j[0] = &prog->mlx.img[0].bpp;
+	j[1] = &prog->mlx.img[0].len;
+	j[2] = &prog->mlx.img[0].endian;
+	temp = mlx_get_data_addr(prog->mlx.img[0].ptr, j[0], j[1], j[2]);
+	mlx_destroy_image(prog->mlx.ptr, prog->mlx.img[0].ptr);
+	prog->mlx.img[0].ptr = mlx_new_image(prog->mlx.ptr, i[0], i[1]);
+	prog->mlx.img[0].addr = temp;
+	mlx_clear_window(prog->mlx.ptr, prog->mlx.window);
+	raycast_loop(prog);
 }
