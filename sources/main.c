@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/11 21:00:10 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/12 11:21:50 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int main(int argc, char **argv)
 		// prog.info.plane_x = 0;
 		// prog.info.plane_y = -0.66;
 		
+		prog.info.pitch = 0;
 		prog.info.move_speed = 0.065;
 		prog.info.rotate_speed = 0.035;
 

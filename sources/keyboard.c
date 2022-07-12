@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 01:54:46 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/11 22:52:09 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/12 11:22:40 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,20 @@ int	key_events(int input, t_program *prog)
 		left_and_right_keys(prog, true);
 	else if (input == KEYCODE_RIGHT)
 		left_and_right_keys(prog, false);
+
+	else if (input == KEYCODE_UP)
+	{
+		prog->info.pitch += 400 * prog->info.move_speed;
+		if (prog->info.pitch > 200)
+			prog->info.pitch = 200;
+	}
+	else if (input == KEYCODE_DOWN)
+	{
+		prog->info.pitch -= 400 * prog->info.move_speed;
+		if (prog->info.pitch < -200)
+			prog->info.pitch = -200;
+	}
+
 	mlx_destroy_image(prog->mlx.ptr, prog->mlx.img[0].ptr);
 	prog->mlx.img[0].ptr = mlx_new_image(prog->mlx.ptr, prog->mlx.win_width, prog->mlx.win_height);
 	prog->mlx.img[0].addr = mlx_get_data_addr(prog->mlx.img[0].ptr, &prog->mlx.img[0].bpp, &prog->mlx.img[0].len, &prog->mlx.img[0].endian);

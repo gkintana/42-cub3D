@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/11 22:50:18 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/12 11:14:37 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_player_info
 	double	vec_y;
 	double	plane_x;
 	double	plane_y;
+	double	pitch;
 	double	move_speed;
 	double	rotate_speed;
 }				t_player_info;

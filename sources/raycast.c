@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:55:41 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/11 23:52:55 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/12 11:20:32 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ void	perform_dda_and_calculate_dist(t_program *prog, t_calculations *calc)
 void	calculate_line(t_program *prog, t_calculations *calc, t_raycast *ray)
 {
 	ray->line_height = (int)(prog->mlx.win_height / calc->perp_dist);
-	ray->start = -ray->line_height / 2 + prog->mlx.win_height / 2;
+	ray->start = -ray->line_height / 2 + prog->mlx.win_height / 2 + prog->info.pitch;
 	if (ray->start < 0)
 		ray->start = 0;
-	ray->end = ray->line_height / 2 + prog->mlx.win_height / 2;
+	ray->end = ray->line_height / 2 + prog->mlx.win_height / 2 + prog->info.pitch;
 	if (ray->end >= prog->mlx.win_height)
 		ray->end = prog->mlx.win_height - 1;
 }
@@ -98,7 +98,7 @@ void	calculate_texture(t_program *prog, t_calculations *calc, t_raycast *ray)
 	else if (calc->side && calc->ray_vec_y < 0)
 		ray->texture_x = prog->tex.width - ray->texture_x - 1;
 	ray->step = 1.0 * prog->tex.height / ray->line_height;
-	ray->texture_pos = (ray->start - prog->mlx.win_height / 2
+	ray->texture_pos = (ray->start - prog->info.pitch - prog->mlx.win_height / 2
 	+ ray->line_height / 2) * ray->step;
 }
 
