@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/12 14:12:35 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/18 20:53:56 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,31 +161,7 @@ int main(int argc, char **argv)
 
 		set_player_position(&prog);
 		set_player_orientation(&prog);
-		
-		// NORTH
-		// prog.info.vec_x = 0;
-		// prog.info.vec_y = -1;
-		// prog.info.plane_x = 0.66;
-		// prog.info.plane_y = 0;
 
-		// SOUTH 
-		// prog.info.vec_x = 0;
-		// prog.info.vec_y = 1;
-		// prog.info.plane_x = -0.66;
-		// prog.info.plane_y = 0;
-
-		// EAST
-		// prog.info.vec_x = 1;
-		// prog.info.vec_y = 0;
-		// prog.info.plane_x = 0;
-		// prog.info.plane_y = 0.66;
-
-		// WEST
-		// prog.info.vec_x = -1;
-		// prog.info.vec_y = 0;
-		// prog.info.plane_x = 0;
-		// prog.info.plane_y = -0.66;
-		
 		prog.info.pitch = 0;
 		prog.info.move_speed = 0.065;
 		prog.info.rotate_speed = 0.035;
