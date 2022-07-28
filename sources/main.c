@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/12 14:12:35 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/28 18:16:46 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,33 +98,27 @@ void	set_player_orientation(t_program *prog)
 ** event handler for mouse inputs, kind of works but we have to click the window
 ** in order for the changes to be seen
 */
-int	mouse_events(int input, int x, int y, t_program *prog)
+int	mouse_events(int x, int y, t_program *prog)
 {
-	(void)input, (void)x, (void)y, (void)prog;
-	// printf("x=%d\ny=%d\n", x, y);
-	// int i, j;
-	// mlx_mouse_get_pos(prog->mlx.ptr, prog->mlx.window, &i, &j);
-	// printf("x=%d\ny=%d\n", i, j);
-	// int a = mlx_mouse_move(0,0,0,0);
-	// (void)a;
-	printf("x=%d\ny=%d\n", x, y);
 	if (y < prog->mlx.win_height / 2)
 	{
-		prog->info.pitch += 400 * prog->info.move_speed;
-		if (prog->info.pitch > 200)
-			prog->info.pitch = 200;
+		prog->info.pitch += 50 * prog->info.move_speed;
+		if (prog->info.pitch > 100)
+			prog->info.pitch = 100;
 	}
 	else
 	{
-		prog->info.pitch -= 400 * prog->info.move_speed;
-		if (prog->info.pitch < -200)
-			prog->info.pitch = -200;
+		prog->info.pitch -= 50 * prog->info.move_speed;
+		if (prog->info.pitch < -100)
+			prog->info.pitch = -100;
 	}
+	prog->info.rotate_speed = 0.0125;
 	if (x < prog->mlx.win_width / 2)
 		left_and_right_keys(prog, true);
 	else
 		left_and_right_keys(prog, false);
 	update_frame(prog);
+	prog->info.rotate_speed = 0.045;
 	return (0);
 }
 
@@ -187,8 +181,8 @@ int main(int argc, char **argv)
 		// prog.info.plane_y = -0.66;
 		
 		prog.info.pitch = 0;
-		prog.info.move_speed = 0.065;
-		prog.info.rotate_speed = 0.035;
+		prog.info.move_speed = 0.085;
+		prog.info.rotate_speed = 0.045;
 
 		prog.map.scale = 100;
 		prog.map.offset_x = 15;
@@ -196,10 +190,10 @@ int main(int argc, char **argv)
 
 		raycast_loop(&prog);
 		// mlx_mouse_hide(prog.mlx.ptr, prog.mlx.window);
-		mlx_mouse_hook(prog.mlx.window, mouse_events, &prog);
+		// mlx_mouse_hook(prog.mlx.window, mouse_events, &prog);
 		// mlx_loop_hook(prog.mlx.ptr, mouse_events, &prog);
-		// mlx_hook(prog.mlx.window, 6, 0L, mouse_events, &prog);
-		mlx_hook(prog.mlx.window, 2, 1L<<0, key_events, &prog);
+		mlx_hook(prog.mlx.window, 6, 1L<<6, mouse_events, &prog);
+		mlx_hook(prog.mlx.window, 2, 0L, key_events, &prog);
 		mlx_hook(prog.mlx.window, 17, 1L<<17, close_window, &prog);
 		mlx_loop(prog.mlx.ptr);
 		return (0);

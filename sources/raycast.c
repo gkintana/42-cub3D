@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:55:41 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/12 22:36:47 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/28 12:41:08 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	check_vectors(t_program *prog, t_calculations *calc)
 	{
 		calc->offset_x = 1;
 		calc->side_dist_x = (calc->map_x + 1.0 - prog->info.pos_x)
-		* calc->delta_x;
+			* calc->delta_x;
 	}
 	if (calc->ray_vec_y < 0)
 	{
@@ -45,7 +45,7 @@ void	check_vectors(t_program *prog, t_calculations *calc)
 	{
 		calc->offset_y = 1;
 		calc->side_dist_y = (calc->map_y + 1.0 - prog->info.pos_y)
-		* calc->delta_y;
+			* calc->delta_y;
 	}
 }
 
@@ -77,10 +77,12 @@ void	perform_dda_and_calculate_dist(t_program *prog, t_calculations *calc)
 void	calculate_line(t_program *prog, t_calculations *calc, t_raycast *ray)
 {
 	ray->line_height = (int)(prog->mlx.win_height / calc->perp_dist);
-	ray->start = -ray->line_height / 2 + prog->mlx.win_height / 2 + prog->info.pitch;
+	ray->start = -ray->line_height / 2 + prog->mlx.win_height / 2
+		+ prog->info.pitch;
 	if (ray->start < 0)
 		ray->start = 0;
-	ray->end = ray->line_height / 2 + prog->mlx.win_height / 2 + prog->info.pitch;
+	ray->end = ray->line_height / 2 + prog->mlx.win_height / 2
+		+ prog->info.pitch;
 	if (ray->end >= prog->mlx.win_height)
 		ray->end = prog->mlx.win_height - 1;
 }
@@ -98,8 +100,8 @@ void	calculate_texture(t_program *prog, t_calculations *calc, t_raycast *ray)
 	else if (calc->side && calc->ray_vec_y < 0)
 		ray->texture_x = prog->tex.width - ray->texture_x - 1;
 	ray->step = 1.0 * prog->tex.height / ray->line_height;
-	ray->texture_pos = (ray->start - prog->info.pitch - prog->mlx.win_height / 2
-	+ ray->line_height / 2) * ray->step;
+	ray->texture_pos = (ray->start - prog->info.pitch
+			- prog->mlx.win_height / 2 + ray->line_height / 2) * ray->step;
 }
 
 // https://permadi.com/1996/05/ray-casting-tutorial-19/#SHADING
@@ -109,7 +111,7 @@ void	apply_shade(t_calculations *calc, t_raycast *ray)
 	double	color_intensity;
 	int		i[6];
 
-	color_intensity = 1 / (calc->perp_dist / 2.5);
+	color_intensity = 1 / (calc->perp_dist / 3.50);
 	i[0] = ((ray->color >> 16) & 255);
 	i[1] = (ray->color >> 8) & 255;
 	i[2] = ray->color & 255;
@@ -125,7 +127,8 @@ void	apply_shade(t_calculations *calc, t_raycast *ray)
 	ray->color = pow(16, 4) * i[0] + pow(16, 2) * i[1] + i[2];
 }
 
-void	save_texture(t_program *prog, t_calculations *calc, t_raycast *ray, int i[])
+void	save_texture(t_program *prog, t_calculations *calc,
+		t_raycast *ray, int i[])
 {
 	int	coordinate;
 
@@ -170,18 +173,12 @@ int	raycast_loop(t_program *prog)
 		calculate_line(prog, &calc, &ray);
 		calculate_texture(prog, &calc, &ray);
 		save_texture(prog, &calc, &ray, i);
-
-		// int	color = 0xFFFFFF;
-		// if (data->map[map_y][map_x] == '1')
-		// 	color = 0xAA0000;
-		// if (side)
-		// 	color /= 2;
-		// draw_line(&data->img[0], x, draw_start, draw_end, color);
 	}
 	draw_walls(prog, ray.buffer);
 	draw_map(prog);
 	draw_player(prog);
-	mlx_put_image_to_window(prog->mlx.ptr, prog->mlx.window, prog->mlx.img[0].ptr, 0, 0);
+	mlx_put_image_to_window(prog->mlx.ptr, prog->mlx.window,
+		prog->mlx.img[0].ptr, 0, 0);
 	return (0);
 }
 

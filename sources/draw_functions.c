@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:56:22 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/10 14:56:45 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/28 12:36:22 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@
  * draws a vertical line to our image's address according to the specified
  * starting and ending points. Used for untextured raycasting
  */
-void	draw_line(t_image *img, int x, int start, int end, int color)
-{
-	int	i;
+// void	draw_line(t_image *img, int x, int start, int end, int color)
+// {
+// 	int	i;
 
-	i = start;
-	while (++i < end)
-		put_pixel_at_addr(&img[0], x, i, color);
-}
+// 	i = start;
+// 	while (++i < end)
+// 		put_pixel_at_addr(&img[0], x, i, color);
+// }
 
 // https://stackoverflow.com/questions/20297594/warning-expected-int-but-argument-is-of-type-int-sizetypen
 /*
@@ -68,7 +68,7 @@ void	draw_map(t_program *prog)
 	int	i[4];
 
 	i[0] = -1;
-	while(prog->mlx.map[++i[0]])
+	while (prog->mlx.map[++i[0]])
 	{
 		i[1] = -1;
 		while (prog->mlx.map[i[0]][++i[1]])
@@ -82,7 +82,7 @@ void	draw_map(t_program *prog)
 					while (++i[3] < prog->mlx.win_width / prog->map.scale)
 						put_pixel_at_addr(&prog->mlx.img[0],
 						i[3] + prog->mlx.win_width / prog->map.scale * i[1] + prog->map.offset_x,
-						i[2] + prog->mlx.win_height / prog->map.scale * i[0] + prog->map.offset_y, 0xAA333333);
+						i[2] + prog->mlx.win_height / prog->map.scale * i[0] + prog->map.offset_y, 0x33333333);
 				}
 				// for (int k = 0; k < data->win_height / 100; k++) {
 				// 	for (int j = 0; j < data->win_width / 100; j++) {
@@ -102,7 +102,7 @@ void	draw_map(t_program *prog)
 					while (++i[3] < prog->mlx.win_width / prog->map.scale)
 						put_pixel_at_addr(&prog->mlx.img[0],
 						i[3] + prog->mlx.win_width / prog->map.scale * i[1] + prog->map.offset_x,
-						i[2] + prog->mlx.win_height / prog->map.scale * i[0] + prog->map.offset_y, 0xAA555555);
+						i[2] + prog->mlx.win_height / prog->map.scale * i[0] + prog->map.offset_y, 0x33555555);
 				}
 			}
 		}
@@ -110,24 +110,33 @@ void	draw_map(t_program *prog)
 }
 
 /*
- * represents the player's location within the boundaries of the minimap
- *
- * Uses the same concept as the draw_map function in terms of pixels rather
- * than relying on the mlx_put_image_to_window function
- */
+** represents the player's location within the boundaries of the minimap
+**
+** Uses the same concept as the draw_map function in terms of pixels rather
+** than relying on the mlx_put_image_to_window function
+**
+** i[0] = player's y-axis
+** i[1] = player's x-axis
+** i[2] = player's current x-coordinate after scaling
+** i[3] = player's current y-coordinate after scaling
+*/
 void	draw_player(t_program *prog)
 {
-	int	i[2];
+	int	i[4];
 
 	i[0] = -1;
 	while (++i[0] < 3)
 	{
 		i[1] = -1;
+		i[2] = 0;
+		i[3] = 0;
 		while (++i[1] < 3)
-			put_pixel_at_addr(&prog->mlx.img[0],
-			i[1] + prog->info.pos_x * prog->mlx.win_width / prog->map.scale + prog->map.offset_x,
-			i[0] + prog->info.pos_y * prog->mlx.win_height / prog->map.scale + prog->map.offset_y, 0xAAFF0000);
+		{
+			i[2] = i[1] + prog->info.pos_x * prog->mlx.win_width
+				/ prog->map.scale + prog->map.offset_x;
+			i[3] = i[0] + prog->info.pos_y * prog->mlx.win_height
+				/ prog->map.scale + prog->map.offset_y;
+			put_pixel_at_addr(&prog->mlx.img[0], i[2], i[3], 0xFF0000);
+		}
 	}
-	// mlx_put_image_to_window(data->mlx, data->mlx_window, data->img[3].ptr,
-	// data->pos_x * data->win_width / 100 + 25 - 0.75, data->pos_y * data->win_height / 100 + 25 - 0.75);
 }
