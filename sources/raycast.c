@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:55:41 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/28 12:41:08 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/29 13:03:57 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,74 +87,6 @@ void	calculate_line(t_program *prog, t_calculations *calc, t_raycast *ray)
 		ray->end = prog->mlx.win_height - 1;
 }
 
-void	calculate_texture(t_program *prog, t_calculations *calc, t_raycast *ray)
-{
-	if (!calc->side)
-		ray->wall = prog->info.pos_y + calc->perp_dist * calc->ray_vec_y;
-	else
-		ray->wall = prog->info.pos_x + calc->perp_dist * calc->ray_vec_x;
-	ray->wall -= floor(ray->wall);
-	ray->texture_x = (int)(ray->wall * (double)prog->tex.width);
-	if (!calc->side && calc->ray_vec_x > 0)
-		ray->texture_x = prog->tex.width - ray->texture_x - 1;
-	else if (calc->side && calc->ray_vec_y < 0)
-		ray->texture_x = prog->tex.width - ray->texture_x - 1;
-	ray->step = 1.0 * prog->tex.height / ray->line_height;
-	ray->texture_pos = (ray->start - prog->info.pitch
-			- prog->mlx.win_height / 2 + ray->line_height / 2) * ray->step;
-}
-
-// https://permadi.com/1996/05/ray-casting-tutorial-19/#SHADING
-// https://stackoverflow.com/questions/4801366/convert-rgb-values-to-integer#:~:text=To%20set%20the%20values%20from,(x%2C%20y%2C%20rgb)%3B
-void	apply_shade(t_calculations *calc, t_raycast *ray)
-{
-	double	color_intensity;
-	int		i[6];
-
-	color_intensity = 1 / (calc->perp_dist / 3.50);
-	i[0] = ((ray->color >> 16) & 255);
-	i[1] = (ray->color >> 8) & 255;
-	i[2] = ray->color & 255;
-	i[3] = color_intensity * i[0];
-	i[4] = color_intensity * i[1];
-	i[5] = color_intensity * i[2];
-	if (i[0] > i[3])
-		i[0] = i[3];
-	if (i[1] > i[4])
-		i[1] = i[4];
-	if (i[2] > i[5])
-		i[2] = i[5];
-	ray->color = pow(16, 4) * i[0] + pow(16, 2) * i[1] + i[2];
-}
-
-void	save_texture(t_program *prog, t_calculations *calc,
-		t_raycast *ray, int i[])
-{
-	int	coordinate;
-
-	coordinate = 0;
-	i[1] = ray->start;
-	while (i[1] < ray->end)
-	{
-		ray->texture_y = (int)ray->texture_pos & (prog->tex.height - 1);
-		ray->texture_pos += ray->step;
-		coordinate = prog->tex.height * ray->texture_y + ray->texture_x;
-		if (!calc->side && calc->ray_vec_x > 0)
-			ray->color = prog->mlx.img[1].pixel[coordinate];
-		else if (!calc->side && calc->ray_vec_x < 0)
-			ray->color = prog->mlx.img[2].pixel[coordinate];
-		else if (calc->side && calc->ray_vec_y > 0)
-			ray->color = prog->mlx.img[3].pixel[coordinate];
-		else if (calc->side && calc->offset_y < 0)
-			ray->color = prog->mlx.img[4].pixel[coordinate];
-		apply_shade(calc, ray);
-		if (calc->side)
-			apply_shade(calc, ray);
-		ray->buffer[i[1]][i[0]] = ray->color;
-		i[1]++;
-	}
-}
-
 int	raycast_loop(t_program *prog)
 {
 	t_calculations	calc;
@@ -180,33 +112,4 @@ int	raycast_loop(t_program *prog)
 	mlx_put_image_to_window(prog->mlx.ptr, prog->mlx.window,
 		prog->mlx.img[0].ptr, 0, 0);
 	return (0);
-}
-
-/*
-** used to renew the image according to the changes made from either pressing
-** some specific keys on the keyboard or based from the movement of the mouse
-**
-** this function destroys the current image and creates a new one instead of
-** reassigning new pixels over the old image. Observed that it reduced cpu
-** load by about 2-3%, however it does affect the memory wherein it always
-** fluctuates between 0.2 and 0.4 which could be misinterpreted by our
-** evaluators as mishandling of memory usage
-*/
-void	update_frame(t_program *prog)
-{
-	int		i[2];
-	int		*j[3];
-	char	*temp;
-
-	i[0] = prog->mlx.win_width;
-	i[1] = prog->mlx.win_height;
-	j[0] = &prog->mlx.img[0].bpp;
-	j[1] = &prog->mlx.img[0].len;
-	j[2] = &prog->mlx.img[0].endian;
-	temp = mlx_get_data_addr(prog->mlx.img[0].ptr, j[0], j[1], j[2]);
-	mlx_destroy_image(prog->mlx.ptr, prog->mlx.img[0].ptr);
-	prog->mlx.img[0].ptr = mlx_new_image(prog->mlx.ptr, i[0], i[1]);
-	prog->mlx.img[0].addr = temp;
-	mlx_clear_window(prog->mlx.ptr, prog->mlx.window);
-	raycast_loop(prog);
 }

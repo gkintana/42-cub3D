@@ -6,13 +6,13 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 01:54:46 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/28 18:15:09 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/29 12:00:39 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 
-static void	w_and_s_keys(t_program *prog, bool move_forward)
+static void	vertical_movement(t_program *prog, bool move_forward)
 {
 	int	i[2];
 
@@ -37,7 +37,7 @@ static void	w_and_s_keys(t_program *prog, bool move_forward)
 	}
 }
 
-static void	a_and_d_keys(t_program *prog, bool move_left)
+static void	horizontal_movement(t_program *prog, bool move_left)
 {
 	int	i[2];
 
@@ -62,69 +62,26 @@ static void	a_and_d_keys(t_program *prog, bool move_left)
 	}
 }
 
-/*
-** i[0] = stores the value of the player's rotate speed
-** i[1] = stores a copy of the player's vector x value before updating
-** i[2] = stores a copy of the player's plane x value before updating
-** i[3] = boolean which indicates if rotation speed is negative
-*/
-void	left_and_right_keys(t_program *prog, bool rotate_left)
-{
-	double	i[4];
-
-	ft_bzero(&i, 4 * sizeof(double));
-	i[0] = prog->info.rotate_speed;
-	if (rotate_left)
-	{
-		i[3] = 1;
-		i[1] = prog->info.vec_x;
-		prog->info.vec_x = calculate_rotation(prog, 1, i);
-		prog->info.vec_y = calculate_rotation(prog, 2, i);
-		i[2] = prog->info.plane_x;
-		prog->info.plane_x = calculate_rotation(prog, 3, i);
-		prog->info.plane_y = calculate_rotation(prog, 4, i);
-	}
-	else
-	{
-		i[3] = 0;
-		i[1] = prog->info.vec_x;
-		prog->info.vec_x = calculate_rotation(prog, 1, i);
-		prog->info.vec_y = calculate_rotation(prog, 2, i);
-		i[2] = prog->info.plane_x;
-		prog->info.plane_x = calculate_rotation(prog, 3, i);
-		prog->info.plane_y = calculate_rotation(prog, 4, i);
-	}
-}
-
 int	key_events(int input, t_program *prog)
 {
 	if (input == KEYCODE_ESC)
 		close_window(prog);
 	else if (input == KEYCODE_W)
-		w_and_s_keys(prog, true);
-	else if (input == KEYCODE_A)
-		a_and_d_keys(prog, true);
+		vertical_movement(prog, true);
 	else if (input == KEYCODE_S)
-		w_and_s_keys(prog, false);
+		vertical_movement(prog, false);
+	else if (input == KEYCODE_A)
+		horizontal_movement(prog, true);
 	else if (input == KEYCODE_D)
-		a_and_d_keys(prog, false);
+		horizontal_movement(prog, false);
 	else if (input == KEYCODE_LEFT)
-		left_and_right_keys(prog, true);
+		horizontal_perspective(prog, true);
 	else if (input == KEYCODE_RIGHT)
-		left_and_right_keys(prog, false);
-
+		horizontal_perspective(prog, false);
 	else if (input == KEYCODE_UP)
-	{
-		prog->info.pitch += 400 * prog->info.move_speed;
-		if (prog->info.pitch > 200)
-			prog->info.pitch = 200;
-	}
+		vertical_perspective(prog, true);
 	else if (input == KEYCODE_DOWN)
-	{
-		prog->info.pitch -= 400 * prog->info.move_speed;
-		if (prog->info.pitch < -200)
-			prog->info.pitch = -200;
-	}
+		vertical_perspective(prog, false);
 	update_frame(prog);
 	return (0);
 }

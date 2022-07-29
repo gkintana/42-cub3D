@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:56:22 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/28 12:36:22 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/29 11:54:06 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@
 
 // https://stackoverflow.com/questions/20297594/warning-expected-int-but-argument-is-of-type-int-sizetypen
 /*
- * transfers each individual pixel from the pre-rendered texture buffer to the
- * output image's address. Used for textured raycasting
- * 
- * i[0] = index for y-axis of map
- * i[1] = index for x-axis of map
- */
+** transfers each individual pixel from the pre-rendered texture buffer to the
+** output image's address. Used for textured raycasting
+** 
+** i[0] = index for y-axis of map
+** i[1] = index for x-axis of map
+*/
 void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width])
 {
 	int	i[2];
@@ -42,7 +42,8 @@ void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width])
 	{
 		i[1] = -1;
 		while (++i[1] < prog->mlx.win_width)
-			put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0], buffer[i[0]][i[1]]);
+			put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+				buffer[i[0]][i[1]]);
 	}
 }
 

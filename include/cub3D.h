@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/12 12:58:05 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/29 13:06:34 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,18 @@ typedef struct s_minimap
 	int	offset_y;
 }				t_minimap;
 
+typedef struct s_mouse
+{
+	int	new_x;
+	int	new_y;
+}				t_mouse;
+
 typedef struct s_program
 {
 	t_texture		tex;
 	t_minilibx		mlx;
 	t_player_info	info;
+	t_mouse			mouse;
 	t_minimap		map;
 }				t_program;
 
@@ -151,17 +158,27 @@ void	check_map_extension(char *file);
 int		check_map_validity(char *file);
 char	**save_map(char *file, int lines);
 
+void	set_player_position(t_program *prog);
+void	set_player_orientation(t_program *prog);
+
 void	draw_line(t_image *img, int x, int start, int end, int color);
 void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width]);
 void	draw_map(t_program *prog);
 void	draw_player(t_program *prog);
 
+void	calculate_texture(t_program *prog, t_calculations *calc,
+		t_raycast *ray);
+void	save_texture(t_program *prog, t_calculations *calc,
+		t_raycast *ray, int i[]);
 int		raycast_loop(t_program *prog);
 
 double	calculate_position_and_vector(t_program *prog, int formula);
 double	calculate_position_and_plane(t_program *prog, int formula);
 double	calculate_rotation(t_program *prog, int formula, double i[]);
-void	left_and_right_keys(t_program *prog, bool rotate_left);
+void	horizontal_perspective(t_program *prog, bool rotate_left);
+void	vertical_perspective(t_program *prog, bool look_up);
+
+int		mouse_events(int x, int y, t_program *prog);
 int		key_events(int input, t_program *prog);
 int		close_window(t_program *prog);
 
