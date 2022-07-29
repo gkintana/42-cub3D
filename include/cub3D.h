@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/29 13:06:34 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/29 19:09:20 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ typedef struct s_texture
 	char	*south;
 	char	*east;
 	char	*west;
+	char	*floor;
+	char	*ceiling;
 	int		width;
 	int		height;
 }				t_texture;
@@ -154,36 +156,92 @@ typedef struct s_raycast
 }				t_raycast;
 
 /*---------------------------- FUNCTION PROTOTYPES ---------------------------*/
-void	check_map_extension(char *file);
-int		check_map_validity(char *file);
-char	**save_map(char *file, int lines);
+// Parse Utils
+char	*ft_strchr(const char *s, int c);
+void	ft_bzero2(int *array, int len);
+int		ft_array_len(char **array);
+int		ft_atoi2(const char *str);
 
+// Parse Functions
+void	check_map_extension(char *file);
+void	check_map_validity(char *file);
+int		check_elements(char *file);
+int		check_elements1(char *str, int *elem, char **map_temp);
+int		check_elements2(char *str, int *elem, char **map_temp);
+int		ft_elem(int *array, int len, char **map_temp);
+int		check_elems1(char *str, int *i, int *elem, int *ctn);
+int		check_elems0(char *str, int *i);
+int		check_elems2(char *str, int *i, int *elem, int *ctn);
+int		ft_map_row1(char *str, int *elem, char **map_temp);
+int		check_elems6(char *str, int *elem, char **map_temp);
+int		check_elems3(char *str, int *i, int *elem, char **map_temp);
+int		check_elems4(char *str, int *elem, char **map_temp);
+int		check_elems5(char *str, int *elem, char **map_temp);
+int		t_path1(char *ret, int fd);
+void	ft_path2(char *ret, int fd);
+int		ft_path(char *str, int i);
+int		ft_rgb(char *str, int i);
+char	*ft_rgb1(char *str, int i);
+char	*ft_rgb2(char *temp);
+int		ft_map_row(char *str);
+char	**ft_temp_map(char **map_temp, char *str);
+int		check_map(char **map);
+int		check_top(char **map);
+int		check_top1(char **map, int *i, int *j, int *flag);
+int		check_bottom(char **map);
+int		check_bottom1(char **map, int *i, int *j, int *flag);
+int		check_left(char **map);
+int		check_left1(char **map, int *j);
+int		check_chars(char **map);
+int		check_right(char **map);
+
+// Initialization Functions
+void	init(t_program *prog, char *file);
+void	init0(int *i, char *str, t_program *prog);
+void	init_n(int *i, char *str, t_program *prog);
+void	init_s(int *i, char *str, t_program *prog);
+void	init_e(int *i, char *str, t_program *prog);
+void	init_w(int *i, char *str, t_program *prog);
+void	init_f(int *i, char *str, t_program *prog);
+void	init_c(int *i, char *str, t_program *prog);
+void	init_map(char *str, char **map_temp, int fd, t_program *prog);
+void	init_mlx(t_program *prog);
+void	init_images(t_program *prog);
+void	init_player(t_program *prog);
+char	*init_rgb(char *str, int *i);
+char	*init_path(char *str, int *i);
+
+// Player Position
 void	set_player_position(t_program *prog);
 void	set_player_orientation(t_program *prog);
 
+// Drawing Functions
 void	draw_line(t_image *img, int x, int start, int end, int color);
 void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width]);
 void	draw_map(t_program *prog);
 void	draw_player(t_program *prog);
 
+// Raycasting
 void	calculate_texture(t_program *prog, t_calculations *calc,
 		t_raycast *ray);
 void	save_texture(t_program *prog, t_calculations *calc,
 		t_raycast *ray, int i[]);
 int		raycast_loop(t_program *prog);
 
+// Player Movement & Perspective
 double	calculate_position_and_vector(t_program *prog, int formula);
 double	calculate_position_and_plane(t_program *prog, int formula);
 double	calculate_rotation(t_program *prog, int formula, double i[]);
 void	horizontal_perspective(t_program *prog, bool rotate_left);
 void	vertical_perspective(t_program *prog, bool look_up);
 
+// Events
 int		mouse_events(int x, int y, t_program *prog);
 int		key_events(int input, t_program *prog);
+void	update_frame(t_program *prog);
 int		close_window(t_program *prog);
 
-void	update_frame(t_program *prog);
-
+// Utilities
 void	put_pixel_at_addr(t_image *img, int x, int y, int color);
 void	free_2d_array(char **array);
 

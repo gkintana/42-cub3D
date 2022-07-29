@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 02:02:04 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/29 13:09:17 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/29 19:10:38 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,12 @@ void	update_frame(t_program *prog)
 
 int	close_window(t_program *prog)
 {
+	free(prog->tex.north);
+	free(prog->tex.south);
+	free(prog->tex.east);
+	free(prog->tex.west);
+	free(prog->tex.floor);
+	free(prog->tex.ceiling);
 	free_2d_array(prog->mlx.map);
 	mlx_destroy_image(prog->mlx.ptr, prog->mlx.img[0].ptr);
 	mlx_destroy_image(prog->mlx.ptr, prog->mlx.img[1].ptr);
