@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/30 13:06:04 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/30 17:00:51 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,14 +214,13 @@ void	init_images(t_program *prog);
 void	init_player(t_program *prog);
 char	*init_rgb(char *str, int *i);
 char	*init_path(char *str, int *i);
+void	get_floor_and_ceiling_rgb(t_program *prog);
 
 // Player Position
 void	set_player_position(t_program *prog);
 void	set_player_orientation(t_program *prog);
 
 // Drawing Functions
-void	get_floor_rgb(t_program *prog);
-void	get_ceiling_rgb(t_program *prog);
 void	draw_line(t_image *img, int x, int start, int end, int color);
 void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width]);
 void	draw_map(t_program *prog);
