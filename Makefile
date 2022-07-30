@@ -6,7 +6,7 @@
 #    By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/22 08:46:09 by gkintana          #+#    #+#              #
-#    Updated: 2022/07/30 12:51:44 by gkintana         ###   ########.fr        #
+#    Updated: 2022/07/30 15:39:07 by gkintana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ SRCS		=	main.c \
 OBJS		=	$(addprefix $(OBJ_DIR)/, $(SRCS:%c=%o))
 
 CC			=	gcc
-CFLAGS		=	-g -Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror
 LIB_AR		=	ar rcs
 RM			=	rm -rf
 
@@ -71,6 +71,7 @@ CYAN		=	"\033[3;36m"
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 			@mkdir -p $(OBJ_DIR)
 			@printf $(CYAN)
+			@printf "\033[A\033[2K\r"
 			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLX_DIR) -O3 -c $< -o $@
 
 all:		$(NAME)

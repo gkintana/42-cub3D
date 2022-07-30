@@ -6,12 +6,14 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:50:21 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/30 13:14:31 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/30 13:32:27 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 
+// https://www.developintelligence.com/blog/2017/02/rgb-to-hex-understanding-the-major-web-color-codes/
+// https://www.rapidtables.com/convert/number/hex-to-decimal.html
 void	get_floor_rgb(t_program *prog)
 {
 	char	**rgb_array;
