@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 13:03:29 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/30 13:30:52 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/30 17:23:26 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@ void	save_texture(t_program *prog, t_calculations *calc,
 		ray->texture_y = (int)ray->texture_pos & (prog->tex.height - 1);
 		ray->texture_pos += ray->step;
 		coordinate = prog->tex.height * ray->texture_y + ray->texture_x;
-		if (!calc->side && calc->ray_vec_x > 0)
+		if (calc->side && calc->offset_y < 0)
 			ray->color = prog->mlx.img[1].pixel[coordinate];
-		else if (!calc->side && calc->ray_vec_x < 0)
-			ray->color = prog->mlx.img[2].pixel[coordinate];
 		else if (calc->side && calc->ray_vec_y > 0)
+			ray->color = prog->mlx.img[2].pixel[coordinate];
+		else if (!calc->side && calc->ray_vec_x > 0)
 			ray->color = prog->mlx.img[3].pixel[coordinate];
-		else if (calc->side && calc->offset_y < 0)
+		else if (!calc->side && calc->ray_vec_x < 0)
 			ray->color = prog->mlx.img[4].pixel[coordinate];
 		apply_shade(calc, ray);
 		if (calc->side)
