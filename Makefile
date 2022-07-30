@@ -6,7 +6,7 @@
 #    By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/22 08:46:09 by gkintana          #+#    #+#              #
-#    Updated: 2022/07/29 17:51:46 by gkintana         ###   ########.fr        #
+#    Updated: 2022/07/30 12:51:44 by gkintana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ OBJ_DIR		=	objects
 
 SRCS		=	main.c \
 				draw_functions.c \
+				floor_and_ceiling.c \
 				init.c \
 				init1.c \
 				init2.c \

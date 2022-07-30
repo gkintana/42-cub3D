@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/29 19:09:20 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/30 13:06:04 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@
 #  define KEYCODE_RIGHT	124
 # endif
 
-/*------------------------------ CONSTANT VALUES -----------------------------*/
+/*--------------------------------- CONSTANTS --------------------------------*/
+# define HEX_SYSTEM		"0123456789ABCDEF"
 # define PI 			3.1415926535897932384626434
 # define WIN_WIDTH		1600
 # define WIN_HEIGHT		900
@@ -70,8 +71,11 @@ typedef struct s_texture
 	char	*west;
 	char	*floor;
 	char	*ceiling;
+
 	int		width;
 	int		height;
+	int		floor_rgb;
+	int		ceiling_rgb;
 }				t_texture;
 
 typedef struct s_minilibx
@@ -216,6 +220,8 @@ void	set_player_position(t_program *prog);
 void	set_player_orientation(t_program *prog);
 
 // Drawing Functions
+void	get_floor_rgb(t_program *prog);
+void	get_ceiling_rgb(t_program *prog);
 void	draw_line(t_image *img, int x, int start, int end, int color);
 void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width]);
 void	draw_map(t_program *prog);

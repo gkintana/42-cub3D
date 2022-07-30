@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:56:22 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/29 11:54:06 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/30 12:44:39 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,17 @@ void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width])
 	{
 		i[1] = -1;
 		while (++i[1] < prog->mlx.win_width)
-			put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
-				buffer[i[0]][i[1]]);
+		{
+			if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2)
+				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+					prog->tex.ceiling_rgb);
+			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2)
+				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+					prog->tex.floor_rgb);
+			else
+				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+					buffer[i[0]][i[1]]);
+		}
 	}
 }
 

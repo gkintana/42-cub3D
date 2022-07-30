@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 13:03:29 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/29 13:04:03 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/30 13:30:52 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	apply_shade(t_calculations *calc, t_raycast *ray)
 	double	color_intensity;
 	int		i[6];
 
-	color_intensity = 1 / (calc->perp_dist / 3.50);
+	color_intensity = 1 / (calc->perp_dist / 3.75);
 	i[0] = ((ray->color >> 16) & 255);
 	i[1] = (ray->color >> 8) & 255;
 	i[2] = ray->color & 255;
@@ -75,7 +75,10 @@ void	save_texture(t_program *prog, t_calculations *calc,
 		apply_shade(calc, ray);
 		if (calc->side)
 			apply_shade(calc, ray);
-		ray->buffer[i[1]][i[0]] = ray->color;
+		if (!ray->color)
+			ray->buffer[i[1]][i[0]] = 1;
+		else
+			ray->buffer[i[1]][i[0]] = ray->color;
 		i[1]++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 01:01:52 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/29 20:08:12 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/30 13:05:48 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int main(int argc, char **argv)
 		if (check_elements(argv[1]) == 0)
 		{
 			init(&prog, argv[1]);
+			get_floor_rgb(&prog);
+			get_ceiling_rgb(&prog);
 			raycast_loop(&prog);
 			mlx_hook(prog.mlx.window, 2, 1L<<0, key_events, &prog);
 			mlx_hook(prog.mlx.window, 6, 1L<<6, mouse_events, &prog);
