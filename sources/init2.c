@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 02:00:52 by rrangwan          #+#    #+#             */
-/*   Updated: 2022/07/31 14:56:04 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/31 18:52:42 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	init_player(t_program *prog)
 	set_player_orientation(prog);
 	prog->info.move_speed = 0.065;
 	prog->info.rotate_speed = 0.035;
-	prog->map.scale = 80;
+	prog->map.scale = 75;
 	prog->map.offset_x = 15;
 	prog->map.offset_y = 15;
 }

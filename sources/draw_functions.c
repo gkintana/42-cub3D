@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:56:22 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/31 15:14:15 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/31 22:58:01 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,41 @@ void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width])
 		i[1] = -1;
 		while (++i[1] < prog->mlx.win_width)
 		{
-			if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2)
+			if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.850)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					prog->tex.ceiling_rgb);
-			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2)
+			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.875)
+				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+					prog->tex.ceiling_rgb * 0.8);
+			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.900)
+				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+					prog->tex.ceiling_rgb * 0.6);
+			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.925)
+				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+					prog->tex.ceiling_rgb * 0.4);
+			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.950)
+				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+					prog->tex.ceiling_rgb * 0.2);
+			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.975)
+				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+					prog->tex.ceiling_rgb * 0.0);
+
+
+			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.150)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					prog->tex.floor_rgb);
+			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.125)
+				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+					prog->tex.floor_rgb * 0.8);
+			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.100)
+				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+					prog->tex.floor_rgb * 0.6);
+			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.075)
+				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+					prog->tex.floor_rgb * 0.4);
+			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.050)
+				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+					prog->tex.floor_rgb * 0.2);
 			else
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					buffer[i[0]][i[1]]);
@@ -199,10 +228,10 @@ void	draw_player(t_program *prog)
 		i[4] = 0;
 		while (++i[2] < i[0])
 		{
-			i[3] = i[2] + prog->info.pos_x * prog->mlx.win_width
-				/ prog->map.scale + prog->map.offset_x - (i[0] / 2);
-			i[4] = i[1] + prog->info.pos_y * prog->mlx.win_height
-				/ prog->map.scale + prog->map.offset_y - (i[0] / 2);
+			i[3] = i[2] + prog->mlx.win_width / prog->map.scale
+				* prog->info.pos_x + prog->map.offset_x - (i[0] / 2);
+			i[4] = i[1] + prog->mlx.win_height / prog->map.scale
+				* prog->info.pos_y + prog->map.offset_y - (i[0] / 2);
 			put_pixel_at_addr(&prog->mlx.img[0], i[3], i[4], 0xFF0000);
 		}
 	}
