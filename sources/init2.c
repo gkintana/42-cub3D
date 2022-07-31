@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rrangwan <rrangwan@42abudhabi.ae>          +#+  +:+       +#+        */
+/*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 02:00:52 by rrangwan          #+#    #+#             */
-/*   Updated: 2022/07/29 19:01:08 by rrangwan         ###   ########.fr       */
+/*   Updated: 2022/07/31 14:56:04 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	init_player(t_program *prog)
 	set_player_orientation(prog);
 	prog->info.move_speed = 0.065;
 	prog->info.rotate_speed = 0.035;
-	prog->map.scale = 100;
+	prog->map.scale = 80;
 	prog->map.offset_x = 15;
 	prog->map.offset_y = 15;
 }

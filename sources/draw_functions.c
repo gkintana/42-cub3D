@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:56:22 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/30 12:44:39 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/07/31 15:14:15 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,32 @@ void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width])
 	}
 }
 
+// void	draw_map(t_program *prog)
+// {
+// 	int x = 15;
+// 	int y = 15;
+
+// 	while (y < prog->mlx.win_height / 4)
+// 	{
+// 		x = 15;
+// 		while (x < prog->mlx.win_width / 4)
+// 		{
+// 			if (x < 20 || y < 20 || x >= prog->mlx.win_width / 4 - 5
+// 				|| y >= prog->mlx.win_height / 4 - 5)
+// 				put_pixel_at_addr(&prog->mlx.img[0], x, y, 0x000000);
+// 			else if (prog->mlx.map[(int)prog->info.pos_y][(int)prog->info.pos_x] != '1')
+// 			{
+// 				put_pixel_at_addr(&prog->mlx.img[0], x, y, 0xAA00AA);
+				
+// 			}
+// 			else
+// 				put_pixel_at_addr(&prog->mlx.img[0], x, y, 0xFFFFFF);
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// }
+
 /*
  * draws the minimap on our image pointer, specifically at the coordinates set
  * at prog.map.offset_x and prog.map.offset_y
@@ -83,7 +109,7 @@ void	draw_map(t_program *prog)
 		i[1] = -1;
 		while (prog->mlx.map[i[0]][++i[1]])
 		{
-			if (prog->mlx.map[i[0]][i[1]] == '1')
+			if (prog->mlx.map[i[0]][i[1]] != ' ' && prog->mlx.map[i[0]][i[1]] != '\n')
 			{
 				i[2] = -1;
 				while (++i[2] < prog->mlx.win_height / prog->map.scale)
@@ -92,7 +118,35 @@ void	draw_map(t_program *prog)
 					while (++i[3] < prog->mlx.win_width / prog->map.scale)
 						put_pixel_at_addr(&prog->mlx.img[0],
 						i[3] + prog->mlx.win_width / prog->map.scale * i[1] + prog->map.offset_x,
-						i[2] + prog->mlx.win_height / prog->map.scale * i[0] + prog->map.offset_y, 0x33333333);
+						i[2] + prog->mlx.win_height / prog->map.scale * i[0] + prog->map.offset_y, 0x000000);
+				}
+			}
+		}
+	}
+
+	i[0] = -1;
+	// i[0] = prog->info.pos_y - 5;
+	// if (i[0] < 0)
+	// 	i[0] = -1;
+	while (prog->mlx.map[++i[0]])
+	{
+		i[1] = -1;
+		// i[1] = prog->info.pos_x - 5;
+		// if (i[1] < 0)
+		// 	i[1] = -1;
+		while (prog->mlx.map[i[0]][++i[1]])
+		{
+			// if (prog->mlx.map[i[0]][i[1]] == '1' && i[1] < prog->info.pos_x + 6 && i[0] < prog->info.pos_y + 6)
+			if (prog->mlx.map[i[0]][i[1]] == '1')
+			{
+				i[2] = -1;
+				while (++i[2] < prog->mlx.win_height / prog->map.scale - 1)
+				{
+					i[3] = -1;
+					while (++i[3] < prog->mlx.win_width / prog->map.scale - 1)
+						put_pixel_at_addr(&prog->mlx.img[0],
+						i[3] + prog->mlx.win_width / prog->map.scale * i[1] + prog->map.offset_x,
+						i[2] + prog->mlx.win_height / prog->map.scale * i[0] + prog->map.offset_y, 0x3313294B);
 				}
 				// for (int k = 0; k < data->win_height / 100; k++) {
 				// 	for (int j = 0; j < data->win_width / 100; j++) {
@@ -103,16 +157,17 @@ void	draw_map(t_program *prog)
 				// mlx_put_image_to_window(data->mlx, data->mlx_window, data->img[2].ptr,
 				// i[1] * data->win_width / 100 + 25, i[0] * data->win_height / 100 + 25);
 			}
+			// else if (prog->mlx.map[i[0]][i[1]] != '1' && !ft_isspace(prog->mlx.map[i[0]][i[1]]) && i[1] < prog->info.pos_x + 6 && i[0] < prog->info.pos_y + 6)
 			else if (prog->mlx.map[i[0]][i[1]] != '1' && !ft_isspace(prog->mlx.map[i[0]][i[1]]))
 			{
 				i[2] = -1;
-				while (++i[2] < prog->mlx.win_height / prog->map.scale)
+				while (++i[2] < prog->mlx.win_height / prog->map.scale - 1)
 				{
 					i[3] = -1;
-					while (++i[3] < prog->mlx.win_width / prog->map.scale)
+					while (++i[3] < prog->mlx.win_width / prog->map.scale - 1)
 						put_pixel_at_addr(&prog->mlx.img[0],
 						i[3] + prog->mlx.win_width / prog->map.scale * i[1] + prog->map.offset_x,
-						i[2] + prog->mlx.win_height / prog->map.scale * i[0] + prog->map.offset_y, 0x33555555);
+						i[2] + prog->mlx.win_height / prog->map.scale * i[0] + prog->map.offset_y, 0x33777777);
 				}
 			}
 		}
@@ -125,28 +180,30 @@ void	draw_map(t_program *prog)
 ** Uses the same concept as the draw_map function in terms of pixels rather
 ** than relying on the mlx_put_image_to_window function
 **
-** i[0] = player's y-axis
-** i[1] = player's x-axis
-** i[2] = player's current x-coordinate after scaling
-** i[3] = player's current y-coordinate after scaling
+** i[0] = player cube size
+** i[1] = player's y-axis
+** i[2] = player's x-axis
+** i[3] = player's current x-coordinate after scaling
+** i[4] = player's current y-coordinate after scaling
 */
 void	draw_player(t_program *prog)
 {
-	int	i[4];
+	int	i[5];
 
-	i[0] = -1;
-	while (++i[0] < 3)
+	i[0] = 4;
+	i[1] = -1;
+	while (++i[1] < i[0])
 	{
-		i[1] = -1;
-		i[2] = 0;
+		i[2] = -1;
 		i[3] = 0;
-		while (++i[1] < 3)
+		i[4] = 0;
+		while (++i[2] < i[0])
 		{
-			i[2] = i[1] + prog->info.pos_x * prog->mlx.win_width
-				/ prog->map.scale + prog->map.offset_x;
-			i[3] = i[0] + prog->info.pos_y * prog->mlx.win_height
-				/ prog->map.scale + prog->map.offset_y;
-			put_pixel_at_addr(&prog->mlx.img[0], i[2], i[3], 0xFF0000);
+			i[3] = i[2] + prog->info.pos_x * prog->mlx.win_width
+				/ prog->map.scale + prog->map.offset_x - (i[0] / 2);
+			i[4] = i[1] + prog->info.pos_y * prog->mlx.win_height
+				/ prog->map.scale + prog->map.offset_y - (i[0] / 2);
+			put_pixel_at_addr(&prog->mlx.img[0], i[3], i[4], 0xFF0000);
 		}
 	}
 }
