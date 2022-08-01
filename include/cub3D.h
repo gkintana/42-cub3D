@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/30 17:00:51 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/01 19:17:35 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,32 +23,35 @@
 
 /*--------------------------------- KEY CODES --------------------------------*/
 # if __linux__
-#  define KEYCODE_W		119
-#  define KEYCODE_A		97
-#  define KEYCODE_S		115
-#  define KEYCODE_D		100
-#  define KEYCODE_ESC	65307
-#  define KEYCODE_UP	65362
-#  define KEYCODE_DOWN	65364
-#  define KEYCODE_LEFT	65361
-#  define KEYCODE_RIGHT	65363
+#  define KEYCODE_W				119
+#  define KEYCODE_A				97
+#  define KEYCODE_S				115
+#  define KEYCODE_D				100
+#  define KEYCODE_ESC			65307
+#  define KEYCODE_UP			65362
+#  define KEYCODE_DOWN			65364
+#  define KEYCODE_LEFT			65361
+#  define KEYCODE_RIGHT			65363
+#  define INITIAL_MOVE_SPEED	0.065
+#  define INITIAL_ROTATE_SPEED	0.035
 # endif
 
 # if __APPLE__
-#  define KEYCODE_W		13
-#  define KEYCODE_A		0
-#  define KEYCODE_S		1
-#  define KEYCODE_D		2
-#  define KEYCODE_ESC	53
-#  define KEYCODE_UP	126
-#  define KEYCODE_DOWN	125
-#  define KEYCODE_LEFT	123
-#  define KEYCODE_RIGHT	124
+#  define KEYCODE_W				13
+#  define KEYCODE_A				0
+#  define KEYCODE_S				1
+#  define KEYCODE_D				2
+#  define KEYCODE_ESC			53
+#  define KEYCODE_UP			126
+#  define KEYCODE_DOWN			125
+#  define KEYCODE_LEFT			123
+#  define KEYCODE_RIGHT			124
+#  define INITIAL_MOVE_SPEED	0.165
+#  define INITIAL_ROTATE_SPEED	0.075
 # endif
 
 /*--------------------------------- CONSTANTS --------------------------------*/
 # define HEX_SYSTEM		"0123456789ABCDEF"
-# define PI 			3.1415926535897932384626434
 # define WIN_WIDTH		1600
 # define WIN_HEIGHT		900
 
@@ -101,6 +104,7 @@ typedef struct s_player_info
 	double	pitch;
 	double	move_speed;
 	double	rotate_speed;
+	double	rotate_backup;
 }				t_player_info;
 
 typedef struct s_minimap
@@ -225,6 +229,7 @@ void	draw_line(t_image *img, int x, int start, int end, int color);
 void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width]);
 void	draw_map(t_program *prog);
 void	draw_player(t_program *prog);
+void	draw_player_perspective(t_program *prog);
 
 // Raycasting
 void	calculate_texture(t_program *prog, t_calculations *calc,

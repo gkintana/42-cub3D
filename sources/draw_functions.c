@@ -6,26 +6,14 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:56:22 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/31 22:58:01 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/01 18:28:17 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 
-/*
- * draws a vertical line to our image's address according to the specified
- * starting and ending points. Used for untextured raycasting
- */
-// void	draw_line(t_image *img, int x, int start, int end, int color)
-// {
-// 	int	i;
-
-// 	i = start;
-// 	while (++i < end)
-// 		put_pixel_at_addr(&img[0], x, i, color);
-// }
-
-// https://stackoverflow.com/questions/20297594/warning-expected-int-but-argument-is-of-type-int-sizetypen
+// https://stackoverflow.com/questions/20297594/warning-expected-int-but-argume
+// nt-is-of-type-int-sizetypen
 /*
 ** transfers each individual pixel from the pre-rendered texture buffer to the
 ** output image's address. Used for textured raycasting
@@ -43,73 +31,57 @@ void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width])
 		i[1] = -1;
 		while (++i[1] < prog->mlx.win_width)
 		{
-			if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.850)
+			
+			if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.850 + prog->info.pitch)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					prog->tex.ceiling_rgb);
-			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.875)
+			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.875 + prog->info.pitch)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					prog->tex.ceiling_rgb * 0.8);
-			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.900)
+			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.900 + prog->info.pitch)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					prog->tex.ceiling_rgb * 0.6);
-			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.925)
+			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.925 + prog->info.pitch)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					prog->tex.ceiling_rgb * 0.4);
-			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.950)
+			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.950 + prog->info.pitch)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					prog->tex.ceiling_rgb * 0.2);
-			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.975)
+			else if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 * 0.975 + prog->info.pitch)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					prog->tex.ceiling_rgb * 0.0);
 
-
-			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.150)
+			
+			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.150 + prog->info.pitch)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					prog->tex.floor_rgb);
-			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.125)
+			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.125 + prog->info.pitch)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					prog->tex.floor_rgb * 0.8);
-			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.100)
+			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.100 + prog->info.pitch)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					prog->tex.floor_rgb * 0.6);
-			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.075)
+			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.075 + prog->info.pitch)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					prog->tex.floor_rgb * 0.4);
-			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.050)
+			else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 * 1.050 + prog->info.pitch)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					prog->tex.floor_rgb * 0.2);
+
+
+
+			// if (!buffer[i[0]][i[1]] && i[0] < prog->mlx.win_height / 2 + prog->info.pitch)
+			// 	put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+			// 		prog->tex.ceiling_rgb);
+			// else if (!buffer[i[0]][i[1]] && i[0] > prog->mlx.win_height / 2 + prog->info.pitch)
+			// 	put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
+			// 		prog->tex.floor_rgb);
 			else
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
 					buffer[i[0]][i[1]]);
 		}
 	}
 }
-
-// void	draw_map(t_program *prog)
-// {
-// 	int x = 15;
-// 	int y = 15;
-
-// 	while (y < prog->mlx.win_height / 4)
-// 	{
-// 		x = 15;
-// 		while (x < prog->mlx.win_width / 4)
-// 		{
-// 			if (x < 20 || y < 20 || x >= prog->mlx.win_width / 4 - 5
-// 				|| y >= prog->mlx.win_height / 4 - 5)
-// 				put_pixel_at_addr(&prog->mlx.img[0], x, y, 0x000000);
-// 			else if (prog->mlx.map[(int)prog->info.pos_y][(int)prog->info.pos_x] != '1')
-// 			{
-// 				put_pixel_at_addr(&prog->mlx.img[0], x, y, 0xAA00AA);
-				
-// 			}
-// 			else
-// 				put_pixel_at_addr(&prog->mlx.img[0], x, y, 0xFFFFFF);
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// }
 
 /*
  * draws the minimap on our image pointer, specifically at the coordinates set
@@ -165,7 +137,7 @@ void	draw_map(t_program *prog)
 		// 	i[1] = -1;
 		while (prog->mlx.map[i[0]][++i[1]])
 		{
-			// if (prog->mlx.map[i[0]][i[1]] == '1' && i[1] < prog->info.pos_x + 6 && i[0] < prog->info.pos_y + 6)
+			// if (prog->mlx.map[i[0]][i[1]] == '1' && i[1] < prog->info.pos_x + 5 && i[0] < prog->info.pos_y + 5)
 			if (prog->mlx.map[i[0]][i[1]] == '1')
 			{
 				i[2] = -1;
@@ -186,7 +158,7 @@ void	draw_map(t_program *prog)
 				// mlx_put_image_to_window(data->mlx, data->mlx_window, data->img[2].ptr,
 				// i[1] * data->win_width / 100 + 25, i[0] * data->win_height / 100 + 25);
 			}
-			// else if (prog->mlx.map[i[0]][i[1]] != '1' && !ft_isspace(prog->mlx.map[i[0]][i[1]]) && i[1] < prog->info.pos_x + 6 && i[0] < prog->info.pos_y + 6)
+			// else if (prog->mlx.map[i[0]][i[1]] != '1' && !ft_isspace(prog->mlx.map[i[0]][i[1]]) && i[1] < prog->info.pos_x + 5 && i[0] < prog->info.pos_y + 5)
 			else if (prog->mlx.map[i[0]][i[1]] != '1' && !ft_isspace(prog->mlx.map[i[0]][i[1]]))
 			{
 				i[2] = -1;
@@ -234,5 +206,31 @@ void	draw_player(t_program *prog)
 				* prog->info.pos_y + prog->map.offset_y - (i[0] / 2);
 			put_pixel_at_addr(&prog->mlx.img[0], i[3], i[4], 0xFF0000);
 		}
+	}
+}
+
+/*
+** draws a simple line which assists the player in visualizing which direction
+** they're currently facing
+**
+** i[0] = offset from player cube's center
+** i[1] = calculations for the x-coordinate of a point representing the player's
+**        perspective at i[0]'s distance
+** i[2] = calculations for the y-coordinate of a point representing the player's
+**        perspective at i[0]'s distance
+*/
+void	draw_player_perspective(t_program *prog)
+{
+	int	i[3];
+
+	ft_bzero(&i, sizeof(int) * 3);
+	i[0] = 5;
+	while (++i[0] < 15)
+	{
+		i[1] = prog->info.vec_x * i[0] + prog->mlx.win_width / prog->map.scale
+			* prog->info.pos_x + prog->map.offset_x;
+		i[2] = prog->info.vec_y * i[0] + prog->mlx.win_height / prog->map.scale
+			* prog->info.pos_y + prog->map.offset_y;
+		put_pixel_at_addr(&prog->mlx.img[0], i[1], i[2], 0xFFFF00);
 	}
 }

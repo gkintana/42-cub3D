@@ -6,7 +6,7 @@
 #    By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/22 08:46:09 by gkintana          #+#    #+#              #
-#    Updated: 2022/07/30 15:39:07 by gkintana         ###   ########.fr        #
+#    Updated: 2022/08/01 16:27:38 by gkintana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ SRCS		=	main.c \
 OBJS		=	$(addprefix $(OBJ_DIR)/, $(SRCS:%c=%o))
 
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-g -Wall -Wextra -Werror
 LIB_AR		=	ar rcs
 RM			=	rm -rf
 

@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:55:41 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/31 22:58:40 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/01 18:19:41 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,36 +109,7 @@ int	raycast_loop(t_program *prog)
 	draw_walls(prog, ray.buffer);
 	draw_map(prog);
 	draw_player(prog);
-
-	int temp = 3;
-	while (temp++ < 10) {
-		put_pixel_at_addr(&prog->mlx.img[0],
-		prog->info.vec_x * temp + prog->mlx.win_width
-				/ prog->map.scale * prog->info.pos_x + prog->map.offset_x,
-		prog->info.vec_y * temp + prog->mlx.win_height
-				/ prog->map.scale * prog->info.pos_y + prog->map.offset_y, 0xFFFF00);
-	}
-
-	// temp = 3;
-	// while (temp++ < 25) {
-	// 	put_pixel_at_addr(&prog->mlx.img[0],
-	// 	(prog->info.vec_x + prog->info.plane_x) * temp + prog->mlx.win_width
-	// 			/ prog->map.scale * prog->info.pos_x + prog->map.offset_x,
-	// 	(prog->info.vec_y + prog->info.plane_y) * temp + prog->mlx.win_height
-	// 			/ prog->map.scale * prog->info.pos_y + prog->map.offset_y, 0xFFFF00);
-	// }
-
-	// temp = 3;
-	// while (temp++ < 25) {
-	// 	if (prog->mlx.map[(int)(prog->info.pos_y + prog->info.vec_y + prog->info.plane_y)][(int)prog->info.pos_x] != '1')
-
-	// 		put_pixel_at_addr(&prog->mlx.img[0],
-	// 		(prog->info.vec_x - prog->info.plane_x) * temp + prog->mlx.win_width
-	// 				/ prog->map.scale * prog->info.pos_x + prog->map.offset_x,
-	// 		(prog->info.vec_y - prog->info.plane_y) * temp + prog->mlx.win_height
-	// 				/ prog->map.scale * prog->info.pos_y + prog->map.offset_y, 0xFFFF00);
-	// }
-
+	draw_player_perspective(prog);
 	mlx_put_image_to_window(prog->mlx.ptr, prog->mlx.window,
 		prog->mlx.img[0].ptr, 0, 0);
 	return (0);

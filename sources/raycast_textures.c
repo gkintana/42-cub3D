@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 13:03:29 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/30 17:23:26 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/01 18:01:18 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	calculate_texture(t_program *prog, t_calculations *calc, t_raycast *ray)
 }
 
 // https://permadi.com/1996/05/ray-casting-tutorial-19/#SHADING
-// https://stackoverflow.com/questions/4801366/convert-rgb-values-to-integer#:~:text=To%20set%20the%20values%20from,(x%2C%20y%2C%20rgb)%3B
+// https://stackoverflow.com/questions/4801366/convert-rgb-values-to-integer#
+// :~:text=To%20set%20the%20values%20from,(x%2C%20y%2C%20rgb)%3B
 static void	apply_shade(t_calculations *calc, t_raycast *ray)
 {
 	double	color_intensity;
@@ -52,6 +53,19 @@ static void	apply_shade(t_calculations *calc, t_raycast *ray)
 	ray->color = pow(16, 4) * i[0] + pow(16, 2) * i[1] + i[2];
 }
 
+static void	determine_texture(t_program *prog, t_calculations *calc,
+		t_raycast *ray, int coordinate)
+{
+	if (calc->side && calc->offset_y < 0)
+		ray->color = prog->mlx.img[1].pixel[coordinate];
+	else if (calc->side && calc->ray_vec_y > 0)
+		ray->color = prog->mlx.img[2].pixel[coordinate];
+	else if (!calc->side && calc->ray_vec_x > 0)
+		ray->color = prog->mlx.img[3].pixel[coordinate];
+	else if (!calc->side && calc->ray_vec_x < 0)
+		ray->color = prog->mlx.img[4].pixel[coordinate];
+}
+
 void	save_texture(t_program *prog, t_calculations *calc,
 		t_raycast *ray, int i[])
 {
@@ -64,14 +78,7 @@ void	save_texture(t_program *prog, t_calculations *calc,
 		ray->texture_y = (int)ray->texture_pos & (prog->tex.height - 1);
 		ray->texture_pos += ray->step;
 		coordinate = prog->tex.height * ray->texture_y + ray->texture_x;
-		if (calc->side && calc->offset_y < 0)
-			ray->color = prog->mlx.img[1].pixel[coordinate];
-		else if (calc->side && calc->ray_vec_y > 0)
-			ray->color = prog->mlx.img[2].pixel[coordinate];
-		else if (!calc->side && calc->ray_vec_x > 0)
-			ray->color = prog->mlx.img[3].pixel[coordinate];
-		else if (!calc->side && calc->ray_vec_x < 0)
-			ray->color = prog->mlx.img[4].pixel[coordinate];
+		determine_texture(prog, calc, ray, coordinate);
 		apply_shade(calc, ray);
 		if (calc->side)
 			apply_shade(calc, ray);

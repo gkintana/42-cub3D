@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rrangwan <rrangwan@42abudhabi.ae>          +#+  +:+       +#+        */
+/*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 02:00:52 by rrangwan          #+#    #+#             */
-/*   Updated: 2022/07/29 19:01:41 by rrangwan         ###   ########.fr       */
+/*   Updated: 2022/08/01 19:24:04 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,28 @@ void	check_map_extension(char *file)
 	}
 }
 
+#if __APPLE__
+void	check_map_validity(char *file)
+{
+	int		fd;
+
+	fd = open(file, O_DIRECTORY);
+	if (fd != -1)
+	{
+		ft_putstr_fd("Error: Argument Not a file\n", 2);
+		exit (1);
+	}
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+	{
+		ft_putstr_fd("Error: Map file does not exist\n", 2);
+		exit (1);
+	}
+	close(fd);
+}
+#endif
+
+#if __linux__
 void	check_map_validity(char *file)
 {
 	int		fd;
@@ -53,6 +75,7 @@ void	check_map_validity(char *file)
 	}
 	close(fd);
 }
+#endif
 
 int	check_elements(char *file)
 {

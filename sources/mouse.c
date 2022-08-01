@@ -6,16 +6,44 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 12:04:39 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/29 13:53:30 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/01 17:53:39 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 
+#if __APPLE__
+/*
+** event handler for mouse inputs. Lowers the camera rotation speed before
+** calculating and updating the frame for a smoother experience, then sets it
+** back to its original value
+*/
+int	mouse_events(int x, int y, t_program *prog)
+{
+	int	rotate_speed;
+
+	rotate_speed = prog->info.rotate_speed;
+	if (y < prog->mlx.win_height / 2)
+		vertical_perspective(prog, true);
+	else
+		vertical_perspective(prog, false);
+	prog->info.rotate_speed = 0.01;
+	if (x < prog->mlx.win_width / 2)
+		horizontal_perspective(prog, true);
+	else
+		horizontal_perspective(prog, false);
+	update_frame(prog);
+	prog->info.rotate_speed = prog->info.rotate_backup;
+	mlx_mouse_move(prog->mlx.window, prog->mlx.win_width / 2,
+		prog->mlx.win_height / 2);
+	return (0);
+}
+#endif
+
+#if __linux__
 /*
 ** calls the mlx_mouse_get_pos function to update the t_mouse structure. Had
-** to separate it from mouse_events since it never stopped rotating on linux,
-** needs to be tested on mac
+** to separate it from mouse_events since it never stopped rotating on linux
 */
 static void	update_mouse_coordinates(t_program *prog)
 {
@@ -50,3 +78,4 @@ int	mouse_events(int x, int y, t_program *prog)
 	prog->info.rotate_speed = rotate_speed;
 	return (0);
 }
+#endif
