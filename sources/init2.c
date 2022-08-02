@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 02:00:52 by rrangwan          #+#    #+#             */
-/*   Updated: 2022/08/01 18:33:40 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/02 20:52:36 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	init_player(t_program *prog)
 	prog->info.move_speed = INITIAL_MOVE_SPEED;
 	prog->info.rotate_speed = INITIAL_ROTATE_SPEED;
 	prog->info.rotate_backup = prog->info.rotate_speed;
-	prog->map.scale = 75;
+	prog->map.scale = 80;
 	prog->map.offset_x = 15;
 	prog->map.offset_y = 15;
 }
