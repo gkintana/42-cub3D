@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:56:22 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/02 22:02:54 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/03 14:44:37 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,23 @@ void	draw_block(t_program *prog, int x, int y, int color)
 	}
 }
 
+void	draw_blank(t_program *prog, int x, int y)
+{
+	int	i[4];
+
+	i[0] = -2;
+	while (++i[0] < prog->mlx.win_height / prog->map.scale)
+	{
+		i[1] = -2;
+		while (++i[1] < prog->mlx.win_width / prog->map.scale)
+		{
+			i[2] = i[1] + prog->mlx.win_width / prog->map.scale;
+			i[3] = i[0] + prog->mlx.win_height / prog->map.scale;
+			put_pixel_at_addr(&prog->mlx.img[0], i[2] + x, i[3] + y, 0xAA333333);
+		}
+	}
+}
+
 /*
  * draws the minimap on our image pointer, specifically at the coordinates set
  * at prog.map.offset_x and prog.map.offset_y
@@ -121,30 +138,237 @@ void	draw_map(t_program *prog)
 {
 	int	i;
 	int	j;
-	int	k;
-	int l;
 
-	i = prog->map.offset_y;
-	k = 0;
-	while (i < prog->mlx.win_height / 5)
+	i = 0;
+	while (i < prog->mlx.win_height / prog->map.scale * 11)
 	{
-		j = prog->map.offset_x;
-		l = 0;
-		while (j < prog->mlx.win_width / 6)
+		j = 0;
+		while (j < prog->mlx.win_width / prog->map.scale * 11)
 		{
-			if (prog->mlx.map[(int)prog->info.pos_y][(int)prog->info.pos_x + l] 
-				&& prog->mlx.map[(int)prog->info.pos_y][(int)prog->info.pos_x + l] != '1')
-				draw_block(prog, j, i, 0x33777777);
-			else
-				draw_block(prog, j, i, 0x3313294B);
+			draw_blank(prog, j, i);
 			j += prog->mlx.win_width / prog->map.scale;
-			l++;
-			k++;
 		}
 		i += prog->mlx.win_height / prog->map.scale;
 	}
 
+	int	k;
+	int l;
+	k = -5; // position y diff
+	l = 0;
 
+	while (k < 6)
+	{
+		i = -5;
+		j = 0;
+		while (i < 6)
+		{
+			if (prog->info.pos_y + k >= 0 && prog->info.pos_x + i >= 0
+			&& prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == '1')
+				draw_block(prog, j * prog->mlx.win_width / prog->map.scale, l * prog->mlx.win_height / prog->map.scale, 0x3313294B);
+			else if (prog->info.pos_y + k >= 0 && prog->info.pos_x + i >= 0
+			&& prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] != '1')
+				draw_block(prog, j * prog->mlx.win_width / prog->map.scale, l * prog->mlx.win_height / prog->map.scale, 0x33777777);
+			else
+				;
+			i++;
+			j++;
+		}
+		k++;
+		l++;
+	}
+
+	draw_block(prog, 5 * prog->mlx.win_width / prog->map.scale, 5 * prog->mlx.win_height / prog->map.scale, 0xFF0000);
+
+	// i = -3;
+	// j = 0;
+	// while (i < 4)
+	// {
+	// 	if (prog->info.pos_y - 2 >= 0 && prog->info.pos_x - 2 >= 0
+	// 	&& prog->mlx.map[(int)prog->info.pos_y - 2][(int)prog->info.pos_x + i] == '1')
+	// 		draw_block(prog, j * prog->mlx.win_width / prog->map.scale, 1 * prog->mlx.win_height / prog->map.scale, 0x3313294B);
+	// 	else if (prog->info.pos_y - 2 >= 0 && prog->info.pos_x - 2 >= 0
+	// 	&& !prog->mlx.map[(int)prog->info.pos_y - 2][(int)prog->info.pos_x + i])
+	// 		;
+	// 	else if (prog->info.pos_y - 2 >= 0 && prog->info.pos_x - 2 >= 0
+	// 	&& prog->mlx.map[(int)prog->info.pos_y - 2][(int)prog->info.pos_x + i] != '1')
+	// 		draw_block(prog, j * prog->mlx.win_width / prog->map.scale, 1 * prog->mlx.win_height / prog->map.scale, 0x33777777);
+	// 	i++;
+	// 	j++;
+	// }
+
+	// i = -3;
+	// j = 0;
+	// while (i < 4)
+	// {
+	// 	if (prog->info.pos_y - 1 >= 0 && prog->info.pos_x - 1 >= 0
+	// 	&& prog->mlx.map[(int)prog->info.pos_y - 1][(int)prog->info.pos_x + i] == '1')
+	// 		draw_block(prog, j * prog->mlx.win_width / prog->map.scale, 2 * prog->mlx.win_height / prog->map.scale, 0x3313294B);
+	// 	else if (prog->info.pos_y - 1 >= 0 && prog->info.pos_x - 1 >= 0
+	// 	&& prog->mlx.map[(int)prog->info.pos_y - 1][(int)prog->info.pos_x + i] != '1')
+	// 		draw_block(prog, j * prog->mlx.win_width / prog->map.scale, 2 * prog->mlx.win_height / prog->map.scale, 0x33777777);
+	// 	else
+	// 		;
+	// 	i++;
+	// 	j++;
+	// }
+
+
+	// i = -3;
+	// j = 0;
+	// while (i < 4)
+	// {
+	// 	if (prog->info.pos_y >= 0 && prog->info.pos_x >= 0
+	// 	&& prog->mlx.map[(int)prog->info.pos_y][(int)prog->info.pos_x + i] == '1')
+	// 		draw_block(prog, j * prog->mlx.win_width / prog->map.scale, 3 * prog->mlx.win_height / prog->map.scale, 0x3313294B);
+	// 	else if (prog->info.pos_y >= 0 && prog->info.pos_x >= 0
+	// 	&& prog->mlx.map[(int)prog->info.pos_y][(int)prog->info.pos_x + i] != '1')
+	// 		draw_block(prog, j * prog->mlx.win_width / prog->map.scale, 3 * prog->mlx.win_height / prog->map.scale, 0x33777777);
+	// 	else
+	// 		;
+	// 	i++;
+	// 	j++;
+	// }
+
+
+	// i = -3;
+	// j = 0;
+	// while (i < 4)
+	// {
+	// 	if (prog->info.pos_y - 3 >= 0 && prog->info.pos_x - 3 >= 0
+	// 	&& prog->mlx.map[(int)prog->info.pos_y + 1][(int)prog->info.pos_x + i] == '1')
+	// 		draw_block(prog, j * prog->mlx.win_width / prog->map.scale, 4 * prog->mlx.win_height / prog->map.scale, 0x3313294B);
+	// 	else if (prog->info.pos_y - 3 >= 0 && prog->info.pos_x - 3 >= 0
+	// 	&& prog->mlx.map[(int)prog->info.pos_y + 1][(int)prog->info.pos_x + i] != '1')
+	// 		draw_block(prog, j * prog->mlx.win_width / prog->map.scale, 4 * prog->mlx.win_height / prog->map.scale, 0x33777777);
+	// 	else
+	// 		;
+	// 	i++;
+	// 	j++;
+	// }
+
+	// i = -3;
+	// j = 0;
+	// while (i < 4)
+	// {
+	// 	if (prog->info.pos_y - 3 >= 0 && prog->info.pos_x - 3 >= 0
+	// 	&& prog->mlx.map[(int)prog->info.pos_y + 2][(int)prog->info.pos_x + i] == '1')
+	// 		draw_block(prog, j * prog->mlx.win_width / prog->map.scale, 5 * prog->mlx.win_height / prog->map.scale, 0x3313294B);
+	// 	else if (prog->info.pos_y - 3 >= 0 && prog->info.pos_x - 3 >= 0
+	// 	&& prog->mlx.map[(int)prog->info.pos_y + 2][(int)prog->info.pos_x + i] != '1')
+	// 		draw_block(prog, j * prog->mlx.win_width / prog->map.scale, 5 * prog->mlx.win_height / prog->map.scale, 0x33777777);
+	// 	else
+	// 		;
+	// 	i++;
+	// 	j++;
+	// }
+
+	// i = -3;
+	// j = 0;
+	// while (i < 4)
+	// {
+	// 	if (prog->info.pos_y - 3 >= 0 && prog->info.pos_x - 3 >= 0
+	// 	&& prog->mlx.map[(int)prog->info.pos_y + 3][(int)prog->info.pos_x + i] == '1')
+	// 		draw_block(prog, j * prog->mlx.win_width / prog->map.scale, 6 * prog->mlx.win_height / prog->map.scale, 0x3313294B);
+	// 	else if (prog->info.pos_y - 3 >= 0 && prog->info.pos_x - 3 >= 0
+	// 	&& prog->mlx.map[(int)prog->info.pos_y + 3][(int)prog->info.pos_x + i] != '1')
+	// 		draw_block(prog, j * prog->mlx.win_width / prog->map.scale, 6 * prog->mlx.win_height / prog->map.scale, 0x33777777);
+	// 	else
+	// 		;
+	// 	i++;
+	// 	j++;
+	// }
+
+
+
+
+
+
+
+	
+	// if (prog->mlx.map[(int)prog->info.pos_y - 3][(int)prog->info.pos_x - 2] == '1')
+	// 	draw_block(prog, 1 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 1 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+	// if (prog->mlx.map[(int)prog->info.pos_y - 3][(int)prog->info.pos_x - 1] == '1')
+	// 	draw_block(prog, 2 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 2 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+	// if (prog->mlx.map[(int)prog->info.pos_y - 3][(int)prog->info.pos_x] == '1')
+	// 	draw_block(prog, 3 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 3 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+	// if (prog->mlx.map[(int)prog->info.pos_y - 3][(int)prog->info.pos_x + 1] == '1')
+	// 	draw_block(prog, 4 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 4 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+	// if (prog->mlx.map[(int)prog->info.pos_y - 3][(int)prog->info.pos_x + 2] == '1')
+	// 	draw_block(prog, 5 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 5 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+	// if (prog->mlx.map[(int)prog->info.pos_y - 3][(int)prog->info.pos_x + 3] == '1')
+	// 	draw_block(prog, 6 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 6 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+
+
+
+
+	// if (prog->mlx.map[(int)prog->info.pos_y - 2][(int)prog->info.pos_x - 3] == '1')
+	// 	draw_block(prog, 0, 1 * prog->mlx.win_height / prog->map.scale, 0x3313294B);
+	// else
+	// 	draw_block(prog, 0, 1 * prog->mlx.win_height / prog->map.scale, 0x33777777);
+	// if (prog->mlx.map[(int)prog->info.pos_y - 2][(int)prog->info.pos_x - 2] == '1')
+	// 	draw_block(prog, 1 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 1 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+	// if (prog->mlx.map[(int)prog->info.pos_y - 2][(int)prog->info.pos_x - 1] == '1')
+	// 	draw_block(prog, 2 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 2 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+	// if (prog->mlx.map[(int)prog->info.pos_y - 2][(int)prog->info.pos_x] == '1')
+	// 	draw_block(prog, 3 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 3 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+	// if (prog->mlx.map[(int)prog->info.pos_y - 2][(int)prog->info.pos_x + 1] == '1')
+	// 	draw_block(prog, 4 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 4 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+	// if (prog->mlx.map[(int)prog->info.pos_y - 2][(int)prog->info.pos_x + 2] == '1')
+	// 	draw_block(prog, 5 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 5 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+	// if (prog->mlx.map[(int)prog->info.pos_y - 2][(int)prog->info.pos_x + 3] == '1')
+	// 	draw_block(prog, 6 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 6 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+
+
+
+	// if (prog->mlx.map[(int)prog->info.pos_y - 1][(int)prog->info.pos_x - 1] == '1')
+	// 	draw_block(prog, 0, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 0, 0, 0x33777777);
+		
+	// if (prog->mlx.map[(int)prog->info.pos_y - 1][(int)prog->info.pos_x] == '1')
+	// 	draw_block(prog, 1 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 1 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+
+	// if (prog->mlx.map[(int)prog->info.pos_y - 1][(int)prog->info.pos_x + 1] == '1')
+	// 	draw_block(prog, 2 * prog->mlx.win_width / prog->map.scale, 0, 0x3313294B);
+	// else
+	// 	draw_block(prog, 2 * prog->mlx.win_width / prog->map.scale, 0, 0x33777777);
+
+
+
+
+
+
+	// if (prog->mlx.map[(int)prog->info.pos_y][(int)prog->info.pos_x - 1] == '1')
+	// 	draw_block(prog, 0, 1 * prog->mlx.win_height / prog->map.scale, 0x3313294B);
+	// else
+	// 	draw_block(prog, 0, 1 * prog->mlx.win_height / prog->map.scale, 0x33777777);
+	
 
 
 	

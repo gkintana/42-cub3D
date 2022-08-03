@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 12:04:39 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/01 17:53:39 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/03 13:09:56 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ int	mouse_events(int x, int y, t_program *prog)
 {
 	int	rotate_speed;
 
+	(void)y;
 	rotate_speed = prog->info.rotate_speed;
-	if (y < prog->mlx.win_height / 2)
-		vertical_perspective(prog, true);
-	else
-		vertical_perspective(prog, false);
-	prog->info.rotate_speed = 0.01;
+	// if (y < prog->mlx.win_height / 2)
+	// 	vertical_perspective(prog, true);
+	// else
+	// 	vertical_perspective(prog, false);
+	prog->info.rotate_speed = 0.0175;
 	if (x < prog->mlx.win_width / 2)
 		horizontal_perspective(prog, true);
 	else

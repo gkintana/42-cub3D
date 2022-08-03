@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/01 19:17:35 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/03 13:09:01 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 #  define KEYCODE_LEFT			123
 #  define KEYCODE_RIGHT			124
 #  define INITIAL_MOVE_SPEED	0.165
-#  define INITIAL_ROTATE_SPEED	0.075
+#  define INITIAL_ROTATE_SPEED	0.095
 # endif
 
 /*--------------------------------- CONSTANTS --------------------------------*/
