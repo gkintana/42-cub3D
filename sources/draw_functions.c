@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:56:22 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/03 14:44:37 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/03 17:58:09 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,11 +162,17 @@ void	draw_map(t_program *prog)
 		j = 0;
 		while (i < 6)
 		{
-			if (prog->info.pos_y + k >= 0 && prog->info.pos_x + i >= 0
+			if (prog->info.pos_y + k >= 0 && prog->info.pos_y + k < 15
+			&& prog->info.pos_x + i >= 0 && prog->info.pos_x + i < 34
 			&& prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == '1')
 				draw_block(prog, j * prog->mlx.win_width / prog->map.scale, l * prog->mlx.win_height / prog->map.scale, 0x3313294B);
-			else if (prog->info.pos_y + k >= 0 && prog->info.pos_x + i >= 0
-			&& prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] != '1')
+			else if (prog->info.pos_y + k >= 0 && prog->info.pos_y + k < 15
+			&& prog->info.pos_x + i >= 0 && prog->info.pos_x + i < 34
+			&& (prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == '0'
+			|| prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == 'N'
+			|| prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == 'S'
+			|| prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == 'E'
+			|| prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == 'W'))
 				draw_block(prog, j * prog->mlx.win_width / prog->map.scale, l * prog->mlx.win_height / prog->map.scale, 0x33777777);
 			else
 				;
@@ -177,7 +183,7 @@ void	draw_map(t_program *prog)
 		l++;
 	}
 
-	draw_block(prog, 5 * prog->mlx.win_width / prog->map.scale, 5 * prog->mlx.win_height / prog->map.scale, 0xFF0000);
+	// draw_block(prog, 5 * prog->mlx.win_width / prog->map.scale, 5 * prog->mlx.win_height / prog->map.scale, 0xFF0000);
 
 	// i = -3;
 	// j = 0;
