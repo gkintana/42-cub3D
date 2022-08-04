@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:56:22 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/03 22:04:02 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/04 13:29:36 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,23 +133,23 @@ void	draw_map(t_program *prog)
 	int	j;
 
 	i = prog->mlx.win_height / prog->map.scale - 2;
-	while (++i < prog->mlx.win_height / prog->map.scale * 12)
+	while (++i < prog->mlx.win_height / prog->map.scale * 14)
 	{
 		j = prog->mlx.win_width / prog->map.scale - 2;
-		while (++j < prog->mlx.win_width / prog->map.scale * 12)
+		while (++j < prog->mlx.win_width / prog->map.scale * 14)
 			put_pixel_at_addr(&prog->mlx.img[0], j, i, 0x000000);
 	}
 
 	int	k;
 	int l;
-	k = -5; // position y diff
+	k = -6; // position y diff
 	l = 0;
 
-	while (k < 6)
+	while (k < 7)
 	{
-		i = -5;
+		i = -6;
 		j = 0;
-		while (i < 6)
+		while (i < 7)
 		{
 			if (prog->info.pos_y + k >= 0 && prog->info.pos_y + k < get_map_height(prog)
 			&& prog->info.pos_x + i >= 0 && prog->info.pos_x + i < ft_strlen(prog->mlx.map[(int)prog->info.pos_y + k])
@@ -190,7 +190,7 @@ void	draw_player(t_program *prog)
 {
 	int	i[5];
 
-	i[0] = 4;
+	i[0] = 6;
 	i[1] = -1;
 	while (++i[1] < i[0])
 	{
@@ -200,9 +200,9 @@ void	draw_player(t_program *prog)
 		while (++i[2] < i[0])
 		{
 			i[3] = i[2] + prog->mlx.win_width / prog->map.scale
-				* prog->info.pos_x + prog->map.offset_x - (i[0] / 2);
+				* 7 + prog->mlx.win_width / prog->map.scale / 2 - (i[0] / 2);
 			i[4] = i[1] + prog->mlx.win_height / prog->map.scale
-				* prog->info.pos_y + prog->map.offset_y - (i[0] / 2);
+				* 7 + prog->mlx.win_height / prog->map.scale / 2 - (i[0] / 2);
 			put_pixel_at_addr(&prog->mlx.img[0], i[3], i[4], 0xFF0000);
 		}
 	}
@@ -227,9 +227,9 @@ void	draw_player_perspective(t_program *prog)
 	while (++i[0] < 15)
 	{
 		i[1] = prog->info.vec_x * i[0] + prog->mlx.win_width / prog->map.scale
-			* prog->info.pos_x + prog->map.offset_x;
+			* 7 + prog->map.offset_x + 0.5;
 		i[2] = prog->info.vec_y * i[0] + prog->mlx.win_height / prog->map.scale
-			* prog->info.pos_y + prog->map.offset_y;
+			* 7 + prog->map.offset_y / 2 + 1;
 		put_pixel_at_addr(&prog->mlx.img[0], i[1], i[2], 0xFFFF00);
 	}
 }
