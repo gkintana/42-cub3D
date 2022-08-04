@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 12:04:39 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/03 13:09:56 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/04 21:38:53 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,7 @@
 */
 int	mouse_events(int x, int y, t_program *prog)
 {
-	int	rotate_speed;
-
 	(void)y;
-	rotate_speed = prog->info.rotate_speed;
-	// if (y < prog->mlx.win_height / 2)
-	// 	vertical_perspective(prog, true);
-	// else
-	// 	vertical_perspective(prog, false);
 	prog->info.rotate_speed = 0.0175;
 	if (x < prog->mlx.win_width / 2)
 		horizontal_perspective(prog, true);
@@ -59,24 +52,15 @@ static void	update_mouse_coordinates(t_program *prog)
 */
 int	mouse_events(int x, int y, t_program *prog)
 {
-	int	rotate_speed;
-
-	rotate_speed = prog->info.rotate_speed;
+	(void)y;
 	update_mouse_coordinates(prog);
-	if (abs(prog->mouse.new_x - x) / 3 < abs(prog->mouse.new_y - y))
-	{
-		if (prog->mouse.new_y < y)
-			vertical_perspective(prog, true);
-		else
-			vertical_perspective(prog, false);
-	}
-	prog->info.rotate_speed = 0.01;
+	prog->info.rotate_speed = 0.0175;
 	if (prog->mouse.new_x < x)
 		horizontal_perspective(prog, true);
 	else
 		horizontal_perspective(prog, false);
 	update_frame(prog);
-	prog->info.rotate_speed = rotate_speed;
+	prog->info.rotate_speed = prog->info.rotate_backup;
 	return (0);
 }
 #endif

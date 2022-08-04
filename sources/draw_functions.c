@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:56:22 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/04 13:29:36 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/04 22:26:40 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,20 @@ void	draw_block(t_program *prog, int x, int y, int color)
 	}
 }
 
+void	draw_map_box(t_program *prog)
+{
+	int	i[2];
+
+	ft_bzero(&i, sizeof(int) * 2);
+	i[0] = prog->mlx.win_height / prog->map.scale - 2;
+	while (++i[0] < prog->mlx.win_height / prog->map.scale * 14)
+	{
+		i[1] = prog->mlx.win_width / prog->map.scale - 2;
+		while (++i[1] < prog->mlx.win_width / prog->map.scale * 14)
+			put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0], 0x000000);
+	}
+}
+
 int	get_map_height(t_program *prog)
 {
 	int	height;
@@ -108,6 +122,29 @@ int	get_map_height(t_program *prog)
 	while (prog->mlx.map[height])
 		height++;
 	return (height);
+}
+
+int	check_map_coordinates(t_program *prog, int i[], bool is_wall)
+{
+	int	j[2];
+
+	j[0] = (int)prog->info.pos_y + i[0];
+	j[1] = (int)prog->info.pos_x + i[2];
+	if (is_wall)
+	{
+		if (j[0] >= 0 && j[0] < get_map_height(prog) 
+		&& j[1] >= 0 && j[1] < (int)ft_strlen(prog->mlx.map[j[0]])
+		&& prog->mlx.map[j[0]][j[1]] == '1')
+			return (1);
+	}
+	else
+	{
+		if (j[0] >= 0 && j[0] < get_map_height(prog) 
+		&& j[1] >= 0 && j[1] < (int)ft_strlen(prog->mlx.map[j[0]])
+		&& ft_strchr("0NSEW", prog->mlx.map[j[0]][j[1]]))
+			return (1);
+	}
+	return (0);
 }
 
 /*
@@ -129,49 +166,65 @@ int	get_map_height(t_program *prog)
  */
 void	draw_map(t_program *prog)
 {
-	int	i;
-	int	j;
+	int	i[4];
 
-	i = prog->mlx.win_height / prog->map.scale - 2;
-	while (++i < prog->mlx.win_height / prog->map.scale * 14)
+	draw_map_box(prog);
+	ft_bzero(&i, sizeof(int) * 4);
+	i[0] = -7;
+	i[1] = 0;
+	while (++i[0] < 7)
 	{
-		j = prog->mlx.win_width / prog->map.scale - 2;
-		while (++j < prog->mlx.win_width / prog->map.scale * 14)
-			put_pixel_at_addr(&prog->mlx.img[0], j, i, 0x000000);
-	}
-
-	int	k;
-	int l;
-	k = -6; // position y diff
-	l = 0;
-
-	while (k < 7)
-	{
-		i = -6;
-		j = 0;
-		while (i < 7)
+		i[2] = -7;
+		i[3] = 0;
+		while (++i[2] < 7)
 		{
-			if (prog->info.pos_y + k >= 0 && prog->info.pos_y + k < get_map_height(prog)
-			&& prog->info.pos_x + i >= 0 && prog->info.pos_x + i < ft_strlen(prog->mlx.map[(int)prog->info.pos_y + k])
-			&& prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == '1')
-				draw_block(prog, j * prog->mlx.win_width / prog->map.scale, l * prog->mlx.win_height / prog->map.scale, 0x3313294B);
-			else if (prog->info.pos_y + k >= 0 && prog->info.pos_y + k < get_map_height(prog)
-			&& prog->info.pos_x + i >= 0 && prog->info.pos_x + i < ft_strlen(prog->mlx.map[(int)prog->info.pos_y + k])
-			&& ft_strchr("0NSEW", prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i]))
-			// (prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == '0'
-			// || prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == 'N'
-			// || prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == 'S'
-			// || prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == 'E'
-			// || prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == 'W'))
-				draw_block(prog, j * prog->mlx.win_width / prog->map.scale, l * prog->mlx.win_height / prog->map.scale, 0x33777777);
-			// else
-			// 	;
-			i++;
-			j++;
+			if (check_map_coordinates(prog, i, true))
+				draw_block(prog, i[3] * prog->mlx.win_width / prog->map.scale,
+				i[1] * prog->mlx.win_height / prog->map.scale, 0x3313294B);
+			else if (check_map_coordinates(prog, i, false))
+				draw_block(prog, i[3] * prog->mlx.win_width / prog->map.scale,
+				i[1] * prog->mlx.win_height / prog->map.scale, 0x33777777);
+			i[3]++;
 		}
-		k++;
-		l++;
+		i[1]++;
 	}
+	
+	// int	i;
+	// int	j;
+
+	// i = prog->mlx.win_height / prog->map.scale - 2;
+	// while (++i < prog->mlx.win_height / prog->map.scale * 14)
+	// {
+	// 	j = prog->mlx.win_width / prog->map.scale - 2;
+	// 	while (++j < prog->mlx.win_width / prog->map.scale * 14)
+	// 		put_pixel_at_addr(&prog->mlx.img[0], j, i, 0x000000);
+	// }
+
+	// int	k;
+	// int l;
+	// k = -6; // position y diff
+	// l = 0;
+
+	// while (k < 7)
+	// {
+	// 	i = -6;
+	// 	j = 0;
+	// 	while (i < 7)
+	// 	{
+	// 		if (prog->info.pos_y + k >= 0 && prog->info.pos_y + k < get_map_height(prog)
+	// 		&& prog->info.pos_x + i >= 0 && prog->info.pos_x + i < ft_strlen(prog->mlx.map[(int)prog->info.pos_y + k])
+	// 		&& prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i] == '1')
+	// 			draw_block(prog, j * prog->mlx.win_width / prog->map.scale, l * prog->mlx.win_height / prog->map.scale, 0x3313294B);
+	// 		else if (prog->info.pos_y + k >= 0 && prog->info.pos_y + k < get_map_height(prog)
+	// 		&& prog->info.pos_x + i >= 0 && prog->info.pos_x + i < ft_strlen(prog->mlx.map[(int)prog->info.pos_y + k])
+	// 		&& ft_strchr("0NSEW", prog->mlx.map[(int)prog->info.pos_y + k][(int)prog->info.pos_x + i]))
+	// 			draw_block(prog, j * prog->mlx.win_width / prog->map.scale, l * prog->mlx.win_height / prog->map.scale, 0x33777777);
+	// 		i++;
+	// 		j++;
+	// 	}
+	// 	k++;
+	// 	l++;
+	// }
 }
 
 /*
