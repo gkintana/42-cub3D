@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:55:41 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/01 18:19:41 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/05 15:02:56 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ int	raycast_loop(t_program *prog)
 	draw_walls(prog, ray.buffer);
 	draw_map(prog);
 	draw_player(prog);
-	draw_player_perspective(prog);
 	mlx_put_image_to_window(prog->mlx.ptr, prog->mlx.window,
 		prog->mlx.img[0].ptr, 0, 0);
 	return (0);

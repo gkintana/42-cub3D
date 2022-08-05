@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/03 13:09:01 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/05 15:02:32 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ void	draw_line(t_image *img, int x, int start, int end, int color);
 void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width]);
 void	draw_map(t_program *prog);
 void	draw_player(t_program *prog);
-void	draw_player_perspective(t_program *prog);
+// void	draw_player_perspective(t_program *prog);
 
 // Raycasting
 void	calculate_texture(t_program *prog, t_calculations *calc,

@@ -6,7 +6,7 @@
 #    By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/22 08:46:09 by gkintana          #+#    #+#              #
-#    Updated: 2022/08/01 16:27:38 by gkintana         ###   ########.fr        #
+#    Updated: 2022/08/05 15:01:29 by gkintana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRCS		=	main.c \
 				init1.c \
 				init2.c \
 				keyboard.c \
+				minimap.c \
 				mouse.c \
 				parse_utils.c \
 				parse.c \
