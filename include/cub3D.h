@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/05 15:02:32 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/05 20:21:48 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,19 @@ typedef struct s_image
 	int		endian;
 }				t_image;
 
+typedef struct s_rgb
+{
+	int	floor_r;
+	int	floor_g;
+	int	floor_b;
+	int	floor;
+
+	int	ceiling_r;
+	int	ceiling_g;
+	int	ceiling_b;
+	int	ceiling;
+}				t_rgb;
+
 typedef struct s_texture
 {
 	char	*north;
@@ -77,8 +90,9 @@ typedef struct s_texture
 
 	int		width;
 	int		height;
-	int		floor_rgb;
-	int		ceiling_rgb;
+	t_rgb	rgb;
+	// int		floor_rgb;
+	// int		ceiling_rgb;
 }				t_texture;
 
 typedef struct s_minilibx
