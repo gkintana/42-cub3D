@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 14:58:32 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/05 15:47:50 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/06 23:59:28 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,66 @@ static int	get_map_height(t_program *prog)
 	return (height);
 }
 
+int	find_wall_start(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '1')
+			return (i);
+	}
+	return (0);
+}
+
+int	is_valid_coordinate(t_program *prog, int j[])
+{
+	if (j[0] >= 0 && j[0] < get_map_height(prog)
+	&& j[1] >= 0 && j[1] < (int)ft_strlen(prog->mlx.map[j[0]]))
+		return (1);
+	return (0);
+}
+
+int	prev_is_one(char *str, int j)
+{
+	j--;
+	while (j > 0 && str[j])
+	{
+		if (str[j] == '1')
+			return (1);
+		else if (str[j] == ' ')
+			j--;
+		else
+			break;
+	}
+	return (0);
+}
+
+int after_is_one(char *str, int j)
+{
+	j++;
+	while (str[j])
+	{
+		if (str[j] == '1')
+			return (1);
+		else if (str[j] == ' ')
+			j++;
+		else
+			break;
+	}
+	return (0);
+}
+
+int check_above(t_program *prog, int y, int x)
+{
+	if (y >= 0 && y < get_map_height(prog)
+	&& x >= 0 && x < (int)ft_strlen(prog->mlx.map[y])
+	&& (prog->mlx.map[y][x] == '1' || prog->mlx.map[y][x] == ' '))
+		return (1);
+	return (0);
+}
+
 /*
 ** checks if the values being used when accessing prog->mlx.map are within the
 ** limits of the allocation
@@ -85,7 +145,8 @@ static int	get_map_height(t_program *prog)
 ** j[0] = stores the result of player's y-position + current y-block
 ** j[1] = stores the result of player's x-position + current x-block
 */
-static int	check_map_coordinates(t_program *prog, int i[], bool is_wall)
+static int	check_map_coordinates(t_program *prog, int i[], bool is_wall,
+			bool is_space)
 {
 	int	j[2];
 
@@ -93,16 +154,26 @@ static int	check_map_coordinates(t_program *prog, int i[], bool is_wall)
 	j[1] = (int)prog->info.pos_x + i[2];
 	if (is_wall)
 	{
-		if (j[0] >= 0 && j[0] < get_map_height(prog) 
-		&& j[1] >= 0 && j[1] < (int)ft_strlen(prog->mlx.map[j[0]])
-		&& prog->mlx.map[j[0]][j[1]] == '1')
+		if (is_valid_coordinate(prog, j) && prog->mlx.map[j[0]][j[1]] == '1')
+			return (1);
+	}
+	else if (is_space)
+	{
+		if (is_valid_coordinate(prog, j) && prog->mlx.map[j[0]][j[1]] == ' '
+		&& j[1] < find_wall_start(prog->mlx.map[j[0]]))
+			return (1);
+		else if (is_valid_coordinate(prog, j) && prog->mlx.map[j[0]][j[1]] == ' '
+		&& j[1] > find_wall_start(prog->mlx.map[j[0]])
+		&& prev_is_one(prog->mlx.map[j[0]], j[1])
+		&& after_is_one(prog->mlx.map[j[0]], j[1])
+		&& check_above(prog, j[0] - 1, j[1]))
+		// || check_below(prog->mlx.map[j[0]], j[1])))
 			return (1);
 	}
 	else
 	{
-		if (j[0] >= 0 && j[0] < get_map_height(prog) 
-		&& j[1] >= 0 && j[1] < (int)ft_strlen(prog->mlx.map[j[0]])
-		&& ft_strchr("0NSEW", prog->mlx.map[j[0]][j[1]]))
+		if (is_valid_coordinate(prog, j)
+		&& ft_strchr(" 0NSEW", prog->mlx.map[j[0]][j[1]]))
 			return (1);
 	}
 	return (0);
@@ -134,9 +205,11 @@ void	draw_map(t_program *prog)
 		{
 			i[4] = i[3] * prog->mlx.win_width / prog->map.scale;
 			i[5] = i[1] * prog->mlx.win_height / prog->map.scale;
-			if (check_map_coordinates(prog, i, true))
+			if (check_map_coordinates(prog, i, true, false))
 				draw_block(prog, i[4], i[5], 0x3313294B);
-			else if (check_map_coordinates(prog, i, false))
+			else if (check_map_coordinates(prog, i, false, true))
+				draw_block(prog, i[4], i[5], 0x000000);
+			else if (check_map_coordinates(prog, i, false, false))
 				draw_block(prog, i[4], i[5], 0x33777777);
 			i[3]++;
 		}
