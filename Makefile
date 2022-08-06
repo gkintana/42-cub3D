@@ -6,7 +6,7 @@
 #    By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/22 08:46:09 by gkintana          #+#    #+#              #
-#    Updated: 2022/08/05 15:01:29 by gkintana         ###   ########.fr        #
+#    Updated: 2022/08/06 13:40:35 by gkintana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ SRCS		=	main.c \
 				parse7.c \
 				player_calculations.c \
 				player_initialization.c \
+				player_representation.c \
 				raycast_textures.c \
 				raycast.c \
 				utils.c

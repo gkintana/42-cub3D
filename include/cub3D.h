@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/05 20:21:48 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/06 11:13:20 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,10 @@ typedef struct s_texture
 	char	*west;
 	char	*floor;
 	char	*ceiling;
+	t_rgb	rgb;
 
 	int		width;
 	int		height;
-	t_rgb	rgb;
-	// int		floor_rgb;
-	// int		ceiling_rgb;
 }				t_texture;
 
 typedef struct s_minilibx
@@ -239,11 +237,9 @@ void	set_player_position(t_program *prog);
 void	set_player_orientation(t_program *prog);
 
 // Drawing Functions
-void	draw_line(t_image *img, int x, int start, int end, int color);
 void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width]);
 void	draw_map(t_program *prog);
 void	draw_player(t_program *prog);
-// void	draw_player_perspective(t_program *prog);
 
 // Raycasting
 void	calculate_texture(t_program *prog, t_calculations *calc,
