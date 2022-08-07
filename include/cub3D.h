@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/06 11:13:20 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/07 14:08:51 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,11 @@ void	get_floor_and_ceiling_rgb(t_program *prog);
 void	set_player_position(t_program *prog);
 void	set_player_orientation(t_program *prog);
 
-// Drawing Functions
+// Drawing Functions & Utilities
+int		get_map_height(t_program *prog);
+int		find_wall_start(char *str);
+int		is_valid_coordinate(t_program *prog, int j[]);
+int		space_is_inside(t_program *prog, int j[]);
 void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width]);
 void	draw_map(t_program *prog);
 void	draw_player(t_program *prog);
