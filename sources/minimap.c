@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 14:58:32 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/07 16:42:07 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/07 19:31:31 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,8 @@ static void	draw_block(t_program *prog, int x, int y, int color)
 }
 
 /*
-** checks if the values being used when accessing prog->mlx.map are within the
-** limits of the allocation
-**
-** When checking prog->mlx.map[] we have to ensure that the value of the 
-** variable is less than or equal to zero, and less than the map's total height.
-** When checking prog->mlx.map[][] we test if the value of the variable is less
-** than or equal to zero, and less than the current map line's length
+** checks if the block at a certain distance from the player's x and y position
+** should be rendered to the minimap
 **
 ** j[0] = stores the result of player's y-position + current y-block
 ** j[1] = stores the result of player's x-position + current x-block
@@ -86,18 +81,15 @@ static int	check_map_coordinates(t_program *prog, int i[], bool is_wall,
 	else if (is_space)
 	{
 		if (is_valid_coordinate(prog, j) && prog->mlx.map[j[0]][j[1]] == ' '
-		&& j[1] < find_wall_start(prog->mlx.map[j[0]]))
+			&& j[1] < find_wall_start(prog->mlx.map[j[0]]))
 			return (1);
-		else if (is_valid_coordinate(prog, j) && prog->mlx.map[j[0]][j[1]] == ' '
-		&& !space_is_inside(prog, j))
+		else if (is_valid_coordinate(prog, j)
+			&& prog->mlx.map[j[0]][j[1]] == ' ' && !space_is_inside(prog, j))
 			return (1);
 	}
-	else
-	{
-		if (is_valid_coordinate(prog, j)
+	else if (is_valid_coordinate(prog, j)
 		&& ft_strchr(" 0NSEW", prog->mlx.map[j[0]][j[1]]))
-			return (1);
-	}
+		return (1);
 	return (0);
 }
 
