@@ -32,8 +32,8 @@ static int	find_south_wall(t_program *prog, int j[])
 
 	x = j[1];
 	y = j[0];
-	while (prog->mlx.map[++y])
-		if (prog->mlx.map[y][x] == '1')
+	while (prog->mlx.map[++y] && y < get_map_height(prog) - 1)
+		if (prog->mlx.map[y][x] && prog->mlx.map[y][x] == '1')
 			return (1);
 	return (0);
 }

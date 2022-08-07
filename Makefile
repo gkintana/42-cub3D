@@ -44,13 +44,12 @@ SRCS		=	main.c \
 				mouse.c \
 				parse_utils.c \
 				parse.c \
+				parse0.c \
 				parse1.c \
 				parse2.c \
 				parse3.c \
 				parse4.c \
 				parse5.c \
-				parse6.c \
-				parse7.c \
 				player_calculations.c \
 				player_initialization.c \
 				player_representation.c \

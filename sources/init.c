@@ -12,36 +12,26 @@
 
 #include <cub3D.h>
 
-//added F and C color
-void	init(t_program *prog, char *file)
+void	init(char **data, char **map, t_program *prog)
 {
-	int		fd;
-	int		i;
-	char	*str;
-	char	**map_temp;
+	int	i;
+	int	j;
 
-	fd = open(file, O_RDONLY);
-	str = get_next_line(fd);
-	map_temp = (char **)malloc(sizeof(char *) * 1);
-	map_temp[0] = NULL;
-	while ((str != NULL))
+	j = 0;
+	while (data && !ft_map_row(data[j]))
 	{
 		i = 0;
-		while (str[i] && ft_isspace(str[i]))
+		while (data && data[j] && data[j][i] && ft_isspace(data[j][i]))
 			i++;
-		if (str[i] == 'N' || str[i] == 'S' || str[i] == 'E' \
-		|| str[i] == 'W' || str[i] == 'F' || str[i] == 'C')
-			init0(&i, str, prog);
-		else if (ft_map_row(str))
-		{
-			init_map(str, map_temp, fd, prog);
-			break ;
-		}
-		free(str);
-		str = get_next_line(fd);
+		if (data[j][i] == 'N' || data[j][i] == 'S' || data[j][i] == 'E' \
+		|| data[j][i] == 'W' || data[j][i] == 'F' || data[j][i] == 'C')
+			init0(&i, data[j], prog);
+		j++;
 	}
-	close (fd);
+	prog->mlx.map = map;
 	init_mlx(prog);
+	init_images(prog);
+	init_player(prog);
 }
 
 void	init0(int *i, char *str, t_program *prog)

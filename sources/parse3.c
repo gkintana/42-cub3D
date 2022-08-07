@@ -12,95 +12,97 @@
 
 #include <cub3D.h>
 
-int	ft_path1(char *ret, int fd)
+int	check_elements2(char **data, int *elem, char **map_temp)
 {
-	if (fd != -1)
-	{
-		printf("Error: texture path %s not a file\n", ret);
-		close (fd);
-		free (ret);
-		ret = NULL;
+	if (ft_map_row(data[elem[8]]) == 0)
 		return (1);
-	}
-	fd = open(ret, O_RDONLY);
-	if (fd == -1)
+	else
 	{
-		printf("Error: texture path %s not accessible\n", ret);
-		free (ret);
-		ret = NULL;
-		return (1);
+		elem[7] = 0;
+		return (check_map(map_temp));
 	}
-	close(fd);
+}
+
+//returns 1 if valid
+int	ft_map_row(char *str)
+{
+	int	i;
+	int	flag;
+
+	i = 0;
+	flag = 0;
+	while (str && str[i] && str[i] != '\n')
+	{
+		if ((str[i] != ' ' && str[i] != '1'))
+			return (0);
+		if (str[i] == '1')
+			flag++;
+		i++;
+	}
+	if (flag == 0)
+		return (0);
+	return (1);
+}
+
+//can delete i think
+char	**ft_temp_map(char ***map_temp, char *str)
+{
+	char	**new_temp;
+	int		rows;
+	int		i;
+
+	rows = ft_array_len(*map_temp);
+	new_temp = (char **)malloc(sizeof(char *) * (rows + 2));
+	new_temp[rows + 1] = 0;
+	new_temp[rows + 2] = NULL;
+	i = 0;
+	while (*map_temp[i])
+	{
+		new_temp[i] = ft_strdup(*map_temp[i]);
+		i++;
+	}
+	new_temp[i] = ft_strdup(str);
+	new_temp[i + 1] = NULL;
+	free_2d_array(*map_temp);
+	map_temp = NULL;
+	return (new_temp);
+}
+
+int	check_map(char **map)
+{
+	if (check_chars(map) || check_top(map) || check_bottom(map) \
+	|| check_left(map) || check_right(map))
+	{
+		printf("Error: invalid map\n");
+		return (1);
+	}		
 	return (0);
 }
 
-void	ft_path2(char *ret, int fd)
+int	check_chars(char **map)
 {
-	close (fd);
-	free (ret);
-	ret = NULL;
-}
+	int	flag;
+	int	i;
+	int	j;
 
-#if __APPLE__
-//should return 0 if all good
-int	ft_path(char *str, int i)
-{
-	char	*ret;
-	int		j;
-	int		len;
-	int		fd;
-
-	j = i;
-	while (!ft_isspace(str[j]))
-		j++;
-	len = j - i;
+	flag = 0;
 	j = 0;
-	ret = (char *)malloc(sizeof(char) * (len + 1));
-	if (!ret)
-		return (1);
-	while (!ft_isspace(str[i]))
+	while (j < ft_array_len(map))
 	{
-		ret[j] = str[i];
+		i = 0;
+		while (i < (int)ft_strlen(map[j]))
+		{
+			if (map[j][i] == 'N' || map[j][i] == 'S' || map[j][i] == 'W' \
+			|| map[j][i] == 'E')
+				flag++;
+			else if (map[j][i] != ' ' && map[j][i] != '1' && map[j][i] != '0' \
+			&& map[j][i] != '\n')
+				return (1);
+			i++;
+		}
 		j++;
-		i += 1;
 	}
-	ret[j] = '\0';
-	fd = open(ret, O_DIRECTORY);
-	if (ft_path1(ret, fd))
+	if (flag != 1)
 		return (1);
-	ft_path2(ret, fd);
 	return (0);
 }
-#endif
-
-#if __linux__
-//should return 0 if all good
-int	ft_path(char *str, int i)
-{
-	char	*ret;
-	int		j;
-	int		len;
-	int		fd;
-
-	j = i;
-	while (!ft_isspace(str[j]))
-		j++;
-	len = j - i;
-	j = 0;
-	ret = (char *)malloc(sizeof(char) * (len + 1));
-	if (!ret)
-		return (1);
-	while (!ft_isspace(str[i]))
-	{
-		ret[j] = str[i];
-		j++;
-		i += 1;
-	}
-	ret[j] = '\0';
-	fd = open(ret, __O_DIRECTORY | __O_PATH);
-	if (ft_path1(ret, fd))
-		return (1);
-	ft_path2(ret, fd);
-	return (0);
-}
-#endif

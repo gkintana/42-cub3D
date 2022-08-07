@@ -12,54 +12,108 @@
 
 #include <cub3D.h>
 
-int	check_elems6(char *str, int *elem, char **map_temp)
+int	ft_path1(char *ret, int fd)
 {
-	free (str);
-	close (elem[6]);
-	free (elem);
-	free_2d_array (map_temp);
-	return (1);
-}
-
-int	check_elems3(char *str, int *i, int *elem, char **map_temp)
-{
-	int	ctn;
-
-	ctn = 0;
-	if (check_elems1(str, i, elem, &ctn))
-		return (check_elems6(str, elem, map_temp));
-	else if (check_elems2(str, i, elem, &ctn))
-		return (check_elems6(str, elem, map_temp));
-	return (ctn);
-}
-
-int	check_elems4(char *str, int *elem, char **map_temp)
-{
-	elem[7] = 0;
-	while (str)
+	if (fd != -1)
 	{
-		map_temp = ft_temp_map(map_temp, str);
-		free (str);
-		str = get_next_line(elem[6]);
-	}
-	if (ft_map_row1(str, elem, map_temp))
-	{
-		free (str);
-		close (elem[6]);
-		free (elem);
+		printf("Error: texture path %s not a file\n", ret);
+		ft_path2(ret, fd);
 		return (1);
 	}
-	free (str);
-	close (elem[6]);
+	fd = open(ret, O_RDONLY);
+	if (fd == -1)
+	{
+		printf("Error: texture path %s not accessible\n", ret);
+		ft_path2(ret, fd);
+		return (1);
+	}
+	ft_path2(ret, fd);
 	return (0);
 }
 
-int	check_elems5(char *str, int *elem, char **map_temp)
+void	ft_path2(char *ret, int fd)
 {
-	free (str);
-	close (elem[6]);
-	free (elem);
-	free_2d_array (map_temp);
-	printf("Error: Invalid inputs in file\n");
-	return (1);
+	close (fd);
+	free (ret);
+	ret = NULL;
+}
+
+int	check_elems2(char *str, int *i, int *elem, int *ctn)
+{
+	if ((str[*i] == 'F' && str[*i + 1] && ft_isspace(str[*i + 1])) \
+			|| (str[*i] == 'C' && str[*i + 1] && ft_isspace(str[*i + 1])))
+	{
+		if (str[*i] == 'F')
+			elem[4]++;
+		else if (str[*i] == 'C')
+			elem[5]++;
+		*i += 1;
+		while (str[*i + 1] && ft_isspace(str[*i]) && str[*i] != '\n')
+			*i += 1;
+		if (str[*i])
+			elem[7] += ft_rgb(str, *i);
+		else
+			elem[7] += 1;
+		*ctn += 2;
+		if (elem[7] > 0)
+		{
+			printf("Error: RGB color failure\n");
+			return (1);
+		}
+	}
+	return (0);
+}
+
+int	ft_rgb(char *str, int i)
+{
+	char	*ret;
+	char	**temp2;
+
+	ret = ft_rgb1(str, i);
+	if (!ret)
+		return (1);
+	temp2 = ft_split(ret, ',');
+	free (ret);
+	if (ft_array_len(temp2) != 3)
+	{
+		free_2d_array(temp2);
+		return (1);
+	}
+	i = 0;
+	while (i < 3)
+	{
+		if (!(ft_atoi2(temp2[i]) >= 0 && ft_atoi2(temp2[i]) <= 255))
+		{
+			free_2d_array(temp2);
+			return (1);
+		}
+		i++;
+	}
+	free_2d_array(temp2);
+	return (0);
+}
+
+char	*ft_rgb1(char *str, int i)
+{
+	char	*temp;
+	char	*ret;
+	int		j;
+
+	temp = (char *)malloc(sizeof(char) * 4097);
+	if (!temp)
+		return (NULL);
+	ft_memset(temp, '\0', 4097);
+	j = 0;
+	while (str[i])
+	{
+		if (!ft_isspace(str[i]))
+		{
+			temp[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	ret = ft_strdup(temp);
+	free (temp);
+	return (ret);
 }

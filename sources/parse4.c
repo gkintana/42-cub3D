@@ -12,74 +12,94 @@
 
 #include <cub3D.h>
 
-int	ft_rgb(char *str, int i)
+//returns 1 if invalid
+int	check_top(char **map)
 {
-	char	*ret;
-	char	**temp2;
+	int		i;
+	int		j;
+	int		flag;
 
-	ret = ft_rgb1(str, i);
-	if (!ret)
+	flag = 0;
+	if (ft_map_row(map[0]) == 0)
 		return (1);
-	temp2 = ft_split(ret, ',');
-	free (ret);
-	if (ft_array_len(temp2) != 3)
-	{
-		free_2d_array(temp2);
-		return (1);
-	}
 	i = 0;
-	while (i < 3)
-	{
-		if (!(ft_atoi2(temp2[i]) >= 0 && ft_atoi2(temp2[i]) <= 255))
-		{
-			free_2d_array(temp2);
-			return (1);
-		}
+	j = 0;
+	while (ft_isspace(map[j][i]) && map[j][i + 1] != '\n')
 		i++;
+	if (map[j][i] != '1')
+		return (1);
+	while (map[j][i + 1] != '\n' && flag < (int)ft_strlen(map[0]))
+	{
+		check_top1(map, &i, &j, &flag);
 	}
-	free_2d_array(temp2);
+	if (map[j][i + 1] != '\n')
+		return (1);
 	return (0);
 }
 
-char	*ft_rgb1(char *str, int i)
+void	check_top1(char **map, int *i, int *j, int *flag)
 {
-	char	*temp;
-	char	*ret;
-	int		j;
-
-	temp = (char *)malloc(sizeof(char) * 4097);
-	if (!temp)
-		return (NULL);
-	ft_memset(temp, '\0', 4097);
-	j = 0;
-	while (str[i])
-	{
-		if (!ft_isspace(str[i]))
-		{
-			temp[j] = str[i];
-			j++;
-		}
-		i++;
-	}
-	ret = ft_rgb2(temp);
-	return (ret);
+	while (map[*j][*i] == '1' && map[*j][*i + 1] && map[*j][*i + 1] == '1' \
+	&& (*j == 0 || (*j > 0 && map[*j - 1][*i] != '1')))
+		*i += 1;
+	*flag += 1;
+	while (map[*j][*i] && map[*j][*i] == '1' && map[*j + 1][*i] && \
+	map[*j + 1][*i] == '1' && map[*j][*i + 1] && map[*j][*i + 1] == ' ')
+		*j += 1;
+	*flag += 1;
+	while (map[*j][*i] && map[*j][*i] == '1' && map[*j][*i + 1] && \
+	map[*j][*i + 1] == '1' && (*j == 0 || (*j > 0 && map[*j - 1][*i + 1] \
+	&& map[*j - 1][*i + 1] != '0')))
+		*i += 1;
+	*flag += 1;
+	while (map[*j][*i] && map[*j][*i] == '1' && *j > 0 && *i > 0 && \
+	map[*j - 1][*i - 1] && map[*j - 1][*i - 1] == ' ' && \
+	map[*j - 1][*i] && map[*j - 1][*i] == '1')
+		*j -= 1;
+	*flag += 1;
 }
 
-char	*ft_rgb2(char *temp)
+int	check_bottom(char **map)
 {
-	char	*ret;
+	int		i;
 	int		j;
+	int		flag;
 
-	ret = (char *)malloc(sizeof(char) * (ft_strlen(temp) + 1));
-	if (!ret)
-		return (NULL);
-	j = 0;
-	while (temp[j] != '\0')
+	flag = 0;
+	j = check_last(map);
+	i = 0;
+	while (ft_isspace(map[j][i]) && map[j][i + 1] != '\n')
+		i++;
+	if (map[j][i] != '1')
+		return (1);
+	while (map[j][i + 1] != '\n' && flag < (int)ft_strlen(map[j]))
 	{
-		ret[j] = temp[j];
-		j++;
+		check_bottom1(map, &i, &j, &flag);
 	}
-	ret[j] = '\0';
-	free (temp);
-	return (ret);
+	if (map[j][i + 1] != '\n')
+		return (1);
+	return (0);
+}
+
+//return 1 if not valid bottom row
+void	check_bottom1(char **map, int *i, int *j, int *flag)
+{	
+	while (map[*j][*i] && map[*j][*i] == '1' && map[*j][*i + 1] && \
+	map[*j][*i + 1] == '1' && ((*j == check_last(map)) \
+	|| ((*j < check_last(map)) && map[*j + 1][*i] && map[*j + 1][*i] != '1')))
+		*i += 1;
+	*flag += 1;
+	while (map[*j][*i] && map[*j][*i] == '1' && map[*j - 1][*i] && \
+	map[*j - 1][*i] == '1' && map[*j][*i + 1] && map[*j][*i + 1] == ' ')
+		*j -= 1;
+	*flag += 1;
+	while (map[*j][*i] && map[*j][*i] == '1' && map[*j][*i + 1] && \
+	map[*j][*i + 1] == '1' && ((*j == check_last(map)) || ((*j < \
+	check_last(map)) && map[*j + 1][*i + 1] && map[*j + 1][*i + 1] != '0')))
+		*i += 1;
+	*flag += 1;
+	while (map[*j][*i] && map[*j][*i] == '1' && (*j < check_last(map)) \
+	&& *i > 0 && map[*j + 1][*i] && map[*j + 1][*i] == '1' && \
+	map[*j + 1][*i - 1] && map[*j + 1][*i - 1] == ' ')
+		*j += 1;
 }

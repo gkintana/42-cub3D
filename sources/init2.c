@@ -33,7 +33,6 @@ char	*init_path(char *str, int *i)
 		*i += 1;
 	}
 	ret[j] = '\0';
-	printf("test init1 ret is  %s\n", ret);
 	return (ret);
 }
 
@@ -44,7 +43,6 @@ void	init_mlx(t_program *prog)
 	prog->mlx.win_height = WIN_HEIGHT;
 	prog->mlx.window = mlx_new_window(prog->mlx.ptr, prog->mlx.win_width, \
 	prog->mlx.win_height, "cub3D");
-	init_images(prog);
 }
 
 void	init_images(t_program *prog)
@@ -69,7 +67,6 @@ void	init_images(t_program *prog)
 	&prog->tex.width, &prog->tex.height);
 	prog->mlx.img[4].pixel = (int *)mlx_get_data_addr(prog->mlx.img[4].ptr, \
 	&prog->mlx.img[4].bpp, &prog->mlx.img[4].len, &prog->mlx.img[4].endian);
-	init_player(prog);
 }
 
 void	init_player(t_program *prog)

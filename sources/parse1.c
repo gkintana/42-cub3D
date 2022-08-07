@@ -12,6 +12,44 @@
 
 #include <cub3D.h>
 
+int	check_elements1(char **data, int *elem, char **map_temp)
+{
+	int	i;
+	int	flag;
+
+	i = 0;
+	elem[8] = 0;
+	flag = 0;
+	while (data[elem[8]])
+	{
+		i = 0;
+		while (data[elem[8]][i] && ft_isspace(data[elem[8]][i]))
+			i++;
+		if (data[elem[8]][i])
+		{
+			flag = check_elems3(data[elem[8]], &i, elem);
+			if (flag == 1)
+				return (1);
+			if (flag == 0)
+				return (check_elements2(data, elem, map_temp));
+		}
+		elem[8] += 1;
+	}
+	return (0);
+}
+
+int	check_elems3(char *str, int *i, int *elem)
+{
+	int	ctn;
+
+	ctn = 0;
+	if (check_elems1(str, i, elem, &ctn))
+		return (1);
+	else if (check_elems2(str, i, elem, &ctn))
+		return (1);
+	return (ctn);
+}
+
 int	check_elems1(char *str, int *i, int *elem, int *ctn)
 {
 	if (check_elems0(str, i))
@@ -30,7 +68,7 @@ int	check_elems1(char *str, int *i, int *elem, int *ctn)
 		if (str[*i])
 			elem[7] += ft_path(str, *i);
 		else
-			elem[7]++;
+			elem[7] += 1;
 		*ctn += 2;
 	}
 	if (elem[7] > 0)
@@ -55,45 +93,31 @@ int	check_elems0(char *str, int *i)
 	return (0);
 }
 
-int	check_elems2(char *str, int *i, int *elem, int *ctn)
+//should return 0 if all good
+int	ft_path(char *str, int i)
 {
-	if ((str[*i] == 'F' && str[*i + 1] && ft_isspace(str[*i + 1])) \
-			|| (str[*i] == 'C' && str[*i + 1] && ft_isspace(str[*i + 1])))
-	{
-		if (str[*i] == 'F')
-			elem[4]++;
-		else if (str[*i] == 'C')
-			elem[5]++;
-		*i += 1;
-		while (str[*i + 1] && ft_isspace(str[*i]) && str[*i] != '\n')
-			*i += 1;
-		if (str[*i])
-			elem[7] += ft_rgb(str, *i);
-		else
-			elem[7]++;
-		*ctn += 2;
-		if (elem[7] > 0)
-		{
-			free (str);
-			printf("Error: RGB color failure\n");
-			free (elem);
-			return (1);
-		}
-	}
-	return (0);
-}
+	char	*ret;
+	int		j;
+	int		len;
+	int		fd;
 
-int	ft_map_row1(char *str, int *elem, char **map_temp)
-{
-	(void)str;
-	(void)elem;
-	if (map_temp[ft_array_len(map_temp) - 1][0] != '\n')
-		map_temp = ft_temp_map(map_temp, "\n");
-	if (check_map(map_temp))
-	{
-		free_2d_array(map_temp);
+	j = i;
+	while (!ft_isspace(str[j]))
+		j++;
+	len = j - i;
+	j = 0;
+	ret = (char *)malloc(sizeof(char) * (len + 1));
+	if (!ret)
 		return (1);
+	while (!ft_isspace(str[i]))
+	{
+		ret[j] = str[i];
+		j++;
+		i += 1;
 	}
-	free_2d_array(map_temp);
+	ret[j] = '\0';
+	fd = open(ret, __O_DIRECTORY | __O_PATH);
+	if (ft_path1(ret, fd))
+		return (1);
 	return (0);
 }

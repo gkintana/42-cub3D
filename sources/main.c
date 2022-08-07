@@ -21,9 +21,8 @@ int	main(int argc, char **argv)
 		ft_bzero(&prog, sizeof(t_program));
 		check_map_validity(argv[1]);
 		check_map_extension(argv[1]);
-		if (check_elements(argv[1]) == 0)
+		if (!check_elements(argv[1], &prog))
 		{
-			init(&prog, argv[1]);
 			get_floor_and_ceiling_rgb(&prog);
 			raycast_loop(&prog);
 			mlx_mouse_hide(prog.mlx.ptr, prog.mlx.window);

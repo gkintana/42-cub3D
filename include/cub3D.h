@@ -177,46 +177,50 @@ typedef struct s_raycast
 
 /*---------------------------- FUNCTION PROTOTYPES ---------------------------*/
 // Parse Utils
-char	*ft_strchr(const char *s, int c);
-void	ft_bzero2(int *array, int len);
+// char	*ft_strchr(const char *s, int c);
+// void	ft_bzero2(int *array, int len);
 int		ft_array_len(char **array);
 int		ft_atoi2(const char *str);
 
 // Parse Functions
 void	check_map_extension(char *file);
 void	check_map_validity(char *file);
-int		check_elements(char *file);
-int		check_elements1(char *str, int *elem, char **map_temp);
-int		check_elements2(char *str, int *elem, char **map_temp);
-int		ft_elem(int *array, int len, char **map_temp);
+char	**check_elements000(char **temp);
+char	**check_elements00(char *file, int *elem);
+char	**check_elements007(char **temp);
+int		check_last(char **map);
+int		check_last2(int *j, char **map);
+void	check_elements0(char **str, int *elem, char **map_temp);
+int		check_elements0b(char **map_temp, t_program *prog, \
+		char **data, int *elem);
+int		check_elements(char *file, t_program *prog);
+int		check_elements1(char **str, int *elem, char **map_temp);
+int		check_elements2(char **str, int *elem, char **map_temp);
+int		ft_elem(int *array, int len);
 int		check_elems1(char *str, int *i, int *elem, int *ctn);
 int		check_elems0(char *str, int *i);
 int		check_elems2(char *str, int *i, int *elem, int *ctn);
-int		ft_map_row1(char *str, int *elem, char **map_temp);
-int		check_elems6(char *str, int *elem, char **map_temp);
-int		check_elems3(char *str, int *i, int *elem, char **map_temp);
-int		check_elems4(char *str, int *elem, char **map_temp);
-int		check_elems5(char *str, int *elem, char **map_temp);
-int		t_path1(char *ret, int fd);
+int		check_elems3(char *str, int *i, int *elem);
+int		ft_path1(char *ret, int fd);
 void	ft_path2(char *ret, int fd);
 int		ft_path(char *str, int i);
 int		ft_rgb(char *str, int i);
 char	*ft_rgb1(char *str, int i);
-char	*ft_rgb2(char *temp);
 int		ft_map_row(char *str);
-char	**ft_temp_map(char **map_temp, char *str);
+char	**ft_temp_map(char ***map_temp, char *str);
 int		check_map(char **map);
 int		check_top(char **map);
-int		check_top1(char **map, int *i, int *j, int *flag);
+void	check_top1(char **map, int *i, int *j, int *flag);
 int		check_bottom(char **map);
-int		check_bottom1(char **map, int *i, int *j, int *flag);
+void	check_bottom1(char **map, int *i, int *j, int *flag);
 int		check_left(char **map);
 int		check_left1(char **map, int *j);
 int		check_chars(char **map);
 int		check_right(char **map);
+int		check_right1(char **map, int *j);
 
 // Initialization Functions
-void	init(t_program *prog, char *file);
+void	init(char **data, char **map, t_program *prog);
 void	init0(int *i, char *str, t_program *prog);
 void	init_n(int *i, char *str, t_program *prog);
 void	init_s(int *i, char *str, t_program *prog);
@@ -224,7 +228,6 @@ void	init_e(int *i, char *str, t_program *prog);
 void	init_w(int *i, char *str, t_program *prog);
 void	init_f(int *i, char *str, t_program *prog);
 void	init_c(int *i, char *str, t_program *prog);
-void	init_map(char *str, char **map_temp, int fd, t_program *prog);
 void	init_mlx(t_program *prog);
 void	init_images(t_program *prog);
 void	init_player(t_program *prog);

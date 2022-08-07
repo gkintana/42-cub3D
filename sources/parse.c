@@ -35,28 +35,6 @@ void	check_map_extension(char *file)
 	}
 }
 
-#if __APPLE__
-void	check_map_validity(char *file)
-{
-	int		fd;
-
-	fd = open(file, O_DIRECTORY);
-	if (fd != -1)
-	{
-		ft_putstr_fd("Error: Argument Not a file\n", 2);
-		exit (1);
-	}
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putstr_fd("Error: Map file does not exist\n", 2);
-		exit (1);
-	}
-	close(fd);
-}
-#endif
-
-#if __linux__
 void	check_map_validity(char *file)
 {
 	int		fd;
@@ -65,76 +43,70 @@ void	check_map_validity(char *file)
 	if (fd != -1)
 	{
 		ft_putstr_fd("Error: Argument Not a file\n", 2);
+		close(fd);
 		exit (1);
 	}
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
 		ft_putstr_fd("Error: Map file does not exist\n", 2);
+		close(fd);
 		exit (1);
 	}
 	close(fd);
 }
-#endif
 
-int	check_elements(char *file)
+void	check_elements0(char **data, int *elem, char **map_temp)
 {
-	char	*str;
-	int		*elem;
-	char	**map_temp;
-
-	elem = (int *)malloc(sizeof(int) * 8);
-	map_temp = (char **)malloc(sizeof(char *) * 1);
-	ft_bzero2(elem, 8);
-	map_temp[0] = NULL;
-	elem[6] = open(file, O_RDONLY);
-	str = get_next_line(elem[6]);
-	if (check_elements1(str, elem, map_temp))
-	{
-		// free_2d_array(map_temp);
-		return (1);
-	}
-	if (ft_elem(elem, 6, map_temp))
-		return (1);
-	//free_2d_array(map_temp); gets segfault..s
-	return (0);
+	free_2d_array(data);
+	data = NULL;
+	close(elem[6]);
+	free (elem);
+	elem = NULL;
+	free_2d_array(map_temp);
+	map_temp = NULL;
 }
 
-int	check_elements2(char *str, int *elem, char **map_temp)
+int	check_last2(int *j, char **map)
 {
-	if (!ft_map_row(str))
-		return (check_elems5(str, elem, map_temp));
-	else
-	{
-		if (check_elems4(str, elem, map_temp))
-			return (1);
-		else
-			return (0);
-	}
-}
-
-int	check_elements1(char *str, int *elem, char **map_temp)
-{
+	int	len;
 	int	i;
-	int	flag;
+	int	k;
 
-	i = 0;
-	flag = 0;
-	while ((str != NULL))
+	k = *j;
+	len = 0;
+	while (1)
 	{
 		i = 0;
-		while (str[i] && ft_isspace(str[i]))
+		if (map[k][i] && ft_isspace(map[k][i]) && map[k][i] != '\n')
 			i++;
-		if (str[i])
+		if (map[k][i] && map[k][i] != '\n' && k > 0)
 		{
-			flag = check_elems3(str, &i, elem, map_temp);
-			if (flag == 1)
-				return (1);
-			if (flag == 0)
-				return (check_elements2(str, elem, map_temp));
+			k--;
+			len++;
 		}
-		free (str);
-		str = get_next_line(elem[6]);
+		else
+			break ;
 	}
-	return (0);
+	*j = k;
+	return (len);
+}
+
+int	check_last(char **map)
+{
+	int	j;
+	int	i;
+
+	i = 0;
+	j = ft_array_len(map) - 1;
+	while (1)
+	{
+		while (ft_isspace(map[j][i]) && map[j][i] != '\n')
+			i++;
+		if (map[j][i] == '\n')
+			j--;
+		else
+			break ;
+	}
+	return (j);
 }

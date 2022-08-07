@@ -12,55 +12,95 @@
 
 #include <cub3D.h>
 
-//should return 0 if not map first row
-int	ft_map_row(char *str)
+int	check_left(char **map)
 {
+	int	j;
+
+	j = check_last(map) - 1;
+	while (j > 0)
+	{
+		if (check_left1(map, &j))
+			return (1);
+		j -= 1;
+	}
+	return (0);
+}
+
+int	check_left1(char **map, int *j)
+{
+	int	flag[2];
 	int	i;
-	int	flag;
 
+	// ft_bzero2(flag, 2);
+	ft_bzero(&flag, sizeof(int) * 2);
 	i = 0;
-	flag = 0;
-	while (str && str[i] && str[i] != '\n')
+	while (map[*j][i] && map[*j][i] == ' ')
 	{
-		if ((str[i] != ' ' && str[i] != '1'))
-			return (0);
-		if (str[i] == '1')
-			flag++;
 		i++;
+		if (map[*j][i] && map[*j][i] == '0')
+			return (1);
 	}
-	if (flag == 0)
-		return (0);
-	return (1);
-}
-
-char	**ft_temp_map(char **map_temp, char *str)
-{
-	char	**new_temp;
-	int		rows;
-	int		i;
-
-	rows = ft_array_len(map_temp);
-	new_temp = (char **)malloc(sizeof(char *) * (rows + 2));
-	i = 0;
-	while (map_temp[i])
-	{
-		new_temp[i] = ft_strdup(map_temp[i]);
-		i++;
-	}
-	new_temp[i] = ft_strdup(str);
-	new_temp[i + 1] = NULL;
-	free_2d_array(map_temp);
-	return (new_temp);
-}
-
-int	check_map(char **map)
-{
-	if (check_chars(map) || check_top(map) || check_bottom(map) \
-	|| check_left(map) || check_right(map))
-	{
-		printf("Error: invalid map\n");
-		// free_2d_array(map);
+	if (map[*j][i] && map[*j][i] != '1')
 		return (1);
-	}		
+	while (map[*j][i] && map[*j][i] == '1')
+	{
+		if (map[*j + 1][i] && map[*j + 1][i] == '1')
+			flag[0] = 1;
+		if (map[*j - 1][i] && map[*j - 1][i] == '1')
+			flag[1] = 1;
+		i++;
+	}
+	if (flag[0] == 0 || flag[1] == 0)
+		return (1);
+	return (0);
+}
+
+int	check_right(char **map)
+{
+	int	j;
+
+	j = check_last(map) - 1;
+	while (j > 0)
+	{
+		if (check_right1(map, &j))
+			return (1);
+		j -= 1;
+	}
+	return (0);
+}
+
+int	check_right1(char **map, int *j)
+{
+	int	flag[2];
+	int	i;
+
+	// ft_bzero2(flag, 2);
+	ft_bzero(&flag, sizeof(int) * 2);
+	i = (int)ft_strlen(map[*j]) - 2;
+	if (map[*j][i] && map[*j][i] != '1')
+		return (1);
+	while (i > 0 && map[*j][i] && map[*j][i] == '1')
+	{
+		if (i < (int)ft_strlen(map[*j - 1]))
+			if (map[*j - 1][i] && map[*j - 1][i] == '1')
+				flag[0] = 1;
+		if (i < (int)ft_strlen(map[*j + 1]))
+			if (map[*j + 1][i] && map[*j + 1][i] == '1')
+				flag[1] = 1;
+		i--;
+	}
+	if (flag[0] == 0 || flag[1] == 0)
+		return (1);
+	return (0);
+}
+
+int	check_elements0b(char **map_temp, t_program *prog, char **data, int *elem)
+{
+	init(data, map_temp, prog);
+	free_2d_array(data);
+	data = NULL;
+	close(elem[6]);
+	free (elem);
+	elem = NULL;
 	return (0);
 }
