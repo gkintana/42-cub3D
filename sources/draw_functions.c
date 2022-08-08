@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:56:22 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/06 13:43:37 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/08 11:56:17 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 static int	convert_hex_to_int(int r, int g, int b)
 {
 	return ((int)(((r / 16) * pow(16, 5))
-			+ ((r % 16) * pow(16, 4))
-			+ ((g / 16) * pow(16, 3))
-			+ ((g % 16) * pow(16, 2))
-			+ ((b / 16) * pow(16, 1))
-			+ ((b % 16) * pow(16, 0))));
+		+ ((r % 16) * pow(16, 4))
+		+ ((g / 16) * pow(16, 3))
+		+ ((g % 16) * pow(16, 2))
+		+ ((b / 16) * pow(16, 1))
+		+ ((b % 16) * pow(16, 0))));
 }
 
 /*
@@ -70,7 +70,7 @@ static int	draw_ceiling(t_program *prog, int (*buffer)[prog->mlx.win_width],
 {
 	int		k[2];
 	double	l[2];
-	
+
 	k[0] = prog->mlx.win_height / 2;
 	k[1] = prog->info.pitch;
 	l[0] = 0.850;
@@ -81,7 +81,7 @@ static int	draw_ceiling(t_program *prog, int (*buffer)[prog->mlx.win_width],
 		{
 			if (l[0] == 0.850)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
-				prog->tex.rgb.ceiling);
+					prog->tex.rgb.ceiling);
 			else
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0], j[7] * l[1]);
 			return (1);
@@ -117,7 +117,7 @@ static int	draw_floor(t_program *prog, int (*buffer)[prog->mlx.win_width],
 		{
 			if (l[0] == 1.150)
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
-				prog->tex.rgb.floor);
+					prog->tex.rgb.floor);
 			else
 				put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0], j[6] * l[1]);
 			return (1);
@@ -156,7 +156,7 @@ void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width])
 			if (!draw_ceiling(prog, buffer, i, j))
 				if (!draw_floor(prog, buffer, i, j))
 					put_pixel_at_addr(&prog->mlx.img[0], i[1], i[0],
-					buffer[i[0]][i[1]]);
+						buffer[i[0]][i[1]]);
 		}
 	}
 }

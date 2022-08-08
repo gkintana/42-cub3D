@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 14:03:51 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/07 19:31:17 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/08 11:56:38 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,6 @@ int	space_is_inside(t_program *prog, int j[])
 		&& find_south_wall(prog, j)
 		&& find_east_wall(prog->mlx.map[j[0]], j[1])
 		&& find_west_wall(prog->mlx.map[j[0]], j[1]))
-			return (1);
+		return (1);
 	return (0);
 }
