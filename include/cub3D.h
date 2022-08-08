@@ -150,7 +150,7 @@ typedef struct s_calculations
 	double	delta_y;
 	int		map_x;
 	int		map_y;
-	
+
 	double	side_dist_x;
 	double	side_dist_y;
 	double	perp_dist;
@@ -250,9 +250,9 @@ void	draw_player(t_program *prog);
 
 // Raycasting
 void	calculate_texture(t_program *prog, t_calculations *calc,
-		t_raycast *ray);
+			t_raycast *ray);
 void	save_texture(t_program *prog, t_calculations *calc,
-		t_raycast *ray, int i[]);
+			t_raycast *ray, int i[]);
 int		raycast_loop(t_program *prog);
 
 // Player Movement & Perspective

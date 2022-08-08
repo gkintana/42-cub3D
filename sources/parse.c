@@ -35,6 +35,8 @@ void	check_map_extension(char *file)
 	}
 }
 
+#if __linux__
+
 void	check_map_validity(char *file)
 {
 	int		fd;
@@ -55,6 +57,31 @@ void	check_map_validity(char *file)
 	}
 	close(fd);
 }
+#endif
+
+#if __APPLE__
+
+void	check_map_validity(char *file)
+{
+	int		fd;
+
+	fd = open(file, O_DIRECTORY);
+	if (fd != -1)
+	{
+		ft_putstr_fd("Error: Argument Not a file\n", 2);
+		close(fd);
+		exit (1);
+	}
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+	{
+		ft_putstr_fd("Error: Map file does not exist\n", 2);
+		close(fd);
+		exit (1);
+	}
+	close(fd);
+}
+#endif
 
 void	check_elements0(char **data, int *elem, char **map_temp)
 {

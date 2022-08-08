@@ -93,6 +93,7 @@ int	check_elems0(char *str, int *i)
 	return (0);
 }
 
+#if __linux__
 //should return 0 if all good
 int	ft_path(char *str, int i)
 {
@@ -121,3 +122,35 @@ int	ft_path(char *str, int i)
 		return (1);
 	return (0);
 }
+#endif
+
+#if __APPLE__
+//should return 0 if all good
+int	ft_path(char *str, int i)
+{
+	char	*ret;
+	int		j;
+	int		len;
+	int		fd;
+
+	j = i;
+	while (!ft_isspace(str[j]))
+		j++;
+	len = j - i;
+	j = 0;
+	ret = (char *)malloc(sizeof(char) * (len + 1));
+	if (!ret)
+		return (1);
+	while (!ft_isspace(str[i]))
+	{
+		ret[j] = str[i];
+		j++;
+		i += 1;
+	}
+	ret[j] = '\0';
+	fd = open(ret, O_DIRECTORY);
+	if (ft_path1(ret, fd))
+		return (1);
+	return (0);
+}
+#endif
