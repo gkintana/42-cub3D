@@ -22,6 +22,8 @@ char	**check_elements007(char **temp)
 	i = 0;
 	j = check_last(temp);
 	len = check_last2(&j, temp);
+	if (len == 0)
+		return (NULL);
 	ret = (char **)malloc(sizeof(char *) * (len + 2));
 	if (!ret)
 		return (NULL);

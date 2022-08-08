@@ -31,7 +31,6 @@ int	check_left1(char **map, int *j)
 	int	flag[2];
 	int	i;
 
-	// ft_bzero2(flag, 2);
 	ft_bzero(&flag, sizeof(int) * 2);
 	i = 0;
 	while (map[*j][i] && map[*j][i] == ' ')
@@ -74,7 +73,6 @@ int	check_right1(char **map, int *j)
 	int	flag[2];
 	int	i;
 
-	// ft_bzero2(flag, 2);
 	ft_bzero(&flag, sizeof(int) * 2);
 	i = (int)ft_strlen(map[*j]) - 2;
 	if (map[*j][i] && map[*j][i] != '1')

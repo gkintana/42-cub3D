@@ -85,15 +85,51 @@ void	check_map_validity(char *file)
 
 void	check_elements0(char **data, int *elem, char **map_temp)
 {
-	free_2d_array(data);
-	data = NULL;
+	if (data)
+	{
+		free_2d_array(data);
+		data = NULL;
+	}
 	close(elem[6]);
 	free (elem);
 	elem = NULL;
-	free_2d_array(map_temp);
-	map_temp = NULL;
+	if (map_temp)
+	{
+		free_2d_array(map_temp);
+		map_temp = NULL;
+	}
 }
 
+int	check_last2(int *j, char **map)
+{
+	int	len;
+	int	i;
+	int	k;
+
+	k = *j;
+	len = 0;
+	while (k > 0)
+	{
+		i = 0;
+		if (map[k][i] && ft_isspace(map[k][i]) && map[k][i] != '\n')
+			i++;
+		if (!map[k][i + 1] || map[k][i + 1] == '\n')
+			break ;
+		else
+		{
+			k--;
+			len++;
+		}
+	}
+	if (k <= 0)
+		return (0);
+	if (!ft_map_row(map[k + 1]))
+		return (0);
+	*j = k;
+	return (len);
+}
+
+/*old
 int	check_last2(int *j, char **map)
 {
 	int	len;
@@ -109,6 +145,7 @@ int	check_last2(int *j, char **map)
 			i++;
 		if (map[k][i] && map[k][i] != '\n' && k > 0)
 		{
+			printf("test3 %d: %s\n i is %d and char %c", k, map[k], i, map[k][i]);
 			k--;
 			len++;
 		}
@@ -118,7 +155,7 @@ int	check_last2(int *j, char **map)
 	*j = k;
 	return (len);
 }
-
+*/
 int	check_last(char **map)
 {
 	int	j;
@@ -126,7 +163,7 @@ int	check_last(char **map)
 
 	i = 0;
 	j = ft_array_len(map) - 1;
-	while (1)
+	while (j > 0)
 	{
 		while (ft_isspace(map[j][i]) && map[j][i] != '\n')
 			i++;
