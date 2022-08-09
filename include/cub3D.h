@@ -27,7 +27,7 @@
 #  define KEYCODE_A				97
 #  define KEYCODE_S				115
 #  define KEYCODE_D				100
-#  define KEYCODE_L				
+#  define KEYCODE_L				108
 #  define KEYCODE_ESC			65307
 #  define KEYCODE_UP			65362
 #  define KEYCODE_DOWN			65364
@@ -180,8 +180,6 @@ typedef struct s_raycast
 
 /*---------------------------- FUNCTION PROTOTYPES ---------------------------*/
 // Parse Utils
-// char	*ft_strchr(const char *s, int c);
-// void	ft_bzero2(int *array, int len);
 int		ft_array_len(char **array);
 int		ft_atoi2(const char *str);
 

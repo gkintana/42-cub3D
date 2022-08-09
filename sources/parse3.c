@@ -73,7 +73,7 @@ int	check_map(char **map)
 	if (check_chars(map) || check_top(map) || check_bottom(map) \
 	|| check_left(map) || check_right(map))
 	{
-		printf("Error: invalid map\n");
+		ft_putstr_fd("Error\nInvalid Map\n", 2);
 		return (1);
 	}		
 	return (0);

@@ -16,14 +16,18 @@ int	ft_path1(char *ret, int fd)
 {
 	if (fd != -1)
 	{
-		printf("Error: texture path %s not a file\n", ret);
+		ft_putstr_fd("Error\ntexture path ", 2);
+		ft_putstr_fd(ret, 2);
+		ft_putstr_fd(" not a file\n", 2);
 		ft_path2(ret, fd);
 		return (1);
 	}
 	fd = open(ret, O_RDONLY);
 	if (fd == -1)
 	{
-		printf("Error: texture path %s not accessible\n", ret);
+		ft_putstr_fd("Error\ntexture path ", 2);
+		ft_putstr_fd(ret, 2);
+		ft_putstr_fd(" not accessible\n", 2);
 		ft_path2(ret, fd);
 		return (1);
 	}
@@ -57,7 +61,7 @@ int	check_elems2(char *str, int *i, int *elem, int *ctn)
 		*ctn += 2;
 		if (elem[7] > 0)
 		{
-			printf("Error: RGB color failure\n");
+			ft_putstr_fd("Error\nRGB color failure\n", 2);
 			return (1);
 		}
 	}

@@ -73,7 +73,7 @@ int	check_elems1(char *str, int *i, int *elem, int *ctn)
 	}
 	if (elem[7] > 0)
 	{
-		printf("Error: Texture path failure\n");
+		ft_putstr_fd("Error\nTexture path failure\n", 2);
 		return (1);
 	}
 	return (0);

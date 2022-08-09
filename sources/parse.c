@@ -19,18 +19,18 @@ void	check_map_extension(char *file)
 	ext = ft_strrchr(file, '.');
 	if (!ext)
 	{
-		ft_putstr_fd("Error: Invalid Map, No Extension\n", 2);
+		ft_putstr_fd("Error\nInvalid Map, No Extension\n", 2);
 		exit(1);
 	}
 	if (ft_strncmp(ext, ".cub", 4) != 0)
 	{
-		ft_putstr_fd("Error: Invalid Map Extension\n", 2);
+		ft_putstr_fd("Error\nInvalid Map Extension\n", 2);
 		exit(1);
 	}
 	ext = ft_strchr(file, '.');
 	if (ft_strlen(ext) != 4)
 	{
-		ft_putstr_fd("Error: Invalid Map Extension\n", 2);
+		ft_putstr_fd("Error\nInvalid Map Extension\n", 2);
 		exit(1);
 	}
 }
@@ -44,14 +44,14 @@ void	check_map_validity(char *file)
 	fd = open(file, __O_DIRECTORY | __O_PATH);
 	if (fd != -1)
 	{
-		ft_putstr_fd("Error: Argument Not a file\n", 2);
+		ft_putstr_fd("Error\nArgument Not a file\n", 2);
 		close(fd);
 		exit (1);
 	}
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
-		ft_putstr_fd("Error: Map file does not exist\n", 2);
+		ft_putstr_fd("Error\nMap file does not exist\n", 2);
 		close(fd);
 		exit (1);
 	}
@@ -68,14 +68,14 @@ void	check_map_validity(char *file)
 	fd = open(file, O_DIRECTORY);
 	if (fd != -1)
 	{
-		ft_putstr_fd("Error: Argument Not a file\n", 2);
+		ft_putstr_fd("Error\nArgument Not a file\n", 2);
 		close(fd);
 		exit (1);
 	}
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
-		ft_putstr_fd("Error: Map file does not exist\n", 2);
+		ft_putstr_fd("Error\nMap file does not exist\n", 2);
 		close(fd);
 		exit (1);
 	}
@@ -102,31 +102,30 @@ void	check_elements0(char **data, int *elem, char **map_temp)
 
 int	check_last2(int *j, char **map)
 {
-	int	len;
-	int	i;
-	int	k;
+    int	len;
+    int	i;
 
-	k = *j;
-	len = 0;
-	while (k > 0)
-	{
-		i = 0;
-		if (map[k][i] && ft_isspace(map[k][i]) && map[k][i] != '\n')
-			i++;
-		if (!map[k][i + 1] || map[k][i + 1] == '\n')
-			break ;
-		else
-		{
-			k--;
-			len++;
-		}
-	}
-	if (k <= 0)
-		return (0);
-	if (!ft_map_row(map[k + 1]))
-		return (0);
-	*j = k;
-	return (len);
+    len = 0;
+    while (*j > 0)
+    {
+        i = 0;
+        if (map[*j][i] && ft_isspace(map[*j][i]) && map[*j][i] != '\n')
+            i++;
+        if ((!map[*j][i + 1] || map[*j][i] == '\n') || (map[*j][i] && \
+        (check_elems0(map[*j], &i) || ((map[*j][i] == 'F' || map[*j][i] == 'C') \
+        && map[*j][i + 1] && ft_isspace(map[*j][i + 1])))))
+            break ;
+        else
+        {
+            *j -= 1;
+            len++;
+        }
+    }
+    if (*j <= 0)
+        return (0);
+    if (!ft_map_row(map[*j + 1]))
+        return (0);
+    return (len);
 }
 
 /*old

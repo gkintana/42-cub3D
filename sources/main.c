@@ -33,6 +33,6 @@ int	main(int argc, char **argv)
 			return (0);
 		}
 	}
-	ft_putstr_fd("Invalid Arguments\n", 2);
+	ft_putstr_fd("Error\nInvalid Arguments\n", 2);
 	return (1);
 }
