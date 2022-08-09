@@ -21,7 +21,7 @@
 int	mouse_events(int x, int y, t_program *prog)
 {
 	(void)y;
-	prog->info.rotate_speed = 0.0175;
+	prog->info.rotate_speed = 0.0435;
 	if (x < prog->mlx.win_width / 2)
 		horizontal_perspective(prog, true);
 	else
