@@ -10,7 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	cub3D
+NAME_M		=	cub3D
+NAME_B		=	cub3D_bonus
 
 LIBFT_DIR	=	libft
 LIBFT		=	libft.a
@@ -28,7 +29,8 @@ ifeq ($(shell uname -s), Darwin)
 endif
 
 INC_DIR		=	include
-SRC_DIR		=	sources
+SRC_DIR		=	sources/mandatory
+BONUS_DIR	=	sources/bonus
 OBJ_DIR		=	objects
 
 SRCS		=	main.c \
@@ -56,8 +58,34 @@ SRCS		=	main.c \
 				raycast_textures.c \
 				raycast.c \
 				utils.c
-
 OBJS		=	$(addprefix $(OBJ_DIR)/, $(SRCS:%c=%o))
+
+BONUS		=	main_bonus.c \
+				draw_functions_bonus.c \
+				floor_and_ceiling_bonus.c \
+				init_bonus.c \
+				init1_bonus.c \
+				init2_bonus.c \
+				keyboard_bonus.c \
+				minimap_check_bonus.c \
+				minimap_utils_bonus.c \
+				minimap_bonus.c \
+				mouse_bonus.c \
+				parse_utils_bonus.c \
+				parse_bonus.c \
+				parse0_bonus.c \
+				parse1_bonus.c \
+				parse2_bonus.c \
+				parse3_bonus.c \
+				parse4_bonus.c \
+				parse5_bonus.c \
+				player_calculations_bonus.c \
+				player_initialization_bonus.c \
+				player_representation_bonus.c \
+				raycast_textures_bonus.c \
+				raycast_bonus.c \
+				utils_bonus.c
+OBJS_BONUS	=	$(addprefix $(OBJ_DIR)/, $(BONUS:%c=%o))
 
 CC			=	gcc
 CFLAGS		=	-g -Wall -Wextra -Werror
@@ -77,10 +105,19 @@ $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 			@printf "\033[A\033[2K\r"
 			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLX_DIR) -O3 -c $< -o $@
 
-all:		$(NAME)
+$(OBJ_DIR)/%.o : $(BONUS_DIR)/%.c
+			@mkdir -p $(OBJ_DIR)
+			@printf $(CYAN)
+			@printf "\033[A\033[2K\r"
+			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLX_DIR) -O3 -c $< -o $@
 
-$(NAME):	$(MLX) $(LIBFT) $(OBJS)
+all:		$(NAME_M)
+
+$(NAME_M):	$(MLX) $(LIBFT) $(OBJS)
 			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLX) -o $@
+
+$(NAME_B):	$(MLX) $(LIBFT) $(OBJS_BONUS)
+			@$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLX) -o $@
 
 $(LIBFT):
 			@printf $(DEFAULT)
@@ -90,6 +127,8 @@ $(MLX):
 			@printf $(DEFAULT)
 			@make -C $(MLX_DIR) all
 
+bonus:		$(NAME_B)
+
 clean:
 			@make -C $(LIBFT_DIR) fclean
 			@make -C $(MLX_DIR) clean
@@ -97,16 +136,18 @@ clean:
 			@echo $(RED)"Deleted cub3D object files & folder"$(DEFAULT)
 
 fclean:		clean
-			@$(RM) $(NAME)
+			@$(RM) $(NAME_M) $(NAME_B)
 			@echo $(RED)"Deleted cub3D executable"$(DEFAULT)
 
 norm:
 			@make -C $(LIBFT_DIR) norm
 			@echo $(DEFAULT)$(YELLOW_BU)"cub3D .c files"$(DEFAULT)$(CYAN)
 			@norminette -R CheckForbiddenSourceHeader $(SRC_DIR)/*.c
+			@echo $(DEFAULT)$(YELLOW_BU)"cub3D_bonus .c files"$(DEFAULT)$(CYAN)
+			@norminette -R CheckForbiddenSourceHeader $(BONUS_DIR)/*.c
 			@echo $(DEFAULT)$(YELLOW_BU)"cub3D .h files"$(DEFAULT)$(CYAN)
 			@norminette -R CheckDefine $(INC_DIR)/*.h
 
 re:			fclean all
 
-.PHONY:		all clean fclean re
+.PHONY:		all clean fclean re bonus
