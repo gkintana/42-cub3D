@@ -76,7 +76,4 @@ void	init_player(t_program *prog)
 	prog->info.move_speed = INITIAL_MOVE_SPEED;
 	prog->info.rotate_speed = INITIAL_ROTATE_SPEED;
 	prog->info.rotate_backup = prog->info.rotate_speed;
-	prog->map.scale = 50;
-	prog->map.offset_x = 15;
-	prog->map.offset_y = 15;
 }

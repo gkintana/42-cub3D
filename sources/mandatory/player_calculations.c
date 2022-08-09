@@ -96,19 +96,3 @@ void	horizontal_perspective(t_program *prog, bool rotate_left)
 		prog->info.plane_y = calculate_rotation(prog, 4, i);
 	}
 }
-
-void	vertical_perspective(t_program *prog, bool look_up)
-{
-	if (look_up)
-	{
-		prog->info.pitch += 50 * prog->info.move_speed;
-		if (prog->info.pitch > 125)
-			prog->info.pitch = 125;
-	}
-	else
-	{
-		prog->info.pitch -= 50 * prog->info.move_speed;
-		if (prog->info.pitch < -125)
-			prog->info.pitch = -125;
-	}
-}

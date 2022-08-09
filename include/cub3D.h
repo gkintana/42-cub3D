@@ -27,10 +27,7 @@
 #  define KEYCODE_A				97
 #  define KEYCODE_S				115
 #  define KEYCODE_D				100
-#  define KEYCODE_L				108
 #  define KEYCODE_ESC			65307
-#  define KEYCODE_UP			65362
-#  define KEYCODE_DOWN			65364
 #  define KEYCODE_LEFT			65361
 #  define KEYCODE_RIGHT			65363
 #  define INITIAL_MOVE_SPEED	0.065
@@ -42,10 +39,7 @@
 #  define KEYCODE_A				0
 #  define KEYCODE_S				1
 #  define KEYCODE_D				2
-#  define KEYCODE_L				37
 #  define KEYCODE_ESC			53
-#  define KEYCODE_UP			126
-#  define KEYCODE_DOWN			125
 #  define KEYCODE_LEFT			123
 #  define KEYCODE_RIGHT			124
 #  define INITIAL_MOVE_SPEED	0.105
@@ -115,33 +109,16 @@ typedef struct s_player_info
 	double	vec_y;
 	double	plane_x;
 	double	plane_y;
-	double	pitch;
 	double	move_speed;
 	double	rotate_speed;
 	double	rotate_backup;
 }				t_player_info;
-
-typedef struct s_minimap
-{
-	int	scale;
-	int	offset_x;
-	int	offset_y;
-}				t_minimap;
-
-typedef struct s_mouse
-{
-	int	new_x;
-	int	new_y;
-	int	lock;
-}				t_mouse;
 
 typedef struct s_program
 {
 	t_texture		tex;
 	t_minilibx		mlx;
 	t_player_info	info;
-	t_mouse			mouse;
-	t_minimap		map;
 }				t_program;
 
 typedef struct s_calculations
@@ -240,14 +217,8 @@ void	get_floor_and_ceiling_rgb(t_program *prog);
 void	set_player_position(t_program *prog);
 void	set_player_orientation(t_program *prog);
 
-// Drawing Functions & Utilities
-int		get_map_height(t_program *prog);
-int		find_wall_start(char *str);
-int		is_valid_coordinate(t_program *prog, int j[]);
-int		space_is_inside(t_program *prog, int j[]);
+// Drawing Functions
 void	draw_walls(t_program *prog, int (*buffer)[prog->mlx.win_width]);
-void	draw_map(t_program *prog);
-void	draw_player(t_program *prog);
 
 // Raycasting
 void	calculate_texture(t_program *prog, t_calculations *calc,
@@ -261,10 +232,8 @@ double	calculate_position_and_vector(t_program *prog, int formula);
 double	calculate_position_and_plane(t_program *prog, int formula);
 double	calculate_rotation(t_program *prog, int formula, double i[]);
 void	horizontal_perspective(t_program *prog, bool rotate_left);
-void	vertical_perspective(t_program *prog, bool look_up);
 
 // Events
-int		mouse_events(int x, int y, t_program *prog);
 int		key_events(int input, t_program *prog);
 void	update_frame(t_program *prog);
 int		close_window(t_program *prog);

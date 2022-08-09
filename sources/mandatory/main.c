@@ -25,8 +25,6 @@ int	main(int argc, char **argv)
 		{
 			get_floor_and_ceiling_rgb(&prog);
 			raycast_loop(&prog);
-			mlx_mouse_hide(prog.mlx.ptr, prog.mlx.window);
-			mlx_hook(prog.mlx.window, 6, 1L << 6, mouse_events, &prog);
 			mlx_hook(prog.mlx.window, 2, 1L << 0, key_events, &prog);
 			mlx_hook(prog.mlx.window, 17, 1L << 17, close_window, &prog);
 			mlx_loop(prog.mlx.ptr);

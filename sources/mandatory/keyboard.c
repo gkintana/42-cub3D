@@ -62,22 +62,6 @@ static void	horizontal_movement(t_program *prog, bool move_left)
 	}
 }
 
-static void	change_mouse_lock_status(t_program *prog)
-{
-	if (!prog->mouse.lock)
-	{
-		prog->mouse.lock = 1;
-		mlx_hook(prog->mlx.window, 6, 1L << 6, NULL, NULL);
-		mlx_mouse_show(prog->mlx.ptr, prog->mlx.window);
-	}
-	else
-	{
-		prog->mouse.lock = 0;
-		mlx_hook(prog->mlx.window, 6, 1L << 6, mouse_events, prog);
-		mlx_mouse_hide(prog->mlx.ptr, prog->mlx.window);
-	}
-}
-
 int	key_events(int input, t_program *prog)
 {
 	if (input == KEYCODE_ESC)
@@ -94,12 +78,6 @@ int	key_events(int input, t_program *prog)
 		horizontal_perspective(prog, true);
 	else if (input == KEYCODE_RIGHT)
 		horizontal_perspective(prog, false);
-	else if (input == KEYCODE_UP)
-		vertical_perspective(prog, true);
-	else if (input == KEYCODE_DOWN)
-		vertical_perspective(prog, false);
-	else if (input == KEYCODE_L)
-		change_mouse_lock_status(prog);
 	update_frame(prog);
 	return (0);
 }

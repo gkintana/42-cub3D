@@ -34,16 +34,11 @@ BONUS_DIR	=	sources/bonus
 OBJ_DIR		=	objects
 
 SRCS		=	main.c \
-				draw_functions.c \
 				floor_and_ceiling.c \
 				init.c \
 				init1.c \
 				init2.c \
 				keyboard.c \
-				minimap_check.c \
-				minimap_utils.c \
-				minimap.c \
-				mouse.c \
 				parse_utils.c \
 				parse.c \
 				parse0.c \
@@ -54,7 +49,6 @@ SRCS		=	main.c \
 				parse5.c \
 				player_calculations.c \
 				player_initialization.c \
-				player_representation.c \
 				raycast_textures.c \
 				raycast.c \
 				utils.c

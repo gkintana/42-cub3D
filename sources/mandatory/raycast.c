@@ -77,12 +77,10 @@ void	perform_dda_and_calculate_dist(t_program *prog, t_calculations *calc)
 void	calculate_line(t_program *prog, t_calculations *calc, t_raycast *ray)
 {
 	ray->line_height = (int)(prog->mlx.win_height / calc->perp_dist);
-	ray->start = -ray->line_height / 2 + prog->mlx.win_height / 2
-		+ prog->info.pitch;
+	ray->start = -ray->line_height / 2 + prog->mlx.win_height / 2;
 	if (ray->start < 0)
 		ray->start = 0;
-	ray->end = ray->line_height / 2 + prog->mlx.win_height / 2
-		+ prog->info.pitch;
+	ray->end = ray->line_height / 2 + prog->mlx.win_height / 2;
 	if (ray->end >= prog->mlx.win_height)
 		ray->end = prog->mlx.win_height - 1;
 }
@@ -107,8 +105,6 @@ int	raycast_loop(t_program *prog)
 		save_texture(prog, &calc, &ray, i);
 	}
 	draw_walls(prog, ray.buffer);
-	draw_map(prog);
-	draw_player(prog);
 	mlx_put_image_to_window(prog->mlx.ptr, prog->mlx.window,
 		prog->mlx.img[0].ptr, 0, 0);
 	return (0);
