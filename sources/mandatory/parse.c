@@ -128,33 +128,6 @@ int	check_last2(int *j, char **map)
     return (len);
 }
 
-/*old
-int	check_last2(int *j, char **map)
-{
-	int	len;
-	int	i;
-	int	k;
-
-	k = *j;
-	len = 0;
-	while (1)
-	{
-		i = 0;
-		if (map[k][i] && ft_isspace(map[k][i]) && map[k][i] != '\n')
-			i++;
-		if (map[k][i] && map[k][i] != '\n' && k > 0)
-		{
-			printf("test3 %d: %s\n i is %d and char %c", k, map[k], i, map[k][i]);
-			k--;
-			len++;
-		}
-		else
-			break ;
-	}
-	*j = k;
-	return (len);
-}
-*/
 int	check_last(char **map)
 {
 	int	j;

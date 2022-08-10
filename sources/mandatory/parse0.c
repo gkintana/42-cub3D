@@ -95,7 +95,6 @@ int	check_elements(char *file, t_program *prog)
 
 	elem = (int *)ft_calloc(9, sizeof(int));
 	data = check_elements00(file, elem);
-	// ft_bzero2(elem, 9);
 	map_temp = check_elements007(data);
 	if (!data || !map_temp)
 	{

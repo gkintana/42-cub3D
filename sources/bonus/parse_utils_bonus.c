@@ -12,38 +12,6 @@
 
 #include <cub3D_bonus.h>
 
-// char	*ft_strchr(const char *s, int c)
-// {
-// 	char	*str;
-// 	int		n;
-// 	int		i;
-
-// 	str = (char *)s;
-// 	if (!c)
-// 		return (str + ft_strlen(str));
-// 	n = ft_strlen(str);
-// 	i = 0;
-// 	while (i < n)
-// 	{
-// 		if (str[i] == (char)c)
-// 			return (str + i);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-// void	ft_bzero2(int *array, int len)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < len)
-// 	{
-// 		array[i] = 0;
-// 		i++;
-// 	}
-// }
-
 int	ft_array_len(char **array)
 {
 	int	ret;
