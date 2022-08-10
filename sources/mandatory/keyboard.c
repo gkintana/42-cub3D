@@ -6,18 +6,18 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 01:54:46 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/29 12:00:39 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/10 20:42:44 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 
-static void	vertical_movement(t_program *prog, bool move_forward)
+static void	vertical_movement(t_program *prog, int move_forward)
 {
 	int	i[2];
 
 	ft_bzero(&i, 2 * sizeof(int));
-	if (move_forward)
+	if (move_forward == TRUE)
 	{
 		i[0] = (int)(calculate_position_and_vector(prog, 1));
 		i[1] = (int)(calculate_position_and_vector(prog, 2));
@@ -37,12 +37,12 @@ static void	vertical_movement(t_program *prog, bool move_forward)
 	}
 }
 
-static void	horizontal_movement(t_program *prog, bool move_left)
+static void	horizontal_movement(t_program *prog, int move_left)
 {
 	int	i[2];
 
 	ft_bzero(&i, 2 * sizeof(int));
-	if (move_left)
+	if (move_left == TRUE)
 	{
 		i[0] = (int)(calculate_position_and_plane(prog, 1));
 		i[1] = (int)(calculate_position_and_plane(prog, 2));
@@ -67,17 +67,17 @@ int	key_events(int input, t_program *prog)
 	if (input == KEYCODE_ESC)
 		close_window(prog);
 	else if (input == KEYCODE_W)
-		vertical_movement(prog, true);
+		vertical_movement(prog, TRUE);
 	else if (input == KEYCODE_S)
-		vertical_movement(prog, false);
+		vertical_movement(prog, FALSE);
 	else if (input == KEYCODE_A)
-		horizontal_movement(prog, true);
+		horizontal_movement(prog, TRUE);
 	else if (input == KEYCODE_D)
-		horizontal_movement(prog, false);
+		horizontal_movement(prog, FALSE);
 	else if (input == KEYCODE_LEFT)
-		horizontal_perspective(prog, true);
+		horizontal_perspective(prog, TRUE);
 	else if (input == KEYCODE_RIGHT)
-		horizontal_perspective(prog, false);
+		horizontal_perspective(prog, FALSE);
 	update_frame(prog);
 	return (0);
 }

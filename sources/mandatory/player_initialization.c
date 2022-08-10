@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 12:10:53 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/29 12:11:46 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/10 20:43:07 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@
 ** checks if the current index being accessed in the map is one of the following
 ** characters "N or S or E or W"
 */
-static bool	is_valid_start_position(t_program *prog, int i[])
+static int	is_valid_start_position(t_program *prog, int i[])
 {
 	if (prog->mlx.map[i[0]][i[1]] == 'N'
 		|| prog->mlx.map[i[0]][i[1]] == 'S'
 		|| prog->mlx.map[i[0]][i[1]] == 'E'
 		|| prog->mlx.map[i[0]][i[1]] == 'W')
-		return (true);
-	return (false);
+		return (TRUE);
+	return (FALSE);
 }
 
 /*
@@ -48,7 +48,7 @@ void	set_player_position(t_program *prog)
 		i[1] = -1;
 		while (prog->mlx.map[i[0]][++i[1]] && !i[2])
 		{
-			if (is_valid_start_position(prog, i))
+			if (is_valid_start_position(prog, i) == TRUE)
 			{
 				prog->info.pos_x = i[1] + 0.50;
 				prog->info.pos_y = i[0] + 0.50;
