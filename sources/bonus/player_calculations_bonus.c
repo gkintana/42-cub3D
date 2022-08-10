@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player_calculations.c                              :+:      :+:    :+:   */
+/*   player_calculations_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 22:47:50 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/29 12:00:08 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/10 20:27:53 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ double	calculate_rotation(t_program *prog, int formula, double i[])
 ** i[2] = stores a copy of the player's plane x value before updating
 ** i[3] = boolean which indicates if rotation speed is negative
 */
-void	horizontal_perspective(t_program *prog, bool rotate_left)
+void	horizontal_perspective(t_program *prog, int rotate_left)
 {
 	double	i[4];
 
 	ft_bzero(&i, 4 * sizeof(double));
 	i[0] = prog->info.rotate_speed;
-	if (rotate_left)
+	if (rotate_left == TRUE)
 	{
 		i[3] = 1;
 		i[1] = prog->info.vec_x;
@@ -97,9 +97,9 @@ void	horizontal_perspective(t_program *prog, bool rotate_left)
 	}
 }
 
-void	vertical_perspective(t_program *prog, bool look_up)
+void	vertical_perspective(t_program *prog, int look_up)
 {
-	if (look_up)
+	if (look_up == TRUE)
 	{
 		prog->info.pitch += 50 * prog->info.move_speed;
 		if (prog->info.pitch > 125)

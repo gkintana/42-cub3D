@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minimap.c                                          :+:      :+:    :+:   */
+/*   minimap_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 14:58:32 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/07 19:31:31 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/10 20:32:58 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,19 @@ static void	draw_block(t_program *prog, int x, int y, int color)
 ** j[0] = stores the result of player's y-position + current y-block
 ** j[1] = stores the result of player's x-position + current x-block
 */
-static int	check_map_coordinates(t_program *prog, int i[], bool is_wall,
-			bool is_space)
+static int	check_map_coordinates(t_program *prog, int i[], int is_wall,
+			int is_space)
 {
 	int	j[2];
 
 	j[0] = (int)prog->info.pos_y + i[0];
 	j[1] = (int)prog->info.pos_x + i[2];
-	if (is_wall)
+	if (is_wall == TRUE)
 	{
 		if (is_valid_coordinate(prog, j) && prog->mlx.map[j[0]][j[1]] == '1')
 			return (1);
 	}
-	else if (is_space)
+	else if (is_space == TRUE)
 	{
 		if (is_valid_coordinate(prog, j) && prog->mlx.map[j[0]][j[1]] == ' '
 			&& j[1] < find_wall_start(prog->mlx.map[j[0]]))
@@ -119,11 +119,11 @@ void	draw_map(t_program *prog)
 		{
 			i[4] = i[3] * prog->mlx.win_width / prog->map.scale;
 			i[5] = i[1] * prog->mlx.win_height / prog->map.scale;
-			if (check_map_coordinates(prog, i, true, false))
+			if (check_map_coordinates(prog, i, TRUE, FALSE))
 				draw_block(prog, i[4], i[5], 0x3313294B);
-			else if (check_map_coordinates(prog, i, false, true))
+			else if (check_map_coordinates(prog, i, FALSE, TRUE))
 				draw_block(prog, i[4], i[5], 0x000000);
-			else if (check_map_coordinates(prog, i, false, false))
+			else if (check_map_coordinates(prog, i, FALSE, FALSE))
 				draw_block(prog, i[4], i[5], 0x33777777);
 			i[3]++;
 		}

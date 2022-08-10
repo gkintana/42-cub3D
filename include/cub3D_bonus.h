@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3D.h                                            :+:      :+:    :+:   */
+/*   cub3D_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/07 14:08:51 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/10 20:28:01 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
-# include <stdbool.h>
 
 /*--------------------------------- KEY CODES --------------------------------*/
 # if __linux__
@@ -263,8 +262,8 @@ int		raycast_loop(t_program *prog);
 double	calculate_position_and_vector(t_program *prog, int formula);
 double	calculate_position_and_plane(t_program *prog, int formula);
 double	calculate_rotation(t_program *prog, int formula, double i[]);
-void	horizontal_perspective(t_program *prog, bool rotate_left);
-void	vertical_perspective(t_program *prog, bool look_up);
+void	horizontal_perspective(t_program *prog, int rotate_left);
+void	vertical_perspective(t_program *prog, int look_up);
 
 // Events
 int		mouse_events(int x, int y, t_program *prog);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycast.c                                          :+:      :+:    :+:   */
+/*   raycast_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:55:41 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/05 15:02:56 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/10 20:33:42 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	check_vectors(t_program *prog, t_calculations *calc)
 
 void	perform_dda_and_calculate_dist(t_program *prog, t_calculations *calc)
 {
-	while (true)
+	while (TRUE)
 	{
 		if (calc->side_dist_x < calc->side_dist_y)
 		{

@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 10:49:59 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/07 14:08:51 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/10 20:31:39 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
-# include <stdbool.h>
 
 /*--------------------------------- KEY CODES --------------------------------*/
 # if __linux__
@@ -50,6 +49,8 @@
 # define HEX_SYSTEM		"0123456789ABCDEF"
 # define WIN_WIDTH		1600
 # define WIN_HEIGHT		900
+# define TRUE			1
+# define FALSE			0
 
 /*-------------------------------- STRUCTURES --------------------------------*/
 typedef struct s_image
@@ -231,7 +232,7 @@ int		raycast_loop(t_program *prog);
 double	calculate_position_and_vector(t_program *prog, int formula);
 double	calculate_position_and_plane(t_program *prog, int formula);
 double	calculate_rotation(t_program *prog, int formula, double i[]);
-void	horizontal_perspective(t_program *prog, bool rotate_left);
+void	horizontal_perspective(t_program *prog, int rotate_left);
 
 // Events
 int		key_events(int input, t_program *prog);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   floor_and_ceiling.c                                :+:      :+:    :+:   */
+/*   floor_and_ceiling_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:50:21 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/06 13:44:08 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/10 20:30:17 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 ** formula was based on the calculations provided at this website
 ** https://www.rapidtables.com/convert/number/hex-to-decimal.html
 */
-static int	convert_hex_to_int(t_rgb *rgb, bool is_floor)
+static int	convert_hex_to_int(t_rgb *rgb, int is_floor)
 {
-	if (is_floor)
+	if (is_floor == TRUE)
 		return ((int)(((rgb->floor_r / 16) * pow(16, 5))
 			+ ((rgb->floor_r % 16) * pow(16, 4))
 			+ ((rgb->floor_g / 16) * pow(16, 3))
@@ -93,8 +93,8 @@ void	get_floor_and_ceiling_rgb(t_program *prog)
 	rgb_array[0] = ft_split(prog->tex.floor, ',');
 	rgb_array[1] = ft_split(prog->tex.ceiling, ',');
 	save_rgb_components(&prog->tex.rgb, rgb_array);
-	prog->tex.rgb.floor = convert_hex_to_int(&prog->tex.rgb, true);
-	prog->tex.rgb.ceiling = convert_hex_to_int(&prog->tex.rgb, false);
+	prog->tex.rgb.floor = convert_hex_to_int(&prog->tex.rgb, TRUE);
+	prog->tex.rgb.ceiling = convert_hex_to_int(&prog->tex.rgb, FALSE);
 	print_rgb_info(&prog->tex.rgb);
 	free_2d_array(rgb_array[0]);
 	free_2d_array(rgb_array[1]);

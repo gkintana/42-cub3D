@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mouse.c                                            :+:      :+:    :+:   */
+/*   mouse_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 12:04:39 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/04 21:38:53 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/10 20:33:30 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	mouse_events(int x, int y, t_program *prog)
 	(void)y;
 	prog->info.rotate_speed = 0.0435;
 	if (x < prog->mlx.win_width / 2)
-		horizontal_perspective(prog, true);
+		horizontal_perspective(prog, TRUE);
 	else
-		horizontal_perspective(prog, false);
+		horizontal_perspective(prog, FALSE);
 	update_frame(prog);
 	prog->info.rotate_speed = prog->info.rotate_backup;
 	mlx_mouse_move(prog->mlx.window, prog->mlx.win_width / 2,
@@ -56,9 +56,9 @@ int	mouse_events(int x, int y, t_program *prog)
 	update_mouse_coordinates(prog);
 	prog->info.rotate_speed = 0.0175;
 	if (prog->mouse.new_x < x)
-		horizontal_perspective(prog, true);
+		horizontal_perspective(prog, TRUE);
 	else
-		horizontal_perspective(prog, false);
+		horizontal_perspective(prog, FALSE);
 	update_frame(prog);
 	prog->info.rotate_speed = prog->info.rotate_backup;
 	return (0);
