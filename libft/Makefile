@@ -6,7 +6,7 @@
 #    By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/28 18:55:33 by gkintana          #+#    #+#              #
-#    Updated: 2022/07/02 19:56:59 by gkintana         ###   ########.fr        #
+#    Updated: 2022/07/30 15:16:23 by gkintana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,11 +86,13 @@ CYAN		=	"\033[3;36m"
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 				@mkdir -p $(OBJ_DIR)
 				@printf $(CYAN)
+				@printf "\033[A\033[2K\r"
 				$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $@
 
 $(OBJ_DIR)/%.o : $(EXT_DIR)/%.c
 				@mkdir -p $(OBJ_DIR)
 				@printf $(CYAN)
+				@printf "\033[A\033[2K\r"
 				$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $@
 
 all:			$(NAME)
