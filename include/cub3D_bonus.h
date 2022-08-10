@@ -56,6 +56,8 @@
 # define HEX_SYSTEM		"0123456789ABCDEF"
 # define WIN_WIDTH		1600
 # define WIN_HEIGHT		900
+# define TRUE			1
+# define FALSE			0
 
 /*-------------------------------- STRUCTURES --------------------------------*/
 typedef struct s_image
@@ -235,6 +237,7 @@ void	init_player(t_program *prog);
 char	*init_rgb(char *str, int *i);
 char	*init_path(char *str, int *i);
 void	get_floor_and_ceiling_rgb(t_program *prog);
+void	play_intro(t_program *prog);
 
 // Player Position
 void	set_player_position(t_program *prog);

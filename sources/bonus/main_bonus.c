@@ -12,31 +12,6 @@
 
 #include <cub3D_bonus.h>
 
-void	intro(t_program *prog)
-{
-	int		width[3];
-	int		height[3];
-	void	*pic[3];
-
-	ft_bzero(pic, sizeof(void *) * 3);
-	pic[0] = mlx_xpm_file_to_image(prog->mlx.ptr, "assets/intro/1.xpm",
-		&width[0], &height[0]);
-	pic[1] = mlx_xpm_file_to_image(prog->mlx.ptr, "assets/intro/2.xpm",
-		&width[1], &height[1]);
-	pic[2] = mlx_xpm_file_to_image(prog->mlx.ptr, "assets/intro/4.xpm",
-		&width[2], &height[2]);
-	int	i = 0;
-	while (i < 3)
-	{
-		mlx_put_image_to_window(prog->mlx.ptr, prog->mlx.window, pic[i], 0, 0);
-		sleep(2);
-		mlx_clear_window(prog->mlx.ptr, prog->mlx.window);
-		mlx_destroy_image(prog->mlx.ptr, pic[i]);
-		pic[i] = NULL;
-		i++;
-	}
-}
-
 int	main(int argc, char **argv)
 {
 	t_program	prog;
@@ -48,7 +23,7 @@ int	main(int argc, char **argv)
 		check_map_extension(argv[1]);
 		if (!check_elements(argv[1], &prog))
 		{
-			intro(&prog);
+			play_intro(&prog);
 			get_floor_and_ceiling_rgb(&prog);
 			raycast_loop(&prog);
 			mlx_mouse_hide(prog.mlx.ptr, prog.mlx.window);

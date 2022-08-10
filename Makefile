@@ -30,7 +30,8 @@ endif
 
 INC_DIR		=	include
 SRC_DIR		=	sources/mandatory
-BONUS_DIR	=	sources/bonus
+BONUS_DIR1	=	sources/bonus
+BONUS_DIR2	=	miniaudio_bonus
 OBJ_DIR		=	objects
 
 SRCS		=	main.c \
@@ -60,6 +61,7 @@ BONUS		=	main_bonus.c \
 				init_bonus.c \
 				init1_bonus.c \
 				init2_bonus.c \
+				intro_bonus.c \
 				keyboard_bonus.c \
 				minimap_check_bonus.c \
 				minimap_utils_bonus.c \
@@ -78,7 +80,8 @@ BONUS		=	main_bonus.c \
 				player_representation_bonus.c \
 				raycast_textures_bonus.c \
 				raycast_bonus.c \
-				utils_bonus.c
+				utils_bonus.c \
+				miniaudio_bonus.c
 OBJS_BONUS	=	$(addprefix $(OBJ_DIR)/, $(BONUS:%c=%o))
 
 CC			=	gcc
@@ -99,11 +102,17 @@ $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 			@printf "\033[A\033[2K\r"
 			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLX_DIR) -O3 -c $< -o $@
 
-$(OBJ_DIR)/%.o : $(BONUS_DIR)/%.c
+$(OBJ_DIR)/%.o : $(BONUS_DIR1)/%.c
 			@mkdir -p $(OBJ_DIR)
 			@printf $(CYAN)
 			@printf "\033[A\033[2K\r"
-			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLX_DIR) -O3 -c $< -o $@
+			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLX_DIR) -I$(BONUS_DIR2) -O3 -c $< -o $@
+
+$(OBJ_DIR)/%.o : $(BONUS_DIR2)/%.c
+			@mkdir -p $(OBJ_DIR)
+			@printf $(CYAN)
+			@printf "\033[A\033[2K\r"
+			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLX_DIR) -I$(BONUS_DIR2) -O3 -c $< -o $@
 
 all:		$(NAME_M)
 
@@ -111,7 +120,7 @@ $(NAME_M):	$(MLX) $(LIBFT) $(OBJS)
 			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLX) -o $@
 
 $(NAME_B):	$(MLX) $(LIBFT) $(OBJS_BONUS)
-			@$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLX) -o $@
+			@$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLX) -o $@ -pthread -ldl
 
 $(LIBFT):
 			@printf $(DEFAULT)
@@ -131,7 +140,7 @@ clean:
 
 fclean:		clean
 			@$(RM) $(NAME_M) $(NAME_B)
-			@echo $(RED)"Deleted cub3D executable"$(DEFAULT)
+			@echo $(RED)"Deleted cub3D executable/s"$(DEFAULT)
 
 norm:
 			@make -C $(LIBFT_DIR) norm
