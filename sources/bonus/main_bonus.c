@@ -23,7 +23,6 @@ int	main(int argc, char **argv)
 		check_map_extension(argv[1]);
 		if (!check_elements(argv[1], &prog))
 		{
-			play_intro(&prog);
 			get_floor_and_ceiling_rgb(&prog);
 			raycast_loop(&prog);
 			mlx_mouse_hide(prog.mlx.ptr, prog.mlx.window);

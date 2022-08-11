@@ -236,7 +236,6 @@ void	init_player(t_program *prog);
 char	*init_rgb(char *str, int *i);
 char	*init_path(char *str, int *i);
 void	get_floor_and_ceiling_rgb(t_program *prog);
-void	play_intro(t_program *prog);
 
 // Player Position
 void	set_player_position(t_program *prog);
