@@ -60,7 +60,6 @@ BONUS		=	main_bonus.c \
 				init_bonus.c \
 				init1_bonus.c \
 				init2_bonus.c \
-				intro_bonus.c \
 				keyboard_bonus.c \
 				minimap_check_bonus.c \
 				minimap_utils_bonus.c \
