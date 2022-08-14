@@ -1,6 +1,7 @@
 # 42 - CUB3D PROJECT
-A project inspired by the world-famous Wolfenstein 3D game. It has enabled us to explore ray-casting principles
-to create a 3D graphical representation of a maze.
+A graphics design project that required us to create a 3D graphical representation of the inside of a maze from a first-person's perspective with the use of ray-casting principles and practical mathematic equations.
+
+This project was done in collaboration with [rrangwan](https://github.com/rrangwan)
 
 
 ## Sample Output
