@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycast_textures.c                                 :+:      :+:    :+:   */
+/*   raycast_textures_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 13:03:29 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/01 18:01:18 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/14 14:29:31 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static void	apply_shade(t_calculations *calc, t_raycast *ray)
 	int		i[6];
 
 	color_intensity = 1 / (calc->perp_dist / 3.75);
+	if (calc->perp_dist > 22.50)
+		color_intensity = 0;
 	i[0] = ((ray->color >> 16) & 255);
 	i[1] = (ray->color >> 8) & 255;
 	i[2] = ray->color & 255;
