@@ -12,16 +12,16 @@ to create a 3D graphical representation of a maze.
     <td><b>Bonus</b></td>
   </tr>
   <tr>
-    <td><img src="examples/img1-mandatory.png" width=600 height=300></td>
-    <td><img src="examples/img1-bonus.png" width=600 height=300></td>
+    <td><img src="examples/img1-mandatory.png" width=600 height=250></td>
+    <td><img src="examples/img1-bonus.png" width=600 height=250></td>
   </tr>
   <tr>
-    <td><img src="examples/img2-mandatory.png" width=600 height=300></td>
-    <td><img src="examples/img2-bonus.png" width=600 height=300></td>
+    <td><img src="examples/img2-mandatory.png" width=600 height=250></td>
+    <td><img src="examples/img2-bonus.png" width=600 height=250></td>
   </tr>
   <tr>
-    <td><img src="examples/img3-mandatory.png" width=600 height=300></td>
-    <td><img src="examples/img3-bonus.png" width=600 height=300></td>
+    <td><img src="examples/img3-mandatory.png" width=600 height=250></td>
+    <td><img src="examples/img3-bonus.png" width=600 height=250></td>
   </tr>
  </table>
   
