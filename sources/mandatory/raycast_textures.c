@@ -26,7 +26,7 @@ void	calculate_texture(t_program *prog, t_calculations *calc, t_raycast *ray)
 		ray->texture_x = prog->tex.width - ray->texture_x - 1;
 	ray->step = 1.0 * prog->tex.height / ray->line_height;
 	ray->texture_pos = (ray->start - prog->mlx.win_height / 2
-		+ ray->line_height / 2) * ray->step;
+			+ ray->line_height / 2) * ray->step;
 }
 
 static void	determine_texture(t_program *prog, t_calculations *calc,

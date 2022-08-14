@@ -55,7 +55,7 @@ static void	save_rgb_components(t_rgb *rgb, char **rgb_array[])
 ** prints the rgb hex and int values of the floor and ceiling colors.
 ** Will be mainly used for double checking & evaluations
 */
-static void	print_rgb_info(t_rgb *rgb)
+void	print_rgb_info(t_rgb *rgb)
 {
 	printf("Floor RGB (Hex Value) = %c%c%c%c%c%c\n",
 		HEX_SYSTEM[rgb->floor_r / 16], HEX_SYSTEM[rgb->floor_r % 16],
@@ -95,7 +95,6 @@ void	get_floor_and_ceiling_rgb(t_program *prog)
 	save_rgb_components(&prog->tex.rgb, rgb_array);
 	prog->tex.rgb.floor = convert_hex_to_int(&prog->tex.rgb, TRUE);
 	prog->tex.rgb.ceiling = convert_hex_to_int(&prog->tex.rgb, FALSE);
-	print_rgb_info(&prog->tex.rgb);
 	free_2d_array(rgb_array[0]);
 	free_2d_array(rgb_array[1]);
 }

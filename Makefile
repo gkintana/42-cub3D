@@ -6,7 +6,7 @@
 #    By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/22 08:46:09 by gkintana          #+#    #+#              #
-#    Updated: 2022/08/10 20:37:25 by gkintana         ###   ########.fr        #
+#    Updated: 2022/08/14 14:19:01 by gkintana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,7 @@ endif
 
 INC_DIR		=	include
 SRC_DIR		=	sources/mandatory
-BONUS_DIR1	=	sources/bonus
-BONUS_DIR2	=	miniaudio_bonus
+BONUS_DIR	=	sources/bonus
 OBJ_DIR		=	objects
 
 SRCS		=	main.c \
@@ -40,6 +39,7 @@ SRCS		=	main.c \
 				init1.c \
 				init2.c \
 				keyboard.c \
+				parse_ifs.c \
 				parse_utils.c \
 				parse.c \
 				parse0.c \
@@ -61,7 +61,6 @@ BONUS		=	main_bonus.c \
 				init_bonus.c \
 				init1_bonus.c \
 				init2_bonus.c \
-				intro_bonus.c \
 				keyboard_bonus.c \
 				minimap_check_bonus.c \
 				minimap_utils_bonus.c \
@@ -69,6 +68,7 @@ BONUS		=	main_bonus.c \
 				mouse_bonus.c \
 				parse_utils_bonus.c \
 				parse_bonus.c \
+				parse_ifs_bonus.c \
 				parse0_bonus.c \
 				parse1_bonus.c \
 				parse2_bonus.c \
@@ -80,8 +80,7 @@ BONUS		=	main_bonus.c \
 				player_representation_bonus.c \
 				raycast_textures_bonus.c \
 				raycast_bonus.c \
-				utils_bonus.c \
-				miniaudio_bonus.c
+				utils_bonus.c
 OBJS_BONUS	=	$(addprefix $(OBJ_DIR)/, $(BONUS:%c=%o))
 
 CC			=	gcc
@@ -102,26 +101,22 @@ $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 			@printf "\033[A\033[2K\r"
 			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLX_DIR) -O3 -c $< -o $@
 
-$(OBJ_DIR)/%.o : $(BONUS_DIR1)/%.c
+$(OBJ_DIR)/%.o : $(BONUS_DIR)/%.c
 			@mkdir -p $(OBJ_DIR)
 			@printf $(CYAN)
 			@printf "\033[A\033[2K\r"
-			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLX_DIR) -I$(BONUS_DIR2) -O3 -c $< -o $@
-
-$(OBJ_DIR)/%.o : $(BONUS_DIR2)/%.c
-			@mkdir -p $(OBJ_DIR)
-			@printf $(CYAN)
-			@printf "\033[A\033[2K\r"
-			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLX_DIR) -I$(BONUS_DIR2) -O3 -c $< -o $@
+			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I$(MLX_DIR) -O3 -c $< -o $@
 
 all:		$(NAME_M)
 
 $(NAME_M):	$(MLX) $(LIBFT) $(OBJS)
 			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLX) -o $@
+			@echo $(DEFAULT)$(GREEN)"cub3D Ready 😉"$(DEFAULT)
 
 $(NAME_B):	$(MLX) $(LIBFT) $(OBJS_BONUS)
-			@$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLX) -o $@ -pthread -ldl
-
+			@$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLX) -o $@
+			@echo $(DEFAULT)$(GREEN)"cub3D_bonus Ready 🥳"$(DEFAULT)
+			
 $(LIBFT):
 			@printf $(DEFAULT)
 			@make -C $(LIBFT_DIR) all

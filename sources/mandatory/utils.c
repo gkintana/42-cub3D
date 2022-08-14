@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 02:02:04 by gkintana          #+#    #+#             */
-/*   Updated: 2022/07/29 19:10:38 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/14 14:11:24 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ void	free_2d_array(char **array)
 
 	i = 0;
 	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
+		free(array[i++]);
 	free(array);
 	array = NULL;
 }

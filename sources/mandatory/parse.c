@@ -35,54 +35,6 @@ void	check_map_extension(char *file)
 	}
 }
 
-#if __linux__
-
-void	check_map_validity(char *file)
-{
-	int		fd;
-
-	fd = open(file, __O_DIRECTORY | __O_PATH);
-	if (fd != -1)
-	{
-		ft_putstr_fd("Error\nArgument Not a file\n", 2);
-		close(fd);
-		exit (1);
-	}
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putstr_fd("Error\nMap file does not exist\n", 2);
-		close(fd);
-		exit (1);
-	}
-	close(fd);
-}
-#endif
-
-#if __APPLE__
-
-void	check_map_validity(char *file)
-{
-	int		fd;
-
-	fd = open(file, O_DIRECTORY);
-	if (fd != -1)
-	{
-		ft_putstr_fd("Error\nArgument Not a file\n", 2);
-		close(fd);
-		exit (1);
-	}
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putstr_fd("Error\nMap file does not exist\n", 2);
-		close(fd);
-		exit (1);
-	}
-	close(fd);
-}
-#endif
-
 void	check_elements0(char **data, int *elem, char **map_temp)
 {
 	if (data)
@@ -102,30 +54,30 @@ void	check_elements0(char **data, int *elem, char **map_temp)
 
 int	check_last2(int *j, char **map)
 {
-    int	len;
-    int	i;
+	int	len;
+	int	i;
 
-    len = 0;
-    while (*j > 0)
-    {
-        i = 0;
-        if (map[*j][i] && ft_isspace(map[*j][i]) && map[*j][i] != '\n')
-            i++;
-        if ((!map[*j][i + 1] || map[*j][i] == '\n') || (map[*j][i] && \
-        (check_elems0(map[*j], &i) || ((map[*j][i] == 'F' || map[*j][i] == 'C') \
-        && map[*j][i + 1] && ft_isspace(map[*j][i + 1])))))
-            break ;
-        else
-        {
-            *j -= 1;
-            len++;
-        }
-    }
-    if (*j <= 0)
-        return (0);
-    if (!ft_map_row(map[*j + 1]))
-        return (0);
-    return (len);
+	len = 0;
+	while (*j > 0)
+	{
+		i = 0;
+		if (map[*j][i] && ft_isspace(map[*j][i]) && map[*j][i] != '\n')
+			i++;
+		if ((!map[*j][i + 1] || map[*j][i] == '\n') || (map[*j][i] && \
+		(check_elems0(map[*j], &i) || ((map[*j][i] == 'F' || map[*j][i] == 'C') \
+		&& map[*j][i + 1] && ft_isspace(map[*j][i + 1])))))
+			break ;
+		else
+		{
+			*j -= 1;
+			len++;
+		}
+	}
+	if (*j <= 0)
+		return (0);
+	if (!ft_map_row(map[*j + 1]))
+		return (0);
+	return (len);
 }
 
 int	check_last(char **map)
