@@ -6,7 +6,7 @@
 #    By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/22 08:46:09 by gkintana          #+#    #+#              #
-#    Updated: 2022/08/10 20:37:25 by gkintana         ###   ########.fr        #
+#    Updated: 2022/08/14 14:19:01 by gkintana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS		=	main.c \
 				init1.c \
 				init2.c \
 				keyboard.c \
+				parse_ifs.c \
 				parse_utils.c \
 				parse.c \
 				parse0.c \
@@ -67,6 +68,7 @@ BONUS		=	main_bonus.c \
 				mouse_bonus.c \
 				parse_utils_bonus.c \
 				parse_bonus.c \
+				parse_ifs_bonus.c \
 				parse0_bonus.c \
 				parse1_bonus.c \
 				parse2_bonus.c \
@@ -109,10 +111,12 @@ all:		$(NAME_M)
 
 $(NAME_M):	$(MLX) $(LIBFT) $(OBJS)
 			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLX) -o $@
+			@echo $(DEFAULT)$(GREEN)"cub3D Ready 😉"$(DEFAULT)
 
 $(NAME_B):	$(MLX) $(LIBFT) $(OBJS_BONUS)
 			@$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT_DIR)/$(LIBFT) $(LINK_MLX) -o $@
-
+			@echo $(DEFAULT)$(GREEN)"cub3D_bonus Ready 🥳"$(DEFAULT)
+			
 $(LIBFT):
 			@printf $(DEFAULT)
 			@make -C $(LIBFT_DIR) all

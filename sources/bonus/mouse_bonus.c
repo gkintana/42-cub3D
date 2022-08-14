@@ -6,7 +6,7 @@
 /*   By: gkintana <gkintana@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 12:04:39 by gkintana          #+#    #+#             */
-/*   Updated: 2022/08/10 20:33:30 by gkintana         ###   ########.fr       */
+/*   Updated: 2022/08/14 14:11:11 by gkintana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	mouse_events(int x, int y, t_program *prog)
 {
 	(void)y;
 	update_mouse_coordinates(prog);
-	prog->info.rotate_speed = 0.0175;
+	prog->info.rotate_speed = 0.0225;
 	if (prog->mouse.new_x < x)
 		horizontal_perspective(prog, TRUE);
 	else
